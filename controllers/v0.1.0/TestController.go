@@ -15,7 +15,7 @@ func TestController(ctx *gin.Context)  {
 
 	res := models.Response{
 		Rc:  "00",
-		Msg: "Transaction succesa",
+		Msg: "Transaction success",
 	}
 	ctx.JSON(http.StatusOK, res)
 }

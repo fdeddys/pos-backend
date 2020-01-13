@@ -17,6 +17,7 @@ var (
 	header string
 
 	accessPointTest string
+	accessPointLogin string
 
 	nameService    string
 
@@ -29,6 +30,8 @@ func init() {
 	header = "/v0.1.0"
 
 	accessPointTest = header + "/test"
+
+	accessPointLogin = header + "/login"
 
 	debugMode = utils.GetEnv("APPS_DEBUG", "debug")
 
@@ -49,6 +52,7 @@ func InitRouter() *gin.Engine  {
 
 
 	r.GET(accessPointTest, v1.TestController)
+	r.POST(accessPointLogin, v1.LoginController)
 
 
 	return r
