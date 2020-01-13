@@ -39,7 +39,7 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) mod
 		res.Msg = constants.ERR_CODE_51_MSG
 		return res
 	}
-	// fmt.Println("USER ---> ", user)
+
 	if user.ID == 0 {
 		res.Rc = constants.ERR_CODE_50
 		res.Msg = constants.ERR_CODE_50_MSG
