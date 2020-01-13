@@ -7,6 +7,7 @@ import (
 	"resto-be/utils"
 	"runtime"
 	"strconv"
+	_ "resto-be/database"
 )
 
 var (

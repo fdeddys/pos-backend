@@ -13,4 +13,7 @@ const (
 const (
 	ERR_CODE_50     = "50"
 	ERR_CODE_50_MSG = "Invalid username / password"
+
+	ERR_CODE_51     = "51"
+	ERR_CODE_51_MSG = "Error connection to database"
 )
