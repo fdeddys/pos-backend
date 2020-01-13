@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"net/http"
-	"resto-be/constants"
 	"resto-be/models"
 	"resto-be/models/dto"
 	"resto-be/services"
@@ -27,10 +26,6 @@ func LoginController(ctx *gin.Context)  {
 
 	res = services.InitializeUserServiceInterface().AuthLogin(&req)
 
-	if res.Rc != constants.ERR_CODE_00 {
-		ctx.JSON(http.StatusUnauthorized, res)
-		return
-	}
 
 	ctx.JSON(http.StatusOK, res)
 
