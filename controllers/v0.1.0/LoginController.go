@@ -10,7 +10,10 @@ import (
 	"resto-be/services"
 )
 
-func LoginController(ctx *gin.Context)  {
+type AuthController struct {
+}
+
+func (controller *AuthController) Login (ctx *gin.Context)  {
 	fmt.Println(">>> Login - Controller <<<")
 	parent := context.Background()
 	defer parent.Done()
@@ -24,7 +27,7 @@ func LoginController(ctx *gin.Context)  {
 		return
 	}
 
-	res = services.InitializeUserServiceInterface().AuthLogin(&req)
+	res = services.InitializeAuthServiceInterface().AuthLogin(&req)
 
 
 	ctx.JSON(http.StatusOK, res)

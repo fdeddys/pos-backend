@@ -8,16 +8,16 @@ import (
 )
 
 //  ..
-type UserServiceInterface struct {
+type AuthServiceInterface struct {
 }
 
-// InitializeUserServiceInterface ..
-func InitializeUserServiceInterface()  *UserServiceInterface {
-	return &UserServiceInterface{
+// InitializeAuthServiceInterface ..
+func InitializeAuthServiceInterface()  *AuthServiceInterface {
+	return &AuthServiceInterface{
 	}
 }
 
-func (service *UserServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) models.Response  {
+func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) models.Response  {
 	var res models.Response
 
 	if userDto.Username == "" {

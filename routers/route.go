@@ -51,8 +51,10 @@ func InitRouter() *gin.Engine  {
 	r.Use(gin.Recovery())
 
 
+	AuthController := new(v1.AuthController)
+
 	r.GET(accessPointTest, v1.TestController)
-	r.POST(accessPointLogin, v1.LoginController)
+	r.POST(accessPointLogin, AuthController.Login)
 
 
 	return r
