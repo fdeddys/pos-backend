@@ -29,8 +29,6 @@ func GetAllMenuGroup() ([]dbmodels.MenuGroup, error) {
 func GetMenuGroupById(id int64) (dbmodels.MenuGroup, error) {
 	db := database.GetDbCon()
 
-
-
 	var menuGroup dbmodels.MenuGroup
 
 	if id == 0 {

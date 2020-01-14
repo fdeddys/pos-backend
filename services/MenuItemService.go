@@ -75,3 +75,71 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemDto) models.R
 
 
 }
+
+
+func (service *MenuItemServiceInterface) GetAll () models.Response{
+	var res models.Response
+
+	menuItems, err := repository.GetAllMenuItem()
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuItems
+
+	return res
+
+}
+
+func (service *MenuItemServiceInterface) GetById (id int64) models.Response{
+	var res models.Response
+
+	menuGroup, err := repository.GetMenuItemById(id)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuGroup
+
+	return res
+
+}
+
+
+func (service *MenuItemServiceInterface) GetByMenuGroupId (id int64) models.Response{
+	var res models.Response
+
+	menuGroup, err := repository.GetMenuItemByMenuGroupId(id)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuGroup
+
+	return res
+
+}
