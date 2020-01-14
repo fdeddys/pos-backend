@@ -28,3 +28,8 @@ const (
 	ERR_CODE_11 = "11"
 	ERR_CODE_11_MSG = "Failed get data from DB"
 )
+
+const (
+	ERR_CODE_30 = "30"
+	ERR_CODE_30_MSG = "Not Found"
+)

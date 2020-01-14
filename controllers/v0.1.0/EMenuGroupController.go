@@ -34,7 +34,7 @@ func (controller *EMenuGroupController) Save (ctx *gin.Context) {
 		return
 	}
 
-	res = services.InitializeMenuGroupInterface().Save(&req)
+	res = services.InitializeMenuGroupServiceInterface().Save(&req)
 
 
 	ctx.JSON(http.StatusOK, res)
@@ -48,7 +48,7 @@ func (controller *EMenuGroupController) GetAll (ctx *gin.Context) {
 
 	res := models.Response{}
 
-	res = services.InitializeMenuGroupInterface().GetAll()
+	res = services.InitializeMenuGroupServiceInterface().GetAll()
 
 	ctx.JSON(http.StatusOK, res)
 
@@ -73,7 +73,7 @@ func (controller *EMenuGroupController) GetById (ctx *gin.Context) {
 	}
 
 
-	res = services.InitializeMenuGroupInterface().GetById(int64(id))
+	res = services.InitializeMenuGroupServiceInterface().GetById(int64(id))
 
 	ctx.JSON(http.StatusOK, res)
 
@@ -107,7 +107,7 @@ func (controller *EMenuGroupController) GetByFilterPaging (ctx *gin.Context) {
 		return
 	}
 
-	res = services.InitializeMenuGroupInterface().GetDataByFilterPaging(req, page, count)
+	res = services.InitializeMenuGroupServiceInterface().GetDataByFilterPaging(req, page, count)
 
 	ctx.JSON(http.StatusOK, res)
 

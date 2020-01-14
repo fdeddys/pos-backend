@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"log"
 	"resto-be/database"
 	"resto-be/database/dbmodels"
@@ -28,7 +29,13 @@ func GetAllMenuGroup() ([]dbmodels.MenuGroup, error) {
 func GetMenuGroupById(id int64) (dbmodels.MenuGroup, error) {
 	db := database.GetDbCon()
 
+
+
 	var menuGroup dbmodels.MenuGroup
+
+	if id == 0 {
+		return menuGroup, errors.New("id = 0")
+	}
 
 	err := db.Where(dbmodels.MenuGroup{ID:id}).First(&menuGroup).Error
 

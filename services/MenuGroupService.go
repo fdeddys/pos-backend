@@ -9,22 +9,22 @@ import (
 	"resto-be/models/dto"
 )
 
-type MenuGroupInterface struct {
+type MenuGroupServiceInterface struct {
 
 }
 
-func InitializeMenuGroupInterface()  *MenuGroupInterface {
-	return &MenuGroupInterface{
+func InitializeMenuGroupServiceInterface()  *MenuGroupServiceInterface {
+	return &MenuGroupServiceInterface{
 	}
 }
 
-func (service *MenuGroupInterface) Save (restoDto *dto.MenuGroupRequestDto) models.Response{
+func (service *MenuGroupServiceInterface) Save (menuGroupDto *dto.MenuGroupRequestDto) models.Response{
 	var res models.Response
 
 	menuGroup := dbmodels.MenuGroup{
-		ID: restoDto.ID,
-		Name: restoDto.Name,
-		ImgUrl: restoDto.ImgUrl,
+		ID: menuGroupDto.ID,
+		Name: menuGroupDto.Name,
+		ImgUrl: menuGroupDto.ImgUrl,
 	}
 
 	err := repository.SaveMenuGroup(&menuGroup)
@@ -47,7 +47,7 @@ func (service *MenuGroupInterface) Save (restoDto *dto.MenuGroupRequestDto) mode
 }
 
 
-func (service *MenuGroupInterface) GetAll () models.Response{
+func (service *MenuGroupServiceInterface) GetAll () models.Response{
 	var res models.Response
 
 	restorants, err := repository.GetAllMenuGroup()
@@ -69,10 +69,10 @@ func (service *MenuGroupInterface) GetAll () models.Response{
 
 }
 
-func (service *MenuGroupInterface) GetById (id int64) models.Response{
+func (service *MenuGroupServiceInterface) GetById (id int64) models.Response{
 	var res models.Response
 
-	resto, err := repository.GetMenuGroupById(id)
+	menuGroup, err := repository.GetMenuGroupById(id)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -85,17 +85,17 @@ func (service *MenuGroupInterface) GetById (id int64) models.Response{
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = resto
+	res.Data = menuGroup
 
 	return res
 
 }
 
 
-func (service *MenuGroupInterface) GetDataByFilterPaging (req dto.MenuGroupRequestDto, page int, count int) models.Response{
+func (service *MenuGroupServiceInterface) GetDataByFilterPaging (req dto.MenuGroupRequestDto, page int, count int) models.Response{
 	var res models.Response
 
-	restorants, total, err := repository.GetMenuGroupFilterPaging(req, page, count)
+	menuGroups, total, err := repository.GetMenuGroupFilterPaging(req, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -108,7 +108,7 @@ func (service *MenuGroupInterface) GetDataByFilterPaging (req dto.MenuGroupReque
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = restorants
+	res.Data = menuGroups
 	res.TotalData = total
 
 	return res

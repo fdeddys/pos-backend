@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"errors"
 	"log"
 	"resto-be/database"
 	"resto-be/database/dbmodels"
@@ -29,6 +30,10 @@ func GetRestoById(id int64) (dbmodels.Resto, error) {
 	db := database.GetDbCon()
 
 	var resto dbmodels.Resto
+
+	if id == 0 {
+		return resto, errors.New("id = 0")
+	}
 
 	err := db.Where(dbmodels.Resto{ID:id}).First(&resto).Error
 
