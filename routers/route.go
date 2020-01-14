@@ -14,10 +14,10 @@ type RestoBeServiceEnv struct {
 }
 
 var (
-	header string
+	version string
 
 	accessPointTest string
-	accessPointLogin string
+	accessPointResto string
 
 	nameService    string
 
@@ -27,11 +27,9 @@ var (
 
 
 func init() {
-	header = "/v0.1.0"
+	version = "/v0.1.0"
 
-	accessPointTest = header + "/test"
-
-	accessPointLogin = header + "/login"
+	accessPointTest = version + "/test"
 
 	debugMode = utils.GetEnv("APPS_DEBUG", "debug")
 
@@ -50,12 +48,21 @@ func InitRouter() *gin.Engine  {
 	r.Use(gin.Logger())
 	r.Use(gin.Recovery())
 
+	r.GET(accessPointTest, v1.TestController)
+
+
+	var api *gin.RouterGroup
 
 	AuthController := new(v1.AuthController)
+	api = r.Group(version + "/auth")
+	api.POST("/login", AuthController.Login)
 
-	r.GET(accessPointTest, v1.TestController)
-	r.POST(accessPointLogin, AuthController.Login)
 
+	RestoController := new(v1.RestoController)
+	api = r.Group(version + "/resto")
+	api.POST("", RestoController.Save)
+
+	//r.POST(accessPointResto)
 
 	return r
 
