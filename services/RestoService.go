@@ -73,6 +73,28 @@ func (service *RestoServiceInterface) GetAll () models.Response{
 
 }
 
+func (service *RestoServiceInterface) GetById (id int64) models.Response{
+	var res models.Response
+
+	resto, err := repository.GetById(id)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = resto
+
+	return res
+
+}
+
 func (service *RestoServiceInterface) GetDataByFilterPaging (req dto.RestoRequesDto, page int, count int) models.Response{
 	var res models.Response
 

@@ -55,6 +55,30 @@ func (controller *RestoController) GetAll (ctx *gin.Context) {
 
 }
 
+func (controller *RestoController) GetById (ctx *gin.Context) {
+	fmt.Println(">>> RestoControoler - Get By Id <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	id, errId := strconv.Atoi(ctx.Param("id"))
+	if errId != nil {
+		log.Println("error", errId)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+
+	res = services.InitializeRestoServiceInterface().GetById(int64(id))
+
+	ctx.JSON(http.StatusOK, res)
+
+
+}
+
 func (controller *RestoController) GetByFilterPaging (ctx *gin.Context) {
 	fmt.Println(">>> RestoControoler - Get All <<<")
 	parent := context.Background()

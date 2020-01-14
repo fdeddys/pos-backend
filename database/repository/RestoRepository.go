@@ -25,6 +25,16 @@ func GetAllResto() ([]dbmodels.Resto, error) {
 	return restorants, err
 }
 
+func GetById(id int64) (dbmodels.Resto, error) {
+	db := database.GetDbCon()
+
+	var resto dbmodels.Resto
+
+	err := db.Where(dbmodels.Resto{ID:id}).First(&resto).Error
+
+	return resto, err
+}
+
 func GetRestoyFilterPaging(req dto.RestoRequesDto, page int, limit int) ([]dbmodels.Resto, int, error) {
 	db := database.GetDbCon()
 
