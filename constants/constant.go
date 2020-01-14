@@ -17,3 +17,8 @@ const (
 	ERR_CODE_51     = "51"
 	ERR_CODE_51_MSG = "Error connection to database"
 )
+
+const (
+	ERR_CODE_02 = "02"
+	ERR_CODE_02_MSG = "Failed save data to DB"
+)

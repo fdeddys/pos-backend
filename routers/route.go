@@ -60,7 +60,7 @@ func InitRouter() *gin.Engine  {
 
 	RestoController := new(v1.RestoController)
 	api = r.Group(version + "/resto")
-	api.POST("", RestoController.Save)
+	api.POST("/", RestoController.Save)
 
 	//r.POST(accessPointResto)
 

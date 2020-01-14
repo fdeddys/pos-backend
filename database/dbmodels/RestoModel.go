@@ -5,6 +5,8 @@ type Resto struct {
 	Name 	string `json:"name"`
 	Desc 	string `json:"desc"`
 	Address string `json:"address"`
+	City string `json:"city"`
+	Province string `json:"province"`
 }
 
 

@@ -8,6 +8,7 @@ import (
 	"resto-be/constants"
 	"resto-be/models"
 	"resto-be/models/dto"
+	"resto-be/services"
 )
 
 type RestoController struct {
@@ -30,9 +31,7 @@ func (controller *RestoController) Save (ctx *gin.Context) {
 		return
 	}
 
-
-
-
+	res = services.InitializeRestoServiceInterface().Save(&req)
 
 	ctx.JSON(http.StatusOK, res)
 
