@@ -68,6 +68,12 @@ func InitRouter() *gin.Engine  {
 	EMenuGroupController := new(v1.EMenuGroupController)
 	api = r.Group(version + "/menu-group")
 	api.POST("/", EMenuGroupController.Save)
+	api.GET("/", EMenuGroupController.GetAll)
+	api.GET("/:id", EMenuGroupController.GetById)
+	api.POST("/page/:page/count/:count", EMenuGroupController.GetByFilterPaging)
+
+
+
 
 
 

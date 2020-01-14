@@ -76,7 +76,7 @@ func (service *RestoServiceInterface) GetAll () models.Response{
 func (service *RestoServiceInterface) GetById (id int64) models.Response{
 	var res models.Response
 
-	resto, err := repository.GetById(id)
+	resto, err := repository.GetRestoById(id)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -98,7 +98,7 @@ func (service *RestoServiceInterface) GetById (id int64) models.Response{
 func (service *RestoServiceInterface) GetDataByFilterPaging (req dto.RestoRequesDto, page int, count int) models.Response{
 	var res models.Response
 
-	restorants, total, err := repository.GetRestoyFilterPaging(req, page, count)
+	restorants, total, err := repository.GetRestoFilterPaging(req, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
