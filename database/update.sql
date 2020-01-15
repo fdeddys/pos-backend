@@ -7,7 +7,7 @@ CREATE TABLE "public"."user" (
   "email" varchar(255),
   "phone_numb" varchar(255),
   "fb" varchar(255),
-  "status" int4,
+  "status" int4 DEFAULT 1,
   PRIMARY KEY ("id")
 )
 ;
@@ -21,7 +21,7 @@ CREATE TABLE "public"."resto" (
   "address" varchar(255),
   "city" varchar(255),
   "province" varchar(255),
-  "status" int4,
+  "status" int4 DEFAULT 1,
   PRIMARY KEY ("id")
 )
 ;
@@ -35,7 +35,7 @@ CREATE TABLE "public"."e_menu_item" (
   "desc" varchar(500),
   "img_url" varchar(255),
   "price" decimal(10,2),
-  "status" int4,
+  "status" int4 DEFAULT 1,
   PRIMARY KEY ("id")
 )
 ;
@@ -45,7 +45,7 @@ CREATE TABLE "public"."e_menu_group" (
   "id" int8 NOT NULL DEFAULT nextval('seq_e_menu_group'::regclass),
   "name" varchar(255),
   "img_url" varchar(255),
-  "status" int4,
+  "status" int4 DEFAULT 1,
   PRIMARY KEY ("id")
 )
 ;

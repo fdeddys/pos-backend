@@ -8,6 +8,7 @@ type MenuItem struct {
 	Desc 	string `json:"desc"`
 	ImgUrl string `json:"img_url"`
 	Price float64 `json:"price"`
+	Status 	int `json:"status"`
 }
 
 
