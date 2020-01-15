@@ -28,10 +28,11 @@ func (service *UserServiceInterface) SaveDataUser(data *dbmodels.User) models.Re
 		Fb:        data.PhoneNumb,
 	}
 
+	newPass := ""
 	if data.ID == 0 {
-
-		newPass := utils.GenerateRandomChar()
-		dataUser.Password = newPass
+		newPass = utils.GenerateRandomChar()
+		encrPass := utils.HashPassword(data.Email + newPass)
+		dataUser.Password = encrPass
 
 	}
 
@@ -47,7 +48,7 @@ func (service *UserServiceInterface) SaveDataUser(data *dbmodels.User) models.Re
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = dataUser.Password
+	res.Data = newPass
 
 	return res
 

@@ -1,6 +1,8 @@
 package utils
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"math/rand"
 	"os"
 	"time"
@@ -30,6 +32,15 @@ func StringWithCharset(length int, charset string) string {
 	return string(b)
 }
 
+// GenerateRandomChar ...
 func GenerateRandomChar() string {
 	return StringWithCharset(8, charset)
+}
+
+// HashPassword ...
+func HashPassword(pass string) string {
+
+	hashPassword := sha256.Sum256([]byte(pass))
+	return hex.EncodeToString(hashPassword[:])
+
 }
