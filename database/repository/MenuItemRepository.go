@@ -47,3 +47,15 @@ func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	err := db.Where(dbmodels.MenuItem{GroupID:id}).Find(&menuItems).Error
 	return menuItems, err
 }
+
+func GetMenuItemByMenuGroupIdAndRestoId(groupId int64, restoId int64) ([]dbmodels.MenuItem, error) {
+	db := database.GetDbCon()
+
+	var menuItems []dbmodels.MenuItem
+
+	if groupId == 0 || restoId == 0{
+		return menuItems, errors.New("id = 0")
+	}
+	err := db.Where(dbmodels.MenuItem{GroupID:groupId, RestoID:restoId}).Find(&menuItems).Error
+	return menuItems, err
+}

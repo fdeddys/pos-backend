@@ -143,3 +143,25 @@ func (service *MenuItemServiceInterface) GetByMenuGroupId (id int64) models.Resp
 	return res
 
 }
+
+func (service *MenuItemServiceInterface) GetByMenuGroupIdAndRestoId (groupId int64, restoId int64) models.Response{
+	var res models.Response
+
+	menuGroup, err := repository.GetMenuItemByMenuGroupIdAndRestoId(groupId, restoId)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuGroup
+
+	return res
+
+}
