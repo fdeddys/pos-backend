@@ -3,23 +3,24 @@ package v0_1_0
 import (
 	"context"
 	"fmt"
-	"github.com/gin-gonic/gin"
 	"net/http"
-	"resto-be/models"
 	"resto-be/models/dto"
 	"resto-be/services"
+
+	"github.com/gin-gonic/gin"
 )
 
 type AuthController struct {
 }
 
-func (controller *AuthController) Login (ctx *gin.Context)  {
+// Login ...
+func (controller *AuthController) Login(ctx *gin.Context) {
 	fmt.Println(">>> Login - Controller <<<")
 	parent := context.Background()
 	defer parent.Done()
 
 	req := dto.LoginRequestDto{}
-	res := models.Response{}
+	res := dto.LoginResponseDto{}
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		fmt.Println("Request body error:", err)
@@ -28,7 +29,6 @@ func (controller *AuthController) Login (ctx *gin.Context)  {
 	}
 
 	res = services.InitializeAuthServiceInterface().AuthLogin(&req)
-
 
 	ctx.JSON(http.StatusOK, res)
 

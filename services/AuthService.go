@@ -1,11 +1,14 @@
 package services
 
 import (
+	"fmt"
 	"resto-be/constants"
 	"resto-be/database/dbmodels"
 	"resto-be/database/repository"
-	"resto-be/models"
 	"resto-be/models/dto"
+	"time"
+
+	jwt "github.com/dgrijalva/jwt-go"
 )
 
 //  ..
@@ -13,20 +16,20 @@ type AuthServiceInterface struct {
 }
 
 // InitializeAuthServiceInterface ..
-func InitializeAuthServiceInterface()  *AuthServiceInterface {
-	return &AuthServiceInterface{
-	}
+func InitializeAuthServiceInterface() *AuthServiceInterface {
+	return &AuthServiceInterface{}
 }
 
-func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) models.Response  {
-	var res models.Response
+// AuthLogin ...
+func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto.LoginResponseDto {
+	var res dto.LoginResponseDto
 
 	valReq := service.ValidationRequest(userDto)
 	if valReq.Rc != "" {
 		return valReq
 	}
 
-	user, err := repository.GetUserByEmail(userDto.Username)
+	user, err := repository.GetUserByEmail(userDto.Email)
 	if err != nil {
 		res.Rc = constants.ERR_CODE_51
 		res.Msg = constants.ERR_CODE_51_MSG
@@ -38,18 +41,41 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) mod
 		return valRes
 	}
 
+	token, err := generateToken(user.Email, user.ID)
+
+	if err != nil {
+		res.Rc = constants.ERR_CODE_52
+		res.Msg = constants.ERR_CODE_52_MSG
+		res.Token = ""
+		return res
+	}
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = "token"
-
+	res.Token = token
 	return res
 }
 
-func (service *AuthServiceInterface) ValidationRequest(userDto *dto.LoginRequestDto) models.Response  {
-	var res models.Response
+func generateToken(userEmail string, userId int64) (string, error) {
+	sign := jwt.New(jwt.GetSigningMethod("HS256"))
+	claims := sign.Claims.(jwt.MapClaims)
+	claims["userEmail"] = userEmail
+	claims["userId"] = fmt.Sprintf("%v", (userId))
 
-	if userDto.Username == "" {
+	unixNano := time.Now().UnixNano()
+	umillisec := unixNano / 1000000
+	timeToString := fmt.Sprintf("%v", umillisec)
+	fmt.Println("token Created ", timeToString)
+	claims["tokenCreated"] = timeToString
+
+	return sign.SignedString([]byte(constants.TokenSecretKey))
+
+}
+
+func (service *AuthServiceInterface) ValidationRequest(userDto *dto.LoginRequestDto) dto.LoginResponseDto {
+	var res dto.LoginResponseDto
+
+	if userDto.Email == "" {
 		res.Rc = constants.ERR_CODE_50
 		res.Msg = constants.ERR_CODE_50_MSG
 		return res
@@ -64,9 +90,8 @@ func (service *AuthServiceInterface) ValidationRequest(userDto *dto.LoginRequest
 	return res
 }
 
-
-func (service *AuthServiceInterface) ValidationResponse(user dbmodels.User, userDto *dto.LoginRequestDto) models.Response  {
-	var res models.Response
+func (service *AuthServiceInterface) ValidationResponse(user dbmodels.User, userDto *dto.LoginRequestDto) dto.LoginResponseDto {
+	var res dto.LoginResponseDto
 
 	if user.ID == 0 {
 		res.Rc = constants.ERR_CODE_50

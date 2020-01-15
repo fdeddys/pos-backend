@@ -1,8 +1,14 @@
 package dto
 
-
 // LoginRequestDto ...
 type LoginRequestDto struct {
-	Username string `json:"username"`
+	Email    string `json:"email"`
 	Password string `json:"password"`
+}
+
+// LoginResponseDto ...
+type LoginResponseDto struct {
+	Rc    string `json:"rc"`
+	Msg   string `json:"message"`
+	Token string `json:"token"`
 }
