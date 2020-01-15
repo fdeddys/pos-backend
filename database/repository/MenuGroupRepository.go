@@ -58,3 +58,22 @@ func GetMenuGroupFilterPaging(req dto.MenuGroupRequestDto, page int, limit int) 
 
 	return menuGroups, total, err
 }
+
+func GetMenuGroupByIdResto(idResto int64) ([]dbmodels.MenuGroup, error) {
+	db := database.GetDbCon()
+
+	var menuGroups []dbmodels.MenuGroup
+
+	if idResto == 0 {
+		return menuGroups, errors.New("id = 0")
+	}
+
+	err := db.Raw("SELECT e_menu_group.ID,e_menu_group.NAME,e_menu_group.img_url " +
+		"FROM e_menu_group " +
+			"JOIN e_menu_item ON e_menu_item.group_id=e_menu_group.ID " +
+				"AND e_menu_item.resto_id= ? " +
+			"GROUP BY e_menu_group.ID, e_menu_item.group_id " +
+		"ORDER BY ID", idResto).Find(&menuGroups).Error
+
+	return menuGroups, err
+}

@@ -113,3 +113,28 @@ func (controller *EMenuGroupController) GetByFilterPaging (ctx *gin.Context) {
 
 
 }
+
+
+func (controller *EMenuGroupController) GetByIdResto (ctx *gin.Context) {
+	fmt.Println(">>> EMenuGroupController - GetByIdResto <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	restoId, errRestoId := strconv.Atoi(ctx.Param("restoId"))
+	if errRestoId != nil {
+		log.Println("error", errRestoId)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+
+	res = services.InitializeMenuGroupServiceInterface().GetByIdResto(int64(restoId))
+
+	ctx.JSON(http.StatusOK, res)
+
+
+}
