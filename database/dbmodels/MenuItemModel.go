@@ -2,8 +2,8 @@ package dbmodels
 
 type MenuItem struct {
 	ID      int64   `json:"id"`
-	GroupID int64   `json:"group_id"`
-	RestoID int64   `json:"resto_id"`
+	GroupID int64   `json:"groupId"`
+	RestoID int64   `json:"restoId"`
 	Name    string  `json:"name"`
 	Desc    string  `json:"desc"`
 	ImgUrl  string  `json:"imgURL"`

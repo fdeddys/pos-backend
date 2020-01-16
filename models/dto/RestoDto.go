@@ -3,7 +3,7 @@ package dto
 type RestoRequesDto struct {
 	ID 		int64 `json:"id"`
 	Name 	string `json:"name"`
-	RestoCode string `json:"resto_code"`
+	RestoCode string `json:"restoCode"`
 	Desc 	string `json:"desc"`
 	Address string `json:"address"`
 	City string `json:"city"`
