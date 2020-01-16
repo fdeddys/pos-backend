@@ -32,7 +32,7 @@ CREATE TABLE "public"."e_menu_item" (
   "group_id" int8,
   "resto_id" int8,
   "name" varchar(255),
-  "desc" varchar(500),
+  "desc" varchar(1024),
   "img_url" varchar(255),
   "price" decimal(10,2),
   "status" int4 DEFAULT 1,
