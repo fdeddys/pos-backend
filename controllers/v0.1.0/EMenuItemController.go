@@ -2,6 +2,7 @@ package v0_1_0
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/gin-gonic/gin"
 	"log"
@@ -33,6 +34,9 @@ func (controller *EMenuItemController) Save (ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
+
+	reqByte,_ :=json.Marshal(req)
+	log.Println("req -> ", string(reqByte))
 
 	res = services.InitializeMenuItemServiceInterface().Save(&req)
 
@@ -95,7 +99,7 @@ func (controller *EMenuItemController) GetByMenuGroupId (ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
-
+/*
 func (controller *EMenuItemController) GetByMenuGroupIdAndIdResto (ctx *gin.Context) {
 	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupIdAndIdResto <<<")
 	parent := context.Background()
@@ -127,3 +131,4 @@ func (controller *EMenuItemController) GetByMenuGroupIdAndIdResto (ctx *gin.Cont
 
 	ctx.JSON(http.StatusOK, res)
 }
+*/

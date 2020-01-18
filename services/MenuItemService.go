@@ -33,18 +33,6 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemDto) models.R
 	}
 	/* END VALIDATE GROUPID */
 
-	/*BEGIN VALIDATE RESTO ID*/
-	_, errResto := repository.GetRestoById(reqDto.RestoID)
-	if errResto != nil {
-		log.Println("err get from database : ", errResto)
-
-		res.Rc = constants.ERR_CODE_30
-		res.Msg = "RestoID " + strconv.Itoa(int(reqDto.RestoID)) + " "+ constants.ERR_CODE_30_MSG
-		return res
-	}
-	/*END VALIDATE RESTO ID*/
-
-
 	menuItem := dbmodels.MenuItem{
 		ID: reqDto.ID,
 		Name: reqDto.Name,
@@ -52,9 +40,8 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemDto) models.R
 		Desc: reqDto.Desc,
 		GroupID: reqDto.GroupID,
 		Price: reqDto.Price,
-		RestoID:reqDto.RestoID,
+		Stock:reqDto.Stock,
 	}
-
 
 	err := repository.SaveMenuItem(&menuItem)
 	if err != nil {
@@ -144,6 +131,8 @@ func (service *MenuItemServiceInterface) GetByMenuGroupId (id int64) models.Resp
 
 }
 
+
+/*
 func (service *MenuItemServiceInterface) GetByMenuGroupIdAndRestoId (groupId int64, restoId int64) models.Response{
 	var res models.Response
 
@@ -165,3 +154,4 @@ func (service *MenuItemServiceInterface) GetByMenuGroupIdAndRestoId (groupId int
 	return res
 
 }
+*/

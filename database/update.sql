@@ -35,6 +35,7 @@ CREATE TABLE "public"."e_menu_item" (
   "desc" varchar(1024),
   "img_url" varchar(255),
   "price" decimal(10,2),
+  "stock" int4,
   "status" int4 DEFAULT 1,
   PRIMARY KEY ("id")
 )
