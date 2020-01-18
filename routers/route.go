@@ -55,7 +55,7 @@ func InitRouter() *gin.Engine {
 	r := gin.New()
 	r.Use(cors.New(cors.Config{
 		AllowMethods:     []string{"GET", "POST", "OPTIONS", "DELETE", "PUT"},
-		AllowHeaders:     []string{"Origin", "Authorization", "Content-Length", "Content-Type", "User-Agent", "Referrer", "Host", "Token"},
+		AllowHeaders:     []string{"Origin", "authorization", "Content-Length", "Content-Type", "User-Agent", "Referrer", "Host", "Token"},
 		ExposeHeaders:    []string{"Content-Length", "Access-Control-Allow-Origin", "Access-Control-Allow-Headers", "Content-Type"},
 		AllowCredentials: true,
 		AllowAllOrigins:  true,
@@ -77,15 +77,15 @@ func InitRouter() *gin.Engine {
 
 	RestoController := new(v1.RestoController)
 	api = r.Group(version + "/resto")
-	api.POST("/", RestoController.Save)
-	api.GET("/", RestoController.GetAll)
+	api.POST("", RestoController.Save)
+	api.GET("", RestoController.GetAll)
 	api.GET("/:id", RestoController.GetById)
 	api.POST("/page/:page/count/:count", RestoController.GetByFilterPaging)
 
 	EMenuGroupController := new(v1.EMenuGroupController)
 	api = r.Group(version + "/menu-group")
-	api.POST("/", EMenuGroupController.Save)
-	api.GET("/", EMenuGroupController.GetAll)
+	api.POST("", EMenuGroupController.Save)
+	api.GET("", EMenuGroupController.GetAll)
 	api.GET("/id/:id", EMenuGroupController.GetById)
 	api.POST("/page/:page/count/:count", EMenuGroupController.GetByFilterPaging)
 	api.GET("/resto/:restoId", EMenuGroupController.GetByIdResto)
@@ -94,8 +94,8 @@ func InitRouter() *gin.Engine {
 
 	EMenuItemController := new(v1.EMenuItemController)
 	api = r.Group(version + "/menu-item")
-	api.POST("/", EMenuItemController.Save)
-	api.GET("/", EMenuItemController.GetAll)
+	api.POST("", EMenuItemController.Save)
+	api.GET("", EMenuItemController.GetAll)
 	api.GET("/id/:id", EMenuItemController.GetById)
 	api.GET("/menu-group/:groupId", EMenuItemController.GetByMenuGroupId)
 	api.GET("/menu-group/:groupId/resto/:restoId", EMenuItemController.GetByMenuGroupIdAndIdResto)

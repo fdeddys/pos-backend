@@ -24,6 +24,7 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 	resto := dbmodels.Resto{
 		ID: restoDto.ID,
 		Name: restoDto.Name,
+		RestoCode: restoDto.RestoCode,
 		Address: restoDto.Address,
 		Desc: restoDto.Desc,
 		City: restoDto.City,
