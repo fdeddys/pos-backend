@@ -40,6 +40,7 @@ func GetMenuGroupById(id int64) (dbmodels.MenuGroup, error) {
 	return menuGroup, err
 }
 
+
 func GetMenuGroupFilterPaging(req dto.MenuGroupRequestDto, page int, limit int) ([]dbmodels.MenuGroup, int, error) {
 	db := database.GetDbCon()
 

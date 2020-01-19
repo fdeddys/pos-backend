@@ -18,6 +18,11 @@ const (
 )
 
 const (
+	ERR_CODE_20		= "20"
+	ERR_CODE_20_MSG		= "You are not allowed "
+)
+
+const (
 	ERR_CODE_50     = "50"
 	ERR_CODE_50_MSG = "Invalid username / password"
 

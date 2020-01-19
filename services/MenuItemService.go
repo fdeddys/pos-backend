@@ -24,6 +24,8 @@ func InitializeMenuItemServiceInterface()  *MenuItemServiceInterface {
 func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) models.Response {
 	var res models.Response
 
+
+
 	/* BEGIN VALIDATE GROUPID */
 	_, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
 	if errMenuGroup != nil {
@@ -34,6 +36,23 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 		return res
 	}
 	/* END VALIDATE GROUPID */
+
+	log.Println("dto.CurrRestoID = ", dto.CurrRestoID)
+	if dto.CurrRestoID != 0 {
+		menuGroup, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
+		if errMenuGroup != nil {
+			log.Println("err get from database : ", errMenuGroup)
+
+			res.Rc = constants.ERR_CODE_30
+			res.Msg = "MenuGroupID " + strconv.Itoa(int(reqDto.GroupID)) + " "+ constants.ERR_CODE_30_MSG
+			return res
+		}
+		if menuGroup.RestoId != dto.CurrRestoID{
+			res.Rc = constants.ERR_CODE_20
+			res.Msg = constants.ERR_CODE_20_MSG
+			return res
+		}
+	}
 
 	menuItem := dbmodels.MenuItem{
 		ID: reqDto.ID,
