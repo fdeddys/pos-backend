@@ -98,6 +98,7 @@ func InitRouter() *gin.Engine {
 	api.GET("", EMenuItemController.GetAll)
 	api.GET("/id/:id", EMenuItemController.GetById)
 	api.GET("/menu-group/:groupId", EMenuItemController.GetByMenuGroupId)
+	api.POST("/page/:page/count/:count", cekToken, EMenuItemController.GetByFilterPaging)
 	//api.GET("/menu-group/:groupId/resto/:restoId", EMenuItemController.GetByMenuGroupIdAndIdResto)
 
 	OrderController := new(v1.OrderController)
@@ -161,6 +162,9 @@ func cekToken(c *gin.Context) {
 
 		currUserId := (claims["userId"]).(string)
 		dto.CurrUserID, _ = strconv.ParseInt(currUserId, 10, 64)
+
+		currRestoId := (claims["restoId"]).(string)
+		dto.CurrRestoID, _ = strconv.ParseInt(currRestoId, 10, 64)
 
 		fmt.Println("now : ", timeNowInInt)
 		fmt.Println("token created time : ", tokenCreated)

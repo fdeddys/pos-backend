@@ -1,6 +1,8 @@
 package services
 
 import (
+	"encoding/json"
+	"fmt"
 	"log"
 	"resto-be/constants"
 	"resto-be/database/dbmodels"
@@ -19,7 +21,7 @@ func InitializeMenuItemServiceInterface()  *MenuItemServiceInterface {
 	}
 }
 
-func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemDto) models.Response {
+func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) models.Response {
 	var res models.Response
 
 	/* BEGIN VALIDATE GROUPID */
@@ -126,6 +128,37 @@ func (service *MenuItemServiceInterface) GetByMenuGroupId (id int64) models.Resp
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 	res.Data = menuGroup
+
+	return res
+
+}
+
+func (service *MenuItemServiceInterface) GetDataByFilterPaging (req dto.MenuItemRequestDto, page int, count int) models.Response{
+	fmt.Println(">>> MenuItemServiceInterface - GetDataByFilterPaging <<<")
+	var res models.Response
+
+
+	req.RestoId = dto.CurrRestoID
+
+	reqByte,_ := json.Marshal(req)
+	log.Println("reqData -> ", string(reqByte))
+
+
+	menuItems, total, err := repository.GetMenuItemFilterPaging(req, page, count)
+	if err != nil {
+		log.Println("err get menu items from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuItems
+	res.TotalData = total
 
 	return res
 

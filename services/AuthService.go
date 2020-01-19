@@ -41,7 +41,7 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto
 		return valRes
 	}
 
-	token, err := generateToken(user.Email, user.ID)
+	token, err := generateToken(user.Email, user.ID, user.RestoId)
 
 	if err != nil {
 		res.Rc = constants.ERR_CODE_52
@@ -56,11 +56,12 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto
 	return res
 }
 
-func generateToken(userEmail string, userId int64) (string, error) {
+func generateToken(userEmail string, userId int64, restoId int64) (string, error) {
 	sign := jwt.New(jwt.GetSigningMethod("HS256"))
 	claims := sign.Claims.(jwt.MapClaims)
 	claims["userEmail"] = userEmail
 	claims["userId"] = fmt.Sprintf("%v", (userId))
+	claims["restoId"] = fmt.Sprintf("%v", (restoId))
 
 	unixNano := time.Now().UnixNano()
 	umillisec := unixNano / 1000000

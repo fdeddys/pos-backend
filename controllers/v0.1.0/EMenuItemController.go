@@ -4,6 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"github.com/astaxie/beego/logs"
 	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
@@ -24,7 +25,7 @@ func (controller *EMenuItemController) Save (ctx *gin.Context) {
 	parent := context.Background()
 	defer parent.Done()
 
-	req := dto.MenuItemDto{}
+	req := dto.MenuItemRequestDto{}
 	res := models.Response{}
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
@@ -95,6 +96,38 @@ func (controller *EMenuItemController) GetByMenuGroupId (ctx *gin.Context) {
 		return
 	}
 	res = services.InitializeMenuItemServiceInterface().GetByMenuGroupId(int64(id))
+
+	ctx.JSON(http.StatusOK, res)
+}
+
+
+func (controller *EMenuItemController) GetByFilterPaging (ctx *gin.Context) {
+	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupId <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.MenuItemRequestDto{}
+	res := models.Response{}
+
+	page, errPage := strconv.Atoi(ctx.Param("page"))
+	if errPage != nil {
+		log.Println("error", errPage)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+	count, errCount := strconv.Atoi(ctx.Param("count"))
+	if errCount != nil {
+		logs.Info("error", errPage)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+	res = services.InitializeMenuItemServiceInterface().GetDataByFilterPaging(req, page, count)
 
 	ctx.JSON(http.StatusOK, res)
 }

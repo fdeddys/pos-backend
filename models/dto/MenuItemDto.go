@@ -1,6 +1,6 @@
 package dto
 
-type MenuItemDto struct {
+type MenuItemRequestDto struct {
 	ID 		int64 `json:"id"`
 	GroupID 		int64 `json:"groupId"`
 	Name 	string `json:"name"`
@@ -9,4 +9,5 @@ type MenuItemDto struct {
 	Price float64 `json:"price"`
 	Stock   int `json:"stock"`
 	Status 	int `json:"status"`
+	RestoId int64 `json:"restoId"`
 }

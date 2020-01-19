@@ -10,6 +10,7 @@ type User struct {
 	Email     string `json:"email"`
 	PhoneNumb string `json:"phoneNumb"`
 	Fb        string `json:"fb"`
+	RestoId   int64 `json:"restoId"`
 	Status 	int `json:"status"`
 }
 
