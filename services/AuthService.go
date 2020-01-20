@@ -56,6 +56,42 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto
 	return res
 }
 
+// AuthLoginCustomer ...
+func (service *AuthServiceInterface) AuthLoginCustomer(userDto *dto.LoginRequestDto) dto.LoginResponseDto {
+	var res dto.LoginResponseDto
+
+	valReq := service.ValidationRequest(userDto)
+	if valReq.Rc != "" {
+		return valReq
+	}
+
+	customer, err := repository.GetCustomerByEmail(userDto.Email)
+	if err != nil {
+		res.Rc = constants.ERR_CODE_51
+		res.Msg = constants.ERR_CODE_51_MSG + " " + err.Error()
+		return res
+	}
+
+	valRes := service.ValidationResponseCustomer(customer, userDto)
+	if valRes.Rc != "" {
+		return valRes
+	}
+
+	token, err := generateToken(customer.Email, customer.ID, 0)
+
+	if err != nil {
+		res.Rc = constants.ERR_CODE_52
+		res.Msg = constants.ERR_CODE_52_MSG
+		res.Token = ""
+		return res
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = customer.Name
+	res.Token = token
+	return res
+}
+
 func generateToken(userEmail string, userId int64, restoId int64) (string, error) {
 	sign := jwt.New(jwt.GetSigningMethod("HS256"))
 	claims := sign.Claims.(jwt.MapClaims)
@@ -101,6 +137,24 @@ func (service *AuthServiceInterface) ValidationResponse(user dbmodels.User, user
 	}
 
 	if user.Password != userDto.Password {
+		res.Rc = constants.ERR_CODE_50
+		res.Msg = constants.ERR_CODE_50_MSG
+		return res
+	}
+
+	return res
+}
+
+func (service *AuthServiceInterface) ValidationResponseCustomer(customer dbmodels.Customer, userDto *dto.LoginRequestDto) dto.LoginResponseDto {
+	var res dto.LoginResponseDto
+
+	if customer.ID == 0 {
+		res.Rc = constants.ERR_CODE_50
+		res.Msg = constants.ERR_CODE_50_MSG
+		return res
+	}
+
+	if customer.Password != userDto.Password {
 		res.Rc = constants.ERR_CODE_50
 		res.Msg = constants.ERR_CODE_50_MSG
 		return res

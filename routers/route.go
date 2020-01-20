@@ -90,8 +90,6 @@ func InitRouter() *gin.Engine {
 	api.POST("/page/:page/count/:count", EMenuGroupController.GetByFilterPaging)
 	api.GET("/resto/:restoId", EMenuGroupController.GetByIdResto)
 
-
-
 	EMenuItemController := new(v1.EMenuItemController)
 	api = r.Group(version + "/menu-item")
 	api.POST("", cekToken, EMenuItemController.Save)
@@ -104,9 +102,6 @@ func InitRouter() *gin.Engine {
 	OrderController := new(v1.OrderController)
 	api = r.Group(version + "/order")
 	api.POST("/add", cekToken, OrderController.Add)
-
-
-
 
 	UserController := new(v1.UserController)
 	api = r.Group(version + "/user")
@@ -121,6 +116,11 @@ func InitRouter() *gin.Engine {
 	ImageController := new(v1.ImageController)
 	api = r.Group(version + "/image")
 	api.POST("/upload", cekToken, ImageController.Upload)
+
+	CustomerController := new(v1.CustomerController)
+	api = r.Group(version + "/customer")
+	api.POST("/login", CustomerController.Login)
+	api.POST("", CustomerController.Save)
 
 	return r
 

@@ -2,11 +2,12 @@ package database
 
 import (
 	"fmt"
+	"log"
+
 	"github.com/astaxie/beego/logs"
 	"github.com/jinzhu/gorm"
-	"github.com/kelseyhightower/envconfig"
 	_ "github.com/jinzhu/gorm/dialects/postgres"
-	"log"
+	"github.com/kelseyhightower/envconfig"
 )
 
 // Env ..
@@ -14,7 +15,7 @@ type Env struct {
 	DbUser  string `envconfig:"RESTO_BE_POSTGRES_USER" default:"resto"`
 	DbPass  string `envconfig:"RESTO_BE_POSTGRES_PASS" default:"Resto#123"`
 	DbName  string `envconfig:"RESTO_BE_POSTGRES_NAME" default:"restodb"`
-	DbHost  string `envconfig:"RESTO_BE_POSTGRES_HOST" default:"localhost"`
+	DbHost  string `envconfig:"RESTO_BE_POSTGRES_HOST" default:"156.67.214.228"`
 	DbPort  string `envconfig:"RESTO_BE_POSTGRES_PORT" default:"5432"`
 	DbDebug bool   `envconfig:"RESTO_BE_POSTGRES_DEBUG" default:"true"`
 	DbType  string `envconfig:"RESTO_BE__TYPE" default:"POSTGRES"`
@@ -74,4 +75,3 @@ func GetDbCon() *gorm.DB {
 	DbCon.LogMode(dbEnv.DbDebug)
 	return DbCon
 }
-
