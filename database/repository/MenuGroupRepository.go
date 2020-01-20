@@ -69,12 +69,7 @@ func GetMenuGroupByIdResto(idResto int64) ([]dbmodels.MenuGroup, error) {
 		return menuGroups, errors.New("id = 0")
 	}
 
-	err := db.Raw("SELECT e_menu_group.ID,e_menu_group.NAME,e_menu_group.img_url " +
-		"FROM e_menu_group " +
-			"JOIN e_menu_item ON e_menu_item.group_id=e_menu_group.ID " +
-				"AND e_menu_item.resto_id= ? " +
-			"GROUP BY e_menu_group.ID, e_menu_item.group_id " +
-		"ORDER BY ID", idResto).Find(&menuGroups).Error
+	err := db.Raw("SELECT*FROM e_menu_group WHERE resto_id=? ORDER BY ID desc", idResto).Find(&menuGroups).Error
 
 	return menuGroups, err
 }
