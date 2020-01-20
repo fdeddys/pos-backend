@@ -118,6 +118,10 @@ func InitRouter() *gin.Engine {
 
 	//r.POST(accessPointResto)
 
+	ImageController := new(v1.ImageController)
+	api = r.Group(version + "/image")
+	api.POST("/upload", cekToken, ImageController.Upload)
+
 	return r
 
 }

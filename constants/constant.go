@@ -20,6 +20,9 @@ const (
 const (
 	ERR_CODE_20		= "20"
 	ERR_CODE_20_MSG		= "You are not allowed "
+
+	ERR_CODE_21		= "21"
+	ERR_CODE_21_MSG		= "Error send to host "
 )
 
 const (
@@ -79,3 +82,4 @@ const (
 	PAID_DESC = "SUDAH DIBAYAR"
 
 )
+

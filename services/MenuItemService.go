@@ -37,6 +37,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 	}
 	/* END VALIDATE GROUPID */
 
+	/* BEGIN VALIDATE RESTO */
 	log.Println("dto.CurrRestoID = ", dto.CurrRestoID)
 	if dto.CurrRestoID != 0 {
 		menuGroup, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
@@ -47,12 +48,15 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 			res.Msg = "MenuGroupID " + strconv.Itoa(int(reqDto.GroupID)) + " "+ constants.ERR_CODE_30_MSG
 			return res
 		}
+
+		// validasi user berhak/tidak untuk save by resto_id
 		if menuGroup.RestoId != dto.CurrRestoID{
 			res.Rc = constants.ERR_CODE_20
 			res.Msg = constants.ERR_CODE_20_MSG
 			return res
 		}
 	}
+	/* END VALIDATE RESTO */
 
 	menuItem := dbmodels.MenuItem{
 		ID: reqDto.ID,
@@ -119,7 +123,9 @@ func (service *MenuItemServiceInterface) GetById (id int64) models.Response{
 		return res
 	}
 
-	log.Println("get data : ", res)
+
+
+	log.Println("get data : ", menuGroup)
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
