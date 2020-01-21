@@ -61,10 +61,12 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 }
 
 func (service *RestoServiceInterface)SavePictures(restoId int64, reqPictures []dto.ImageDto) error {
-	var image dbmodels.RestoPicture
+
+	repository.DeleteImageRestoByRestoId(restoId)
 
 	for i:=0; i< len(reqPictures); i++ {
-		image.ID = reqPictures[i].ID
+		var image dbmodels.RestoPicture
+
 		image.ImgUrl = reqPictures[i].ImgUrl
 		image.RestoId = restoId
 		image.Status = constants.IMAGE_ACTIVE

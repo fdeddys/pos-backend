@@ -8,6 +8,13 @@ import (
 	"resto-be/models/dto"
 )
 
+func DeleteImageRestoByRestoId(restoId int64) {
+	db := database.GetDbCon()
+
+	db.Exec("delete from resto_picture where resto_id = ?", restoId)
+
+}
+
 func SaveImageResto(image *dbmodels.RestoPicture) (error)  {
 	db := database.GetDbCon()
 
@@ -38,12 +45,13 @@ func GetRestoById(id int64) (dbmodels.Resto, error) {
 	db := database.GetDbCon()
 
 	var resto dbmodels.Resto
+	//var pictures dbmodels.RestoPicture
 
 	if id == 0 {
 		return resto, errors.New("id = 0")
 	}
 
-	err := db.Where(dbmodels.Resto{ID:id}).First(&resto).Error
+	err := db.Where(dbmodels.Resto{ID:id}).Preload("RestoPicture").First(&resto).Error
 
 	return resto, err
 }

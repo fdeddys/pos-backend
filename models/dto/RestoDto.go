@@ -13,6 +13,5 @@ type RestoRequesDto struct {
 }
 
 type ImageDto struct {
-	ID 			int64 `json:"id"`
 	ImgUrl		string `json:"imgURL"`
 }
