@@ -62,7 +62,7 @@ func GetRestoById(id int64) (dbmodels.Resto, error) {
 		return resto, errors.New("id = 0")
 	}
 
-	err := db.Where(dbmodels.Resto{ID:id}).Preload("RestoPicture").First(&resto).Error
+	err := db.Where(dbmodels.Resto{ID:id}).Preload("Pictures").First(&resto).Error
 
 	return resto, err
 }
@@ -75,7 +75,7 @@ func GetRestoFilterPaging(req dto.RestoRequesDto, page int, limit int) ([]dbmode
 	var total int
 
 
-	err := db.Limit(limit).Offset((page-1) * limit).Order("id").Find(&restorants).Limit(-1).Offset(0).Count(&total).Error // query
+	err := db.Limit(limit).Offset((page-1) * limit).Order("id").Preload("Pictures").Find(&restorants).Limit(-1).Offset(0).Count(&total).Error // query
 
 	if err != nil {
 		log.Println("<<< Error get data restoran by filter paging >>>")
