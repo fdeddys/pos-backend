@@ -89,6 +89,9 @@ const (
 
 	RESTO_IN_ACTIVE = 0
 	RESTO_IN_ACTIVE_DESC = "In Active"
+
+	ERR_CODE_60 = "60"
+	ERR_CODE_60_MSG = "Kode Resto Telah Digunakan"
 )
 
 const (

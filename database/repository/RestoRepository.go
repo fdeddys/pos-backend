@@ -8,6 +8,17 @@ import (
 	"resto-be/models/dto"
 )
 
+func GetRestoByRestoCode(restoCode string) (dbmodels.Resto,error) {
+	db := database.GetDbCon()
+
+	var resto dbmodels.Resto
+	//var pictures dbmodels.RestoPicture
+
+	err := db.Where(dbmodels.Resto{RestoCode:restoCode}).First(&resto).Error
+
+	return resto, err
+}
+
 func DeleteImageRestoByRestoId(restoId int64) {
 	db := database.GetDbCon()
 

@@ -80,6 +80,8 @@ func InitRouter() *gin.Engine {
 	api.POST("", RestoController.Save)
 	api.GET("", RestoController.GetAll)
 	api.GET("/:id", RestoController.GetById)
+	api.POST("/check-code", RestoController.CheckCodeResto)
+	api.POST("/upload-image", RestoController.GetByFilterPaging)
 	api.POST("/page/:page/count/:count", RestoController.GetByFilterPaging)
 
 	EMenuGroupController := new(v1.EMenuGroupController)

@@ -20,8 +20,18 @@ func InitializeRestoServiceInterface()  *RestoServiceInterface {
 
 func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models.Response{
 	var res models.Response
+	var resto dbmodels.Resto
 
-	resto := dbmodels.Resto{
+	//check code resto
+	resto,_ = repository.GetRestoByRestoCode(restoDto.RestoCode)
+	if resto.ID != restoDto.ID && resto.ID > 0{
+		res.Rc = constants.ERR_CODE_60
+		res.Msg = constants.ERR_CODE_60_MSG
+
+		return res
+	}
+
+	resto = dbmodels.Resto{
 		ID: restoDto.ID,
 		Name: restoDto.Name,
 		RestoCode: restoDto.RestoCode,
@@ -147,4 +157,29 @@ func (service *RestoServiceInterface) GetDataByFilterPaging (req dto.RestoReques
 
 	return res
 
+}
+
+func (service *RestoServiceInterface) CheckCode(requesDto dto.RestoRequesDto) models.Response {
+	// cek kode resto
+	var res models.Response
+	resto,_ := repository.GetRestoByRestoCode(requesDto.RestoCode)
+
+	if resto.ID != requesDto.ID{
+		if resto.ID > 0 {
+			if resto.ID == requesDto.ID{
+
+			}
+			res.Rc = constants.ERR_CODE_60
+			res.Msg = constants.ERR_CODE_60_MSG
+
+			return res
+		}
+	}
+
+
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+
+	return res
 }

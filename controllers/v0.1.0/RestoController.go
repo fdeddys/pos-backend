@@ -112,5 +112,27 @@ func (controller *RestoController) GetByFilterPaging (ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, res)
 
+}
 
+func (controller *RestoController)CheckCodeResto(ctx *gin.Context)  {
+	fmt.Println(">>> RestoControoler - CheckCodeResto <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.RestoRequesDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	byteReq,_ := json.Marshal(req)
+	log.Println("req--> ", string(byteReq))
+
+	res = services.InitializeRestoServiceInterface().CheckCode(req)
+
+	ctx.JSON(http.StatusOK, res)
 }
