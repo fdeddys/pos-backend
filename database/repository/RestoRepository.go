@@ -8,6 +8,14 @@ import (
 	"resto-be/models/dto"
 )
 
+func SaveImageResto(image *dbmodels.RestoPicture) (error)  {
+	db := database.GetDbCon()
+
+	err := db.Save(&image).Error
+
+	return err
+}
+
 func SaveResto(resto *dbmodels.Resto) (error) {
 	db := database.GetDbCon()
 

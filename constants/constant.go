@@ -83,3 +83,19 @@ const (
 
 )
 
+const (
+	RESTO_ACTIVE = 1
+	RESTO_ACTIVE_DESC = "Active"
+
+	RESTO_IN_ACTIVE = 0
+	RESTO_IN_ACTIVE_DESC = "In Active"
+)
+
+const (
+	IMAGE_ACTIVE = 1
+	IMAGE_ACTIVE_DESC = "Active"
+
+	IMAGE_IN_ACTIVE = 0
+	IMAGE_IN_ACTIVE_DESC = "In Active"
+)
+

@@ -8,5 +8,11 @@ type RestoRequesDto struct {
 	Address string `json:"address"`
 	City string `json:"city"`
 	Province string `json:"province"`
+	Pictures []ImageDto `json:"pictures"`
 	Status 	int `json:"status"`
+}
+
+type ImageDto struct {
+	ID 			int64 `json:"id"`
+	ImgUrl		string `json:"imgURL"`
 }

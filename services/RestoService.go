@@ -29,8 +29,10 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 		Desc: restoDto.Desc,
 		City: restoDto.City,
 		Province: restoDto.Province,
+		Status: constants.RESTO_ACTIVE,
 	}
 
+	// save resto
 	err := repository.SaveResto(&resto)
 	if err != nil {
 		log.Println("err save database : ", err)
@@ -38,6 +40,13 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 		res.Rc = constants.ERR_CODE_10
 		res.Msg = constants.ERR_CODE_10_MSG
 		return res
+	}
+
+	//save pic
+	errSavePicture := service.SavePictures(resto.ID, restoDto.Pictures)
+	if errSavePicture != nil{
+		log.Println("err save pict : ", err)
+
 	}
 
 	log.Println("save : ", res)
@@ -49,6 +58,25 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 
 	return res
 
+}
+
+func (service *RestoServiceInterface)SavePictures(restoId int64, reqPictures []dto.ImageDto) error {
+	var image dbmodels.RestoPicture
+
+	for i:=0; i< len(reqPictures); i++ {
+		image.ID = reqPictures[i].ID
+		image.ImgUrl = reqPictures[i].ImgUrl
+		image.RestoId = restoId
+		image.Status = constants.IMAGE_ACTIVE
+		err := repository.SaveImageResto(&image)
+		if err != nil {
+			log.Println("err save path image to database : ", err)
+
+			return err
+		}
+	}
+
+	return nil
 }
 
 

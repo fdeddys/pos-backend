@@ -2,6 +2,7 @@ package v0_1_0
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/gin-gonic/gin"
@@ -33,6 +34,8 @@ func (controller *RestoController) Save (ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
+	byteReq,_ := json.Marshal(req)
+	log.Println("req--> ", string(byteReq))
 
 	res = services.InitializeRestoServiceInterface().Save(&req)
 
