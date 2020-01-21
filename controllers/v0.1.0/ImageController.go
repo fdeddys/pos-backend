@@ -17,7 +17,7 @@ type ImageController struct {
 }
 
 func (controller *ImageController) Upload(ctx *gin.Context) {
-	fmt.Println(">>> User Controoler - Get All <<<")
+	fmt.Println(">>> ImageController - Upload <<<")
 	parent := context.Background()
 	defer parent.Done()
 	req := dto.UploadImageReqDto{}

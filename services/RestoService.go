@@ -18,6 +18,15 @@ func InitializeRestoServiceInterface()  *RestoServiceInterface {
 	}
 }
 
+//func (service *RestoServiceInterface) UploadImage(req dto.UploadImageReqDto) models.Response {
+//	fmt.Println("<< RestoServiceInterface - Upload Image >>")
+//	var res models.Response
+//
+//
+//
+//	return res
+//}
+
 func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models.Response{
 	var res models.Response
 	var resto dbmodels.Resto

@@ -24,7 +24,7 @@ func (service *ImageServiceInterface) Upload (req dto.UploadImageReqDto) models.
 		BucketName: req.BucketName,
 		NameFile: req.NameFile,
 		Data: req.Data,
-		ContentType: req.ContentType,
+		ContentType: "image/jpeg",
 	}
 
 	_, err :=service.Send(reqUpload)
