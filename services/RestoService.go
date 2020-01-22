@@ -239,6 +239,31 @@ func (service *RestoServiceInterface) UploadImage (req dto.UploadImageRestoReque
 	return res
 }
 
+func (service *RestoServiceInterface) RemoveImage (req dto.RemoveImageRestoRequestDto) models.Response {
+	fmt.Println("<< RestoSErvice -- RemoveImage >>")
+	var res models.Response
+
+	pict := repository.GetRestoPictureByImgUrl(req.ImgUrl)
+	if pict.ID == 0 {
+		log.Println("Image not Found ye")
+		res.Rc = constants.ERR_CODE_30
+		res.Msg = constants.ERR_CODE_30_MSG
+		return res
+	}
+	err:= repository.RemoveRestoPicture(&pict)
+	if err != nil {
+		res.Rc = constants.ERR_CODE_12
+		res.Msg = constants.ERR_CODE_12_MSG
+		return res
+
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+
+	return res
+}
+
 func (service *RestoServiceInterface) AsyncSendToMinio (fileName string, data string, errChan chan error)  {
 
 	reqUpload := menustorage.ReqUploadImageModel{

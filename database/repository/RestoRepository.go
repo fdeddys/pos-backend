@@ -106,3 +106,11 @@ func SaveRestoPicture(picture *dbmodels.RestoPicture) error  {
 
 	return err
 }
+
+func RemoveRestoPicture(picture *dbmodels.RestoPicture) error  {
+	db := database.GetDbCon()
+
+	err := db.Delete(&picture).Error
+
+	return err
+}

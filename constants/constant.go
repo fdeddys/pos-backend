@@ -45,6 +45,9 @@ const (
 
 	ERR_CODE_11     = "11"
 	ERR_CODE_11_MSG = "Failed get data from DB"
+
+	ERR_CODE_12     = "12"
+	ERR_CODE_12_MSG = "Failed remove data from DB"
 )
 
 const (

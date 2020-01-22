@@ -187,3 +187,27 @@ func (controller *RestoController) UploadImage(ctx *gin.Context)  {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+func (controller *RestoController) RemoveImage(ctx *gin.Context)  {
+	fmt.Println(">>> RestoControoler - RemoveImage <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	var req dto.RemoveImageRestoRequestDto
+	var res models.Response
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	reqByte,_ := json.Marshal(req)
+	log.Println("reqdata ==>", string(reqByte))
+
+	res = services.InitializeRestoServiceInterface().RemoveImage(req)
+
+	ctx.JSON(http.StatusOK, res)
+
+}

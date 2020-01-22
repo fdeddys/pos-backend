@@ -12,6 +12,14 @@ func TestRestoServiceInterface_GenerateFileNameImage(t *testing.T) {
 	log.Println(fileName, url)
 }
 
+func TestRestoServiceInterface_RemoveImage(t *testing.T) {
+	req := dto.RemoveImageRestoRequestDto{
+		ImgUrl: "p3",
+	}
+	res := InitializeRestoServiceInterface().RemoveImage(req)
+	log.Println(res)
+}
+
 func TestRestoServiceInterface_UploadImage(t *testing.T) {
 	req := dto.UploadImageRestoRequestDto{
 		RestoId: 40,
