@@ -12,7 +12,7 @@ var (
 )
 
 func init()  {
-	host = utils.GetEnv("STORAGE_MINIO_URLACCESS", "http://156.67.214.228:9000")
+	host = utils.GetEnv("MENU_STORAGE_HOST", "http://156.67.214.228:9001")
 	endpointUpload = utils.GetEnv("STORAGE_MINIO_UPLOAD", "/upload")
 }
 

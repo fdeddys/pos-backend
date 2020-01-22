@@ -17,7 +17,7 @@ func InitializeImageServiceInterface()  *ImageServiceInterface {
 	}
 }
 
-func (service *ImageServiceInterface) Upload (req dto.UploadImageReqDto) models.Response {
+func (service *ImageServiceInterface) Upload (req dto.UploadImageReqDtotemp) models.Response {
 	var res models.Response
 
 	reqUpload := menustorage.ReqUploadImageModel{

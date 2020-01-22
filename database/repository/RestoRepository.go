@@ -26,7 +26,7 @@ func DeleteImageRestoByRestoId(restoId int64) {
 
 }
 
-func SaveImageResto(image *dbmodels.RestoPicture) (error)  {
+func SaveImageRestoTemp(image *dbmodels.RestoPicture) (error)  {
 	db := database.GetDbCon()
 
 	err := db.Save(&image).Error
@@ -75,7 +75,7 @@ func GetRestoFilterPaging(req dto.RestoRequesDto, page int, limit int) ([]dbmode
 	var total int
 
 
-	err := db.Limit(limit).Offset((page-1) * limit).Order("id").Preload("Pictures").Find(&restorants).Limit(-1).Offset(0).Count(&total).Error // query
+	err := db.Limit(limit).Offset((page-1) * limit).Order("id").Find(&restorants).Limit(-1).Offset(0).Count(&total).Error // query
 
 	if err != nil {
 		log.Println("<<< Error get data restoran by filter paging >>>")
@@ -84,4 +84,25 @@ func GetRestoFilterPaging(req dto.RestoRequesDto, page int, limit int) ([]dbmode
 
 
 	return restorants, total, err
+}
+
+func GetRestoPictureByImgUrl(imgUrl string) (dbmodels.RestoPicture) {
+	db := database.GetDbCon()
+
+	var picture dbmodels.RestoPicture
+
+	err := db.Where(dbmodels.RestoPicture{ImgUrl:imgUrl}).First(&picture).Error
+	if err != nil {
+		log.Println("image belum ada")
+	}
+
+	return picture
+}
+
+func SaveRestoPicture(picture *dbmodels.RestoPicture) error  {
+	db := database.GetDbCon()
+
+	err := db.Save(&picture).Error
+
+	return err
 }

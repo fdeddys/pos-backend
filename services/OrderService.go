@@ -33,6 +33,7 @@ func (service *OrderServiceInterface) Add (reqDto *dto.OrderRequestDto) models.R
 		OrderDate: time.Now(),
 	}
 
+
 	// save order to db
 	err := repository.AddOrder(&order)
 	if err != nil {

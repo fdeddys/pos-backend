@@ -20,7 +20,7 @@ func (controller *ImageController) Upload(ctx *gin.Context) {
 	fmt.Println(">>> ImageController - Upload <<<")
 	parent := context.Background()
 	defer parent.Done()
-	req := dto.UploadImageReqDto{}
+	req := dto.UploadImageReqDtotemp{}
 	res := models.Response{}
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {

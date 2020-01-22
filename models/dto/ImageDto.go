@@ -1,6 +1,6 @@
 package dto
 
-type UploadImageReqDto struct {
+type UploadImageReqDtotemp struct {
 	BucketName string `json:"bucketName"`
 	Data string `json:"data"`
 	NameFile string `json:"nameFile"`
