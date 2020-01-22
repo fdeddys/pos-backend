@@ -234,6 +234,7 @@ func (service *RestoServiceInterface) UploadImage (req dto.UploadImageRestoReque
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = imgUrl
 
 	return res
 }
