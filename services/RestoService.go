@@ -209,6 +209,20 @@ func (service *RestoServiceInterface) CheckCode(requesDto dto.RestoRequesDto) mo
 func (service *RestoServiceInterface) UploadImage (req dto.UploadImageRestoRequestDto) models.Response {
 	fmt.Println("<< RestoSErvice -- Upload Image >>")
 	var res models.Response
+
+	//// check restoId
+	//var resto dbmodels.Resto
+	//if req.RestoId == 0 {
+	//	resto.Status = constants.RESTO_ACTIVE
+	//	err := repository.SaveResto(&resto)
+	//	if err != nil {
+	//		res.Rc = constants.ERR_CODE_10
+	//		res.Msg = constants.ERR_CODE_10_MSG
+	//		return res
+	//	}
+	//	req.RestoId = resto.ID
+	//}
+
 	fileName, imgUrl := service.GenerateFileNameImage(req.RestoId,req.Seq)
 
 	log.Println(fileName, imgUrl)
