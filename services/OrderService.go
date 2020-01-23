@@ -11,28 +11,27 @@ import (
 )
 
 type OrderServiceInterface struct {
-
 }
 
-func InitializeOrderServiceInterface()  *OrderServiceInterface {
-	return &OrderServiceInterface{
-	}
+func InitializeOrderServiceInterface() *OrderServiceInterface {
+	return &OrderServiceInterface{}
 }
 
-func (service *OrderServiceInterface) Add (reqDto *dto.OrderRequestDto) models.Response {
+func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Response {
 	var res models.Response
 
 	/*pack message order*/
 	order := dbmodels.Order{
-		OrderNo: reqDto.OrderNo,
-		TableId: reqDto.TableId,
-		RestoId: reqDto.RestoId,
-		UserId: dto.CurrUserID,
-		Status: constants.ORDER_STATUS_DIPESAN,
-		IsPaid: constants.NOT_YET_PAID,
-		OrderDate: time.Now(),
+		OrderNo:    reqDto.OrderNo,
+		TableId:    reqDto.TableId,
+		RestoId:    reqDto.RestoId,
+		CustomerId: reqDto.CustomerId,
+		Total:      reqDto.Total,
+		UserId:     dto.CurrUserID,
+		Status:     constants.ORDER_STATUS_DIPESAN,
+		IsPaid:     constants.NOT_YET_PAID,
+		OrderDate:  time.Now(),
 	}
-
 
 	// save order to db
 	err := repository.AddOrder(&order)
@@ -52,7 +51,7 @@ func (service *OrderServiceInterface) Add (reqDto *dto.OrderRequestDto) models.R
 	return res
 }
 
-func (service *OrderServiceInterface) AddOrderDetail (orderId int64, orderDetails []dto.OrderDetailRequest) models.Response {
+func (service *OrderServiceInterface) AddOrderDetail(orderId int64, orderDetails []dto.OrderDetailRequest) models.Response {
 	var res models.Response
 
 	for _, detail := range orderDetails {
@@ -68,11 +67,11 @@ func (service *OrderServiceInterface) AddOrderDetail (orderId int64, orderDetail
 		}
 
 		// pack msg order detail
-		orderDetail :=dbmodels.OrderDetail{
-			Price: menuItem.Price,
+		orderDetail := dbmodels.OrderDetail{
+			Price:     menuItem.Price,
 			EMenuItem: detail.EMenuItem,
-			Qty: detail.Qty,
-			OrderId: orderId,
+			Qty:       detail.Qty,
+			OrderId:   orderId,
 		}
 
 		// save order detail to db

@@ -44,7 +44,7 @@ func (controller *CustomerController) Login(ctx *gin.Context) {
 	defer parent.Done()
 
 	req := dto.LoginRequestDto{}
-	res := dto.LoginResponseDto{}
+	res := dto.LoginCustomerResponseDto{}
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		fmt.Println("Request body error:", err)
@@ -54,6 +54,7 @@ func (controller *CustomerController) Login(ctx *gin.Context) {
 
 	res = services.InitializeAuthServiceInterface().AuthLoginCustomer(&req)
 
+	fmt.Println("isissss ", res)
 	ctx.JSON(http.StatusOK, res)
 
 }

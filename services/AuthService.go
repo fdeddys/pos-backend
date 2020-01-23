@@ -57,12 +57,14 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto
 }
 
 // AuthLoginCustomer ...
-func (service *AuthServiceInterface) AuthLoginCustomer(userDto *dto.LoginRequestDto) dto.LoginResponseDto {
-	var res dto.LoginResponseDto
+func (service *AuthServiceInterface) AuthLoginCustomer(userDto *dto.LoginRequestDto) dto.LoginCustomerResponseDto {
+	var res dto.LoginCustomerResponseDto
 
 	valReq := service.ValidationRequest(userDto)
 	if valReq.Rc != "" {
-		return valReq
+		res.Rc = valReq.Rc
+		res.Msg = valReq.Msg
+		return res
 	}
 
 	customer, err := repository.GetCustomerByEmail(userDto.Email)
@@ -74,9 +76,13 @@ func (service *AuthServiceInterface) AuthLoginCustomer(userDto *dto.LoginRequest
 
 	valRes := service.ValidationResponseCustomer(customer, userDto)
 	if valRes.Rc != "" {
-		return valRes
+		fmt.Println("val res ### ", valRes)
+		res.Rc = valReq.Rc
+		res.Msg = valReq.Msg
+		fmt.Println("val res ### ", res)
+		return res
 	}
-
+	fmt.Println("val res", valRes)
 	token, err := generateToken(customer.Email, customer.ID, 0)
 
 	if err != nil {
@@ -87,8 +93,12 @@ func (service *AuthServiceInterface) AuthLoginCustomer(userDto *dto.LoginRequest
 	}
 
 	res.Rc = constants.ERR_CODE_00
-	res.Msg = customer.Name
+	res.Name = customer.Name
+	res.Phone = customer.PhoneNumb
+	res.CustomerID = fmt.Sprintf("%v", customer.ID)
+	res.Msg = constants.ERR_CODE_00_MSG
 	res.Token = token
+	fmt.Println("finihs")
 	return res
 }
 
@@ -145,6 +155,7 @@ func (service *AuthServiceInterface) ValidationResponse(user dbmodels.User, user
 	return res
 }
 
+// ValidationResponseCustomer ...
 func (service *AuthServiceInterface) ValidationResponseCustomer(customer dbmodels.Customer, userDto *dto.LoginRequestDto) dto.LoginResponseDto {
 	var res dto.LoginResponseDto
 
@@ -154,6 +165,7 @@ func (service *AuthServiceInterface) ValidationResponseCustomer(customer dbmodel
 		return res
 	}
 
+	fmt.Println("check pass")
 	if customer.Password != userDto.Password {
 		res.Rc = constants.ERR_CODE_50
 		res.Msg = constants.ERR_CODE_50_MSG

@@ -104,7 +104,7 @@ func InitRouter() *gin.Engine {
 
 	OrderController := new(v1.OrderController)
 	api = r.Group(version + "/order")
-	api.POST("/add", cekToken, OrderController.Add)
+	api.POST("/add", OrderController.Add)
 
 	UserController := new(v1.UserController)
 	api = r.Group(version + "/user")

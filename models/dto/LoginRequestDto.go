@@ -12,3 +12,13 @@ type LoginResponseDto struct {
 	Msg   string `json:"message"`
 	Token string `json:"token"`
 }
+
+// LoginCustomerResponseDto ...
+type LoginCustomerResponseDto struct {
+	Rc         string `json:"rc"`
+	Msg        string `json:"message"`
+	CustomerID string `json:"customerId"`
+	Phone      string `json:"phone"`
+	Name       string `json:"name"`
+	Token      string `json:"token"`
+}
