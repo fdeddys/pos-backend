@@ -87,6 +87,14 @@ const (
 )
 
 const (
+	GROUP_ACTIVE = 1
+	GROUP_ACTIVE_DESC = "Active"
+
+	GROUP_IN_ACTIVE = 0
+	GROUP_IN_ACTIVE_DESC = "In Active"
+)
+
+const (
 	RESTO_ACTIVE = 1
 	RESTO_ACTIVE_DESC = "Active"
 

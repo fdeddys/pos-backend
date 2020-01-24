@@ -89,6 +89,15 @@ func (controller *EMenuGroupController) GetByFilterPaging (ctx *gin.Context) {
 	req := dto.MenuGroupRequestDto{}
 	res := models.Response{}
 
+	restoId, errRestoId := strconv.Atoi(ctx.Param("restoId"))
+	if errRestoId != nil {
+		log.Println("error", errRestoId)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
 	page, errPage := strconv.Atoi(ctx.Param("page"))
 	if errPage != nil {
 		log.Println("error", errPage)
@@ -107,7 +116,7 @@ func (controller *EMenuGroupController) GetByFilterPaging (ctx *gin.Context) {
 		return
 	}
 
-	res = services.InitializeMenuGroupServiceInterface().GetDataByFilterPaging(req, page, count)
+	res = services.InitializeMenuGroupServiceInterface().GetDataByFilterPaging(req, int64(restoId), page, count)
 
 	ctx.JSON(http.StatusOK, res)
 

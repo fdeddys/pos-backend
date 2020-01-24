@@ -25,6 +25,8 @@ func (service *MenuGroupServiceInterface) Save (menuGroupDto *dto.MenuGroupReque
 		ID: menuGroupDto.ID,
 		Name: menuGroupDto.Name,
 		ImgUrl: menuGroupDto.ImgUrl,
+		RestoId: menuGroupDto.RestoId,
+		Status: constants.GROUP_ACTIVE,
 	}
 
 	err := repository.SaveMenuGroup(&menuGroup)
@@ -92,10 +94,10 @@ func (service *MenuGroupServiceInterface) GetById (id int64) models.Response{
 }
 
 
-func (service *MenuGroupServiceInterface) GetDataByFilterPaging (req dto.MenuGroupRequestDto, page int, count int) models.Response{
+func (service *MenuGroupServiceInterface) GetDataByFilterPaging (req dto.MenuGroupRequestDto, restoId int64, page int, count int) models.Response{
 	var res models.Response
 
-	menuGroups, total, err := repository.GetMenuGroupFilterPaging(req, page, count)
+	menuGroups, total, err := repository.GetMenuGroupFilterPaging(req, restoId, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
 

@@ -41,7 +41,7 @@ func GetMenuGroupById(id int64) (dbmodels.MenuGroup, error) {
 }
 
 
-func GetMenuGroupFilterPaging(req dto.MenuGroupRequestDto, page int, limit int) ([]dbmodels.MenuGroup, int, error) {
+func GetMenuGroupFilterPaging(req dto.MenuGroupRequestDto, restoId int64, page int, limit int) ([]dbmodels.MenuGroup, int, error) {
 	db := database.GetDbCon()
 
 	var menuGroups []dbmodels.MenuGroup
@@ -49,7 +49,9 @@ func GetMenuGroupFilterPaging(req dto.MenuGroupRequestDto, page int, limit int) 
 	var total int
 
 
-	err := db.Limit(limit).Offset((page-1) * limit).Order("id").Find(&menuGroups).Limit(-1).Offset(0).Count(&total).Error // query
+	err := db.Where(dbmodels.MenuGroup{
+		RestoId: restoId,
+	}).Limit(limit).Offset((page-1) * limit).Order("id").Find(&menuGroups).Limit(-1).Offset(0).Count(&total).Error // query
 
 	if err != nil {
 		log.Println("<<< Error get data menuGroups by filter paging >>>")
