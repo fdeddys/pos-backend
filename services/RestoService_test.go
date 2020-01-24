@@ -4,6 +4,7 @@ import (
 	"log"
 	"resto-be/models/dto"
 	"testing"
+	"github.com/rs/xid"
 )
 
 func TestRestoServiceInterface_GenerateFileNameImage(t *testing.T) {
@@ -28,4 +29,10 @@ func TestRestoServiceInterface_UploadImage(t *testing.T) {
 	}
 	res:= InitializeRestoServiceInterface().UploadImage(req)
 	log.Println("res--> ", res)
+}
+
+func TestGenID(t *testing.T) {
+	id := xid.New()
+	log.Println("id ==> ",id)
+
 }

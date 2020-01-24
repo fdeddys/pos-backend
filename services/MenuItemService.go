@@ -27,7 +27,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 
 
 	/* BEGIN VALIDATE GROUPID */
-	_, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
+	menuGroup, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
 	if errMenuGroup != nil {
 		log.Println("err get from database : ", errMenuGroup)
 
@@ -37,8 +37,11 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 	}
 	/* END VALIDATE GROUPID */
 
-	/* BEGIN VALIDATE RESTO */
-	log.Println("dto.CurrRestoID = ", dto.CurrRestoID)
+
+	/*
+	* TODO VALIDATE RESTO
+	*/
+	/* to
 	if dto.CurrRestoID != 0 {
 		menuGroup, errMenuGroup := repository.GetMenuGroupById(reqDto.GroupID)
 		if errMenuGroup != nil {
@@ -64,6 +67,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 		ImgUrl: reqDto.ImgUrl,
 		Desc: reqDto.Desc,
 		GroupID: reqDto.GroupID,
+		RestoID: menuGroup.RestoId,
 		Price: reqDto.Price,
 		Stock:reqDto.Stock,
 	}
