@@ -100,6 +100,8 @@ func InitRouter() *gin.Engine {
 	api.GET("/id/:id", EMenuItemController.GetById)
 	api.GET("/menu-group/:groupId", EMenuItemController.GetByMenuGroupId)
 	api.POST("/page/:page/count/:count", cekToken, EMenuItemController.GetByFilterPaging)
+	api.POST("/upload-image", cekToken, EMenuItemController.UploadImage)
+
 	//api.GET("/menu-group/:groupId/resto/:restoId", EMenuItemController.GetByMenuGroupIdAndIdResto)
 
 	OrderController := new(v1.OrderController)

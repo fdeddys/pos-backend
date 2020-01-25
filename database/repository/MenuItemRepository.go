@@ -18,6 +18,14 @@ func SaveMenuItem(menuItem *dbmodels.MenuItem) (error) {
 	return err
 }
 
+func SaveMenuItemPicture(picture *dbmodels.MenuItemPicture) error  {
+	db := database.GetDbCon()
+
+	err := db.Save(&picture).Error
+
+	return err
+}
+
 func GetAllMenuItem() ([]dbmodels.MenuItem, error) {
 	db := database.GetDbCon()
 

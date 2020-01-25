@@ -113,3 +113,7 @@ const (
 	IMAGE_IN_ACTIVE_DESC = "In Active"
 )
 
+const (
+	BUCKET_RESTO = "resto"
+	BUCKET_MENU_ITEM = "menu-item"
+)

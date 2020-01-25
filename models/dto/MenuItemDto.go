@@ -11,3 +11,8 @@ type MenuItemRequestDto struct {
 	Status 	int `json:"status"`
 	RestoId int64 `json:"restoId"`
 }
+
+type UploadImageMenuItemRequestDto struct {
+	Data string `json:"data"`
+	MenuItemId int64 `json:"menuItemId"`
+}

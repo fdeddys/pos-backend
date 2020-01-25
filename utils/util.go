@@ -44,3 +44,4 @@ func HashPassword(pass string) string {
 	return hex.EncodeToString(hashPassword[:])
 
 }
+

@@ -7,17 +7,22 @@ import (
 	"resto-be/constants"
 	"resto-be/database/dbmodels"
 	"resto-be/database/repository"
+	"resto-be/hosts/menustorage"
 	"resto-be/models"
 	"resto-be/models/dto"
+	"resto-be/utils"
+	"resto-be/utils/packmsg"
 	"strconv"
 )
 
 type MenuItemServiceInterface struct {
-}
+	Send func(menustorage.ReqUploadImageModel)(*menustorage.ResUploadImageModel, error)
 
+}
 
 func InitializeMenuItemServiceInterface()  *MenuItemServiceInterface {
 	return &MenuItemServiceInterface{
+		Send: menustorage.UploadImage,
 	}
 }
 
@@ -191,6 +196,78 @@ func (service *MenuItemServiceInterface) GetDataByFilterPaging (req dto.MenuItem
 
 	return res
 
+}
+
+func (service *MenuItemServiceInterface) UploadImage(req dto.UploadImageMenuItemRequestDto) models.Response {
+	fmt.Println("<< MenuItemService -- Upload Image >>")
+	var res models.Response
+
+	fileName, imgUrl := utils.GenerateFileNameImage(constants.BUCKET_MENU_ITEM)
+	log.Println(fileName, imgUrl)
+
+	erPathImageChan := make(chan error)
+	errSendToMinioChan := make(chan error)
+	go service.AsyncSavePathImage(imgUrl, req.MenuItemId, erPathImageChan)
+	go service.AsyncSendToMinio(fileName, req.Data, errSendToMinioChan)
+
+	erPathImage := <-erPathImageChan
+	errSendToMinio := <-errSendToMinioChan
+
+	log.Println("errUploadPath ->", erPathImage)
+	log.Println("errSendToMinio ->", errSendToMinio)
+	if erPathImage != nil {
+		res.Rc = constants.ERR_CODE_10
+		res.Msg = constants.ERR_CODE_10_MSG
+		return res
+	}
+	if errSendToMinio != nil {
+		res.Rc = constants.ERR_CODE_21
+		res.Msg = constants.ERR_CODE_21_MSG
+		return res
+
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = imgUrl
+
+	return res
+}
+
+func (service *MenuItemServiceInterface) AsyncSavePathImage(imgUrl string, menuItemId int64, errChan chan error)  {
+	picture := dbmodels.MenuItemPicture{
+		Status:constants.IMAGE_ACTIVE,
+		ImgUrl: imgUrl,
+		MenuItemId: menuItemId,
+	}
+
+	err := repository.SaveMenuItemPicture(&picture)
+	if err != nil {
+		log.Println("err save path image item to database : ", err)
+
+		errChan <- err
+		close(errChan)
+		return
+	}
+
+	errChan <- nil
+	close(errChan)
+	return
+
+}
+
+func (service *MenuItemServiceInterface) AsyncSendToMinio (fileName string, data string, errChan chan error)  {
+
+	reqUpload := packmsg.PackMsgMinio(fileName, constants.BUCKET_MENU_ITEM, data)
+
+	_, err :=service.Send(reqUpload)
+	if err!=nil {
+		log.Println("gagal upload")
+	}
+
+	errChan <- err
+	close(errChan)
+	return
 }
 
 

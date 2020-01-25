@@ -132,6 +132,32 @@ func (controller *EMenuItemController) GetByFilterPaging (ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+func (controller *EMenuItemController) UploadImage(ctx *gin.Context)  {
+	fmt.Println(">>> EMenuItemController - UploadImage <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	var req dto.UploadImageMenuItemRequestDto
+	var res models.Response
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	req2:= req
+	req2.Data = "--gambar base64--"
+	reqByte,_ := json.Marshal(req2)
+	log.Println("reqdata ==>", string(reqByte))
+
+	res = services.InitializeMenuItemServiceInterface().UploadImage(req)
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
 /*
 func (controller *EMenuItemController) GetByMenuGroupIdAndIdResto (ctx *gin.Context) {
 	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupIdAndIdResto <<<")
