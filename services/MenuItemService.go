@@ -193,11 +193,13 @@ func (service *MenuItemServiceInterface) GetDataByFilterPaging (req dto.MenuItem
 	fmt.Println(">>> MenuItemServiceInterface - GetDataByFilterPaging <<<")
 	var res models.Response
 
-
-	req.RestoId = dto.CurrRestoID
-
 	reqByte,_ := json.Marshal(req)
 	log.Println("reqData -> ", string(reqByte))
+	if req.RestoId == 0 {
+		res.Rc = constants.ERR_CODE_40
+		res.Msg = constants.ERR_CODE_40_MSG
+		return res
+	}
 
 
 	menuItems, total, err := repository.GetMenuItemFilterPaging(req, page, count)

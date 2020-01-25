@@ -122,12 +122,20 @@ func (controller *EMenuItemController) GetByMenuGroupId (ctx *gin.Context) {
 
 
 func (controller *EMenuItemController) GetByFilterPaging (ctx *gin.Context) {
-	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupId <<<")
+	fmt.Println(">>> EMenuItemController - Get By GetByFilterPaging <<<")
 	parent := context.Background()
 	defer parent.Done()
 
 	req := dto.MenuItemRequestDto{}
 	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
 
 	page, errPage := strconv.Atoi(ctx.Param("page"))
 	if errPage != nil {

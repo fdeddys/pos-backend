@@ -56,6 +56,11 @@ const (
 )
 
 const (
+	ERR_CODE_40     = "40"
+	ERR_CODE_40_MSG = "Resto Id harus diisi"
+)
+
+const (
 	STOCK_UNAVAILABLE = 0
 	STOCK_UNAVAILABLE_DESC = "Tidak Tersedia"
 	STOCK_AVAILABLE = 1

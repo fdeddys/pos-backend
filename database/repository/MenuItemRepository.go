@@ -2,8 +2,6 @@ package repository
 
 import (
 	"errors"
-	"fmt"
-	"github.com/jinzhu/gorm"
 	"log"
 	"resto-be/database"
 	"resto-be/database/dbmodels"
@@ -93,6 +91,30 @@ func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	return menuItems, err
 }
 
+
+func GetMenuItemFilterPaging(req dto.MenuItemRequestDto, page int, limit int) ([]dbmodels.MenuItem, int, error) {
+	db := database.GetDbCon()
+
+	var menuGroups []dbmodels.MenuItem
+
+	var total int
+
+
+	err := db.Where(dbmodels.MenuItem{
+		RestoID: req.RestoId,
+		GroupID: req.GroupID,
+	}).Preload("Pictures").Limit(limit).Offset((page-1) * limit).Order("id").Find(&menuGroups).Limit(-1).Offset(0).Count(&total).Error // query
+
+	if err != nil {
+		log.Println("<<< Error get data menuItems by filter paging >>>")
+		return menuGroups, 0, err
+	}
+
+
+	return menuGroups, total, err
+}
+/*
+
 func GetMenuItemFilterPaging(req dto.MenuItemRequestDto, page int, limit int) ([]dbmodels.MenuItem, int, error) {
 	db := database.GetDbCon()
 
@@ -124,9 +146,6 @@ func GetMenuItemFilterPaging(req dto.MenuItemRequestDto, page int, limit int) ([
 	errCount :=<- errCountChan
 	total = <-countChan
 
-	//errCount := db.Raw(count).Count(&total).Error
-
-	//err := db.Limit(limit).Offset((page-1) * limit).Where(whereQuery).Order("id").Find(&menuItems).Limit(-1).Offset(0).Count(&total).Error
 
 	if err != nil {
 		log.Println("<<< Error get data menu item by filter paging >>>")
@@ -153,6 +172,8 @@ func AsyncCountQueryMenuItem(db *gorm.DB, query string, total int,  err chan err
 	close(err)
 	close(count)
 }
+
+*/
 
 /*
 
