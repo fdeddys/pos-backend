@@ -75,6 +75,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 		RestoID: menuGroup.RestoId,
 		Price: reqDto.Price,
 		Stock:reqDto.Stock,
+		Status: constants.MENU_ITEM_ACTIVE,
 	}
 
 	err := repository.SaveMenuItem(&menuItem)
@@ -144,6 +145,27 @@ func (service *MenuItemServiceInterface) GetById (id int64) models.Response{
 
 }
 
+func (service *MenuItemServiceInterface) GetByRestoId (id int64) models.Response{
+	var res models.Response
+
+	menuGroup, err := repository.GetMenuItemByRestoId(id)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuGroup
+
+	return res
+
+}
 
 func (service *MenuItemServiceInterface) GetByMenuGroupId (id int64) models.Response{
 	var res models.Response
@@ -230,6 +252,32 @@ func (service *MenuItemServiceInterface) UploadImage(req dto.UploadImageMenuItem
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 	res.Data = imgUrl
+
+	return res
+}
+
+func (service *MenuItemServiceInterface) RemoveImage (req dto.RemoveImageRequestDto) models.Response {
+	fmt.Println("<< MenuItemServiceInterface -- RemoveImage >>")
+	var res models.Response
+
+	pict := repository.GetMenuItemPictureByImgUrl(req.ImgUrl)
+	if pict.ID == 0 {
+		log.Println("Image not Found ye")
+		res.Rc = constants.ERR_CODE_30
+		res.Msg = constants.ERR_CODE_30_MSG
+		return res
+	}
+
+	err:= repository.RemoveMenuItemPicture(&pict)
+	if err != nil {
+		res.Rc = constants.ERR_CODE_12
+		res.Msg = constants.ERR_CODE_12_MSG
+		return res
+
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
 
 	return res
 }

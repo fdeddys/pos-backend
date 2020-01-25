@@ -80,6 +80,26 @@ func (controller *EMenuItemController) GetById (ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+func (controller *EMenuItemController) GetByRestoId(ctx *gin.Context) {
+	fmt.Println(">>> EMenuItemController - Get By GetByRestoId <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	id, errId := strconv.Atoi(ctx.Param("restoId"))
+	if errId != nil {
+		log.Println("error", errId)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+	res = services.InitializeMenuItemServiceInterface().GetByRestoId(int64(id))
+
+	ctx.JSON(http.StatusOK, res)
+}
+
 func (controller *EMenuItemController) GetByMenuGroupId (ctx *gin.Context) {
 	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupId <<<")
 	parent := context.Background()
@@ -157,6 +177,31 @@ func (controller *EMenuItemController) UploadImage(ctx *gin.Context)  {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+func (controller *EMenuItemController) RemoveImage(ctx *gin.Context)  {
+	fmt.Println(">>> EMenuItemController - RemoveImage <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	var req dto.RemoveImageRequestDto
+	var res models.Response
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	reqByte,_ := json.Marshal(req)
+	log.Println("reqdata ==>", string(reqByte))
+
+	res = services.InitializeMenuItemServiceInterface().RemoveImage(req)
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
 
 /*
 func (controller *EMenuItemController) GetByMenuGroupIdAndIdResto (ctx *gin.Context) {

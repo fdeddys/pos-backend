@@ -26,6 +26,27 @@ func SaveMenuItemPicture(picture *dbmodels.MenuItemPicture) error  {
 	return err
 }
 
+func RemoveMenuItemPicture(picture *dbmodels.MenuItemPicture) error  {
+	db := database.GetDbCon()
+
+	err := db.Delete(&picture).Error
+
+	return err
+}
+
+func GetMenuItemPictureByImgUrl(imgUrl string) (dbmodels.MenuItemPicture) {
+	db := database.GetDbCon()
+
+	var picture dbmodels.MenuItemPicture
+
+	err := db.Where(dbmodels.MenuItemPicture{ImgUrl:imgUrl}).First(&picture).Error
+	if err != nil {
+		log.Println("image belum ada")
+	}
+
+	return picture
+}
+
 func GetAllMenuItem() ([]dbmodels.MenuItem, error) {
 	db := database.GetDbCon()
 
@@ -44,8 +65,20 @@ func GetMenuItemById(id int64) (dbmodels.MenuItem, error) {
 	if id == 0 {
 		return menuItem, errors.New("id = 0")
 	}
-	err := db.Where(dbmodels.MenuItem{ID:id}).First(&menuItem).Error
+	err := db.Where(dbmodels.MenuItem{ID:id}).Preload("Pictures").First(&menuItem).Error
 	return menuItem, err
+}
+
+func GetMenuItemByRestoId(id int64) ([]dbmodels.MenuItem, error) {
+	db := database.GetDbCon()
+
+	var menuItems []dbmodels.MenuItem
+
+	if id == 0 {
+		return menuItems, errors.New("id = 0")
+	}
+	err := db.Where(dbmodels.MenuItem{RestoID:id}).Preload("Pictures").Find(&menuItems).Error
+	return menuItems, err
 }
 
 func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
@@ -56,7 +89,7 @@ func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	if id == 0 {
 		return menuItems, errors.New("id = 0")
 	}
-	err := db.Where(dbmodels.MenuItem{GroupID:id}).Find(&menuItems).Error
+	err := db.Where(dbmodels.MenuItem{GroupID:id}).Preload("Pictures").Find(&menuItems).Error
 	return menuItems, err
 }
 

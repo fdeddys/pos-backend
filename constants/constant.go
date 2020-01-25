@@ -106,6 +106,11 @@ const (
 )
 
 const (
+	MENU_ITEM_ACTIVE = 1
+	MENU_ITEM_ACTIVE_DESC = "Active"
+)
+
+const (
 	IMAGE_ACTIVE = 1
 	IMAGE_ACTIVE_DESC = "Active"
 

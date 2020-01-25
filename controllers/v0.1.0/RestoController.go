@@ -193,7 +193,7 @@ func (controller *RestoController) RemoveImage(ctx *gin.Context)  {
 	parent := context.Background()
 	defer parent.Done()
 
-	var req dto.RemoveImageRestoRequestDto
+	var req dto.RemoveImageRequestDto
 	var res models.Response
 
 	if err := ctx.ShouldBindJSON(&req); err != nil {

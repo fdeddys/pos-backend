@@ -253,7 +253,7 @@ func (service *RestoServiceInterface) UploadImage (req dto.UploadImageRestoReque
 	return res
 }
 
-func (service *RestoServiceInterface) RemoveImage (req dto.RemoveImageRestoRequestDto) models.Response {
+func (service *RestoServiceInterface) RemoveImage (req dto.RemoveImageRequestDto) models.Response {
 	fmt.Println("<< RestoSErvice -- RemoveImage >>")
 	var res models.Response
 

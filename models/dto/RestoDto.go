@@ -22,6 +22,3 @@ type UploadImageRestoRequestDto struct {
 	Seq 	int `json:"seq"`
 }
 
-type RemoveImageRestoRequestDto struct {
-	ImgUrl string `json:"imgURL"`
-}
