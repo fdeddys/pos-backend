@@ -25,7 +25,7 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 
 	var orders []dbmodels.Order
 
-	if err := db.Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
+	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 
