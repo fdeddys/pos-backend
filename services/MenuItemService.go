@@ -231,7 +231,7 @@ func (service *MenuItemServiceInterface) UploadImage(req dto.UploadImageMenuItem
 
 	erPathImageChan := make(chan error)
 	errSendToMinioChan := make(chan error)
-	go service.AsyncSavePathImage(imgUrl, req.MenuItemId, erPathImageChan)
+	go service.AsyncSavePathImage(imgUrl, req.ID, req.MenuItemId, erPathImageChan)
 	go service.AsyncSendToMinio(fileName, req.Data, errSendToMinioChan)
 
 	erPathImage := <-erPathImageChan
@@ -284,8 +284,9 @@ func (service *MenuItemServiceInterface) RemoveImage (req dto.RemoveImageRequest
 	return res
 }
 
-func (service *MenuItemServiceInterface) AsyncSavePathImage(imgUrl string, menuItemId int64, errChan chan error)  {
+func (service *MenuItemServiceInterface) AsyncSavePathImage(imgUrl string, id int64, menuItemId int64, errChan chan error)  {
 	picture := dbmodels.MenuItemPicture{
+		ID: id,
 		Status:constants.IMAGE_ACTIVE,
 		ImgUrl: imgUrl,
 		MenuItemId: menuItemId,

@@ -180,6 +180,7 @@ func (controller *EMenuItemController) UploadImage(ctx *gin.Context)  {
 	reqByte,_ := json.Marshal(req2)
 	log.Println("reqdata ==>", string(reqByte))
 
+
 	res = services.InitializeMenuItemServiceInterface().UploadImage(req)
 
 	ctx.JSON(http.StatusOK, res)
