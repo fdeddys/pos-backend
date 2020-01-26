@@ -17,6 +17,30 @@ func InitializeOrderServiceInterface() *OrderServiceInterface {
 	return &OrderServiceInterface{}
 }
 
+// GetByCustomerPage ...
+func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto, page int, count int) models.Response {
+	var res models.Response
+
+	log.Println("reqq ->", req)
+	users, err := repository.GetByCustomerIdPage(*req, page, count)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = users
+
+	return res
+
+}
+
 func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Response {
 	var res models.Response
 

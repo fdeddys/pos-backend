@@ -109,6 +109,7 @@ func InitRouter() *gin.Engine {
 	OrderController := new(v1.OrderController)
 	api = r.Group(version + "/order")
 	api.POST("/add", OrderController.Add)
+	api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
 
 	UserController := new(v1.UserController)
 	api = r.Group(version + "/user")
