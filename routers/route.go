@@ -77,7 +77,7 @@ func InitRouter() *gin.Engine {
 
 	RestoController := new(v1.RestoController)
 	api = r.Group(version + "/resto")
-	api.POST("", RestoController.Save)
+	api.POST("", cekToken, RestoController.Save)
 	api.GET("", RestoController.GetAll)
 	api.GET("/:id", RestoController.GetById)
 	api.POST("/check-code", RestoController.CheckCodeResto)

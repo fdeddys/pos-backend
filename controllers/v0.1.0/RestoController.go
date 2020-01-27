@@ -27,6 +27,26 @@ func (controller *RestoController) Save (ctx *gin.Context) {
 	req := dto.RestoRequesDto{}
 	res := models.Response{}
 
+	log.Println("dto.CurrUserID", dto.CurrUserID)
+
+	/*
+	Cek user with role_access
+	*/
+	access := services.InitRoleAccessService().GetUserAccess(dto.CurrUserID, "RestoSave")
+	log.Println("access ==> ",access)
+	if !access {
+		res.Rc = constants.ERR_CODE_20
+		res.Msg = constants.ERR_CODE_20_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	/*
+	END Cek user with role_access
+		if access false then return
+
+	*/
+
+
 	if err := ctx.ShouldBindJSON(&req); err != nil {
 		fmt.Println("Request body error:", err)
 		res.Rc = constants.ERR_CODE_03
