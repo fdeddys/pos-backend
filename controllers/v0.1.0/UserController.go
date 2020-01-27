@@ -51,6 +51,26 @@ func (controller *UserController) GetByFilterPaging(ctx *gin.Context) {
 
 }
 
+func (h *UserController) GetUser(ctx *gin.Context) {
+	fmt.Println(">>> UserController - Save <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	user := dbmodels.User{
+		ID: dto.CurrUserID,
+		RestoId: dto.CurrRestoID,
+		Email: dto.CurrUserEmail,
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = user
+
+	ctx.JSON(http.StatusOK, res)
+}
+
 // SaveDataUser ...
 func (h *UserController) SaveUser(ctx *gin.Context) {
 

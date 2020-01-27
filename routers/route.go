@@ -115,6 +115,8 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/user")
 	api.POST("/page/:page/count/:count", cekToken, UserController.GetByFilterPaging)
 	api.POST("/", cekToken, UserController.SaveUser)
+	api.GET("/current-user", cekToken, UserController.GetUser)
+
 	//api.GET("/", EMenuItemController.GetAll)
 	//api.GET("/:id", EMenuItemController.GetById)
 	//api.POST("/page/:page/count/:count", EMenuItemController.GetByFilterPaging)
