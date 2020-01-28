@@ -31,3 +31,28 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 
 	return orders, nil
 }
+
+// GetOrderById ...
+func GetOrderById(id int64) (dbmodels.Order, error) {
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+	order := dbmodels.Order{}
+
+	err := db.Preload("Resto").Where(" id = ?  ", id).First(&order).Error
+
+	return order, err
+
+}
+
+// GetAllDataDetailReceive ...
+func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var orderDetails []dbmodels.OrderDetail
+
+	db.Preload("MenuItem").Find(&orderDetails, " order_Id = ? and qty > 0 ", orderID)
+
+	return orderDetails
+}

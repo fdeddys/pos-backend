@@ -4,7 +4,9 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
+	"io"
 	"log"
+	"os"
 	"strconv"
 
 	"github.com/gin-gonic/gin"
@@ -13,6 +15,7 @@ import (
 	"resto-be/constants"
 	"resto-be/models"
 	"resto-be/models/dto"
+	"resto-be/report"
 	"resto-be/services"
 
 	"github.com/astaxie/beego/logs"
@@ -87,4 +90,28 @@ func (controller *OrderController) Add(ctx *gin.Context) {
 	log.Println("res add order --> ", string(resByte))
 	ctx.JSON(http.StatusOK, res)
 
+}
+
+func (controller *OrderController) PrintPreview(c *gin.Context) {
+
+	orderID, errPage := strconv.ParseInt(c.Param("id"), 10, 64)
+	if errPage != nil {
+		logs.Info("error", errPage)
+		c.JSON(http.StatusBadRequest, "id not supplied")
+		c.Abort()
+		return
+	}
+
+	// fmt.Println("-------->", req)
+
+	report.GenerateReceiveReport(orderID)
+
+	header := c.Writer.Header()
+	header["Content-type"] = []string{"application/x-pdf"}
+	header["Content-Disposition"] = []string{"attachment; filename= invoice.pdf"}
+
+	file, _ := os.Open("invoice.pdf")
+
+	io.Copy(c.Writer, file)
+	return
 }
