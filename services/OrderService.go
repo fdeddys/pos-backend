@@ -71,6 +71,7 @@ func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Re
 		Status:     constants.ORDER_STATUS_DIPESAN,
 		IsPaid:     constants.NOT_YET_PAID,
 		OrderDate:  time.Now(),
+		Notes:      reqDto.Notes,
 	}
 
 	// save order to db

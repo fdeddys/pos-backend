@@ -15,6 +15,7 @@ type Order struct {
 	IsPaid     string     `json:"isPaid"`
 	IsPaidDesc string		`json:"isPaidDesc"gorm:"-"`
 	CustomerId int64     `json:"customerId"`
+	Notes      string    `json:"notes"`
 }
 
 func (t *Order) TableName() string {

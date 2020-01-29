@@ -8,6 +8,7 @@ type OrderRequestDto struct {
 	CustomerId   int64                `json:"customerId"`
 	OrderDetails []OrderDetailRequest `json:"orderDetails"`
 	Total        int64                `json:"total"`
+	Notes        string               `json:"notes"`
 }
 
 type OrderDetailRequest struct {
