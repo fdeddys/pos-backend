@@ -11,6 +11,7 @@ type LoginResponseDto struct {
 	Rc    string `json:"rc"`
 	Msg   string `json:"message"`
 	Token string `json:"token"`
+	Data interface{} `json:"data"`
 }
 
 // LoginCustomerResponseDto ...

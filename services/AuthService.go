@@ -53,6 +53,7 @@ func (service *AuthServiceInterface) AuthLogin(userDto *dto.LoginRequestDto) dto
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 	res.Token = token
+	res.Data = user
 	return res
 }
 

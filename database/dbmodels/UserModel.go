@@ -11,6 +11,7 @@ type User struct {
 	PhoneNumb string `json:"phoneNumb"`
 	Fb        string `json:"fb"`
 	RestoId   int64 `json:"restoId"`
+	RoleId    int64 `json:"role_id"`
 	Status 	int `json:"status"`
 }
 
