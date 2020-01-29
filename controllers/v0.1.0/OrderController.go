@@ -137,3 +137,25 @@ func (controller *OrderController) GetByID(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+// GetOrderDetail ...
+func (controller *OrderController) GetOrderDetail(ctx *gin.Context) {
+	fmt.Println(">>> Order Controoler - Get order detail by Order ID <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	orderID, err := strconv.ParseInt(ctx.Param("orderId"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "id not supplied")
+		ctx.Abort()
+		return
+	}
+
+	res = services.InitializeOrderServiceInterface().GetOrderDetailByOrderID(orderID)
+
+	ctx.JSON(http.StatusOK, res)
+
+}

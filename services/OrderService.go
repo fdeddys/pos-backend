@@ -140,3 +140,26 @@ func (service *OrderServiceInterface) GetById(id int64) models.Response {
 	return res
 
 }
+
+// GetOrderDetailByOrderID ...
+func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.Response {
+	var res models.Response
+
+	order := repository.GetOrderDetailByOrderID(id)
+	// if err != nil {
+	// 	log.Println("err get from database : ", err)
+
+	// 	res.Rc = constants.ERR_CODE_11
+	// 	res.Msg = constants.ERR_CODE_11_MSG
+	// 	return res
+	// }
+
+	// log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = order
+
+	return res
+
+}
