@@ -2,6 +2,7 @@ package services
 
 import (
 	"fmt"
+	"github.com/rs/xid"
 	"log"
 	"resto-be/constants"
 	"resto-be/database/dbmodels"
@@ -47,24 +48,19 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 	var res models.Response
 	var resto dbmodels.Resto
 
-	//check code resto
-	resto,_ = repository.GetRestoByRestoCode(restoDto.RestoCode)
-	if resto.ID != restoDto.ID && resto.ID > 0{
-		res.Rc = constants.ERR_CODE_60
-		res.Msg = constants.ERR_CODE_60_MSG
-
-		return res
-	}
-
 	resto = dbmodels.Resto{
 		ID: restoDto.ID,
 		Name: restoDto.Name,
-		RestoCode: restoDto.RestoCode,
 		Address: restoDto.Address,
+		RestoCode: restoDto.RestoCode,
 		Desc: restoDto.Desc,
 		City: restoDto.City,
 		Province: restoDto.Province,
 		Status: constants.RESTO_ACTIVE,
+	}
+
+	if resto.ID == 0 {
+		resto.RestoCode = service.GenerateRestoCode()
 	}
 
 	// save resto
@@ -93,6 +89,16 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 
 	return res
 
+}
+
+func (service *RestoServiceInterface) GenerateRestoCode() string {
+
+	x:= xid.New().Counter()
+	log.Println("x--> ", x)
+
+	restoCode := fmt.Sprintf("RST%v", x)
+
+	return restoCode
 }
 
 func (service *RestoServiceInterface)SavePictures(restoId int64, reqPictures []dto.ImageDto) error {

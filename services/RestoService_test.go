@@ -36,3 +36,8 @@ func TestGenID(t *testing.T) {
 	log.Println("id ==> ",id)
 
 }
+
+func TestRestoServiceInterface_GenerateRestoCode(t *testing.T) {
+	res := InitializeRestoServiceInterface().GenerateRestoCode()
+	log.Println(res)
+}
