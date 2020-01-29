@@ -115,3 +115,25 @@ func (controller *OrderController) PrintPreview(c *gin.Context) {
 	io.Copy(c.Writer, file)
 	return
 }
+
+// GetById ...
+func (controller *OrderController) GetByID(ctx *gin.Context) {
+	fmt.Println(">>> Order Controoler - Get by ID <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	orderID, err := strconv.ParseInt(ctx.Param("id"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "id not supplied")
+		ctx.Abort()
+		return
+	}
+
+	res = services.InitializeOrderServiceInterface().GetById(orderID)
+
+	ctx.JSON(http.StatusOK, res)
+
+}
