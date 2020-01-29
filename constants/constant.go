@@ -83,10 +83,10 @@ const (
 )
 
 const (
-	NOT_YET_PAID = 10
+	NOT_YET_PAID = "00"
 	NOT_YET_PAID_DESC = "BELUM DIBAYAR"
 
-	PAID = 10
+	PAID = "10"
 	PAID_DESC = "SUDAH DIBAYAR"
 
 )

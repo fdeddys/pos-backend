@@ -12,7 +12,8 @@ type Order struct {
 	UserId     int64     `json:"userId"`
 	Total      int64     `json:"total"`
 	Status     int64     `json:"status"`
-	IsPaid     int64     `json:"isPaid"`
+	IsPaid     string     `json:"isPaid"`
+	IsPaidDesc string		`json:"isPaidDesc"gorm:"-"`
 	CustomerId int64     `json:"customerId"`
 }
 

@@ -32,6 +32,11 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 	}
 
 	log.Println("get data : ", res)
+	log.Println("result : ", users)
+
+	for i:=0; i<len(users); i++ {
+		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
+	}
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
@@ -39,6 +44,17 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 
 	return res
 
+}
+
+func (service *OrderServiceInterface) GetStatusOrder(status string) string {
+	switch status {
+	case constants.PAID:
+		return constants.PAID_DESC
+	case constants.NOT_YET_PAID:
+		return constants.NOT_YET_PAID_DESC
+	}
+
+	return "-"
 }
 
 func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Response {
@@ -132,6 +148,8 @@ func (service *OrderServiceInterface) GetById(id int64) models.Response {
 	}
 
 	log.Println("get data : ", res)
+
+	order.IsPaidDesc = service.GetStatusOrder(order.IsPaid)
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
