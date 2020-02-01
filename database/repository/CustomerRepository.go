@@ -48,3 +48,15 @@ func GetCustomerFilterPaging(req dto.CustomerDto, page int, limit int) ([]dbmode
 
 	return customers, total, nil
 }
+
+// GetCustomerByID ...
+func GetCustomerByID(id int64) (dbmodels.Customer, error) {
+	db := database.GetDbCon()
+
+	var resto dbmodels.Customer
+	//var pictures dbmodels.RestoPicture
+
+	err := db.Where("id = ?", id).First(&resto).Error
+
+	return resto, err
+}

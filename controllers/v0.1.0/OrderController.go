@@ -159,3 +159,44 @@ func (controller *OrderController) GetOrderDetail(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+// GetByRestoPage ...
+func (controller *OrderController) GetByRestoPage(ctx *gin.Context) {
+	fmt.Println(">>> Order Controoler - Get by cust PAGE <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.OrderRequestDto{}
+	res := models.Response{}
+
+	page, errPage := strconv.Atoi(ctx.Param("page"))
+	if errPage != nil {
+		log.Println("error", errPage)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+	count, errCount := strconv.Atoi(ctx.Param("count"))
+	if errCount != nil {
+		logs.Info("error", errPage)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	json.Marshal(req)
+	res = services.InitializeOrderServiceInterface().GetByRestoPage(&req, page, count)
+
+	ctx.JSON(http.StatusOK, res)
+
+}

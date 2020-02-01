@@ -29,7 +29,6 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 		return orders, err
 	}
 
-
 	return orders, nil
 }
 
@@ -56,4 +55,17 @@ func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
 	db.Preload("MenuItem").Find(&orderDetails, " order_Id = ? and qty > 0 ", orderID)
 
 	return orderDetails
+}
+
+// GetByRestoIDPage ...
+func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
+	db := database.GetDbCon()
+
+	var orders []dbmodels.Order
+
+	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ?", req.RestoId).Find(&orders).Error; err != nil {
+		return orders, err
+	}
+
+	return orders, nil
 }

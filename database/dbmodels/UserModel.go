@@ -10,9 +10,10 @@ type User struct {
 	Email     string `json:"email"`
 	PhoneNumb string `json:"phoneNumb"`
 	Fb        string `json:"fb"`
-	RestoId   int64 `json:"restoId"`
-	RoleId    int64 `json:"role_id"`
-	Status 	int `json:"status"`
+	RestoId   int64  `json:"restoId"`
+	Resto     Resto  `gorm:"foreignkey:id; association_foreignkey:RestoId; association_autoupdate:false;association_autocreate:false"`
+	RoleId    int64  `json:"role_id"`
+	Status    int    `json:"status"`
 }
 
 // TableName ...

@@ -34,7 +34,7 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 	log.Println("get data : ", res)
 	log.Println("result : ", users)
 
-	for i:=0; i<len(users); i++ {
+	for i := 0; i < len(users); i++ {
 		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
 	}
 
@@ -178,6 +178,35 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 	res.Data = order
+
+	return res
+
+}
+
+// GetByRestoPage ...
+func (service *OrderServiceInterface) GetByRestoPage(req *dto.OrderRequestDto, page int, count int) models.Response {
+	var res models.Response
+
+	log.Println("reqq ->", req)
+	users, err := repository.GetByRestoIDPage(*req, page, count)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+	log.Println("result : ", users)
+
+	for i := 0; i < len(users); i++ {
+		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = users
 
 	return res
 
