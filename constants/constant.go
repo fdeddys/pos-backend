@@ -48,6 +48,9 @@ const (
 
 	ERR_CODE_12     = "12"
 	ERR_CODE_12_MSG = "Failed remove data from DB"
+
+	ERR_CODE_13     = "13"
+	ERR_CODE_13_MSG = "Failed Update data to DB"
 )
 
 const (
@@ -89,7 +92,7 @@ const (
 	PAID_DESC = "SUDAH DIBAYAR"
 
 	CANCEL      = "20"
-	CANCEL_DESC = "SUDAH DIBAYAR"
+	CANCEL_DESC = "CANCEL"
 )
 
 const (

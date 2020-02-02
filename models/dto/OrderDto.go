@@ -9,9 +9,11 @@ type OrderRequestDto struct {
 	OrderDetails []OrderDetailRequest `json:"orderDetails"`
 	Total        int64                `json:"total"`
 	Notes        string               `json:"notes"`
+	Status       string               `json:"status"`
 }
 
 type OrderDetailRequest struct {
 	EMenuItem int64 `json:"eMenuItem"`
 	Qty       int   `json:"qty"`
+	ID        int64 `json:"id"`
 }

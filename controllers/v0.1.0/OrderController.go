@@ -200,3 +200,68 @@ func (controller *OrderController) GetByRestoPage(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+// UpdateStatusPayment ...
+func (controller *OrderController) UpdateStatusOrder(ctx *gin.Context) {
+	fmt.Println(">>> OrderController - Update status <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+	req := dto.OrderRequestDto{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	json.Marshal(req)
+
+	switch req.Status {
+	case "PAID":
+		req.Status = constants.PAID
+		res = services.InitializeOrderServiceInterface().UpdatePayment(&req)
+	case "CANCEL":
+		req.Status = constants.CANCEL
+		res = services.InitializeOrderServiceInterface().UpdatePayment(&req)
+	case "cook":
+		// statusPayment = constants.PAID
+	case "delivery":
+		// statusPayment = constants.CANCEL
+	}
+
+	// logs.Info(statusPayment)
+	// res = services.InitializeOrderServiceInterface().Add(&req)
+	resByte, _ := json.Marshal(res)
+	log.Println("res update pay order --> ", string(resByte))
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+// UpdateQty ...
+func (controller *OrderController) UpdateQty(ctx *gin.Context) {
+	fmt.Println(">>> OrderController - Update Qty <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+	req := dto.OrderDetailRequest{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	json.Marshal(req)
+
+	res = services.InitializeOrderServiceInterface().UpdateQty(&req)
+
+	resByte, _ := json.Marshal(res)
+	log.Println("res update qty order --> ", string(resByte))
+	ctx.JSON(http.StatusOK, res)
+
+}
