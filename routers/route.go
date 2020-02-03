@@ -138,6 +138,7 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/customer")
 	api.POST("/login", CustomerController.Login)
 	api.POST("", CustomerController.Save)
+	api.POST("/savebyresto", cekToken, CustomerController.Save)
 	api.POST("/page/:page/count/:count", cekToken, CustomerController.FilterPage)
 	api.GET("/id/:id", CustomerController.GetByID)
 

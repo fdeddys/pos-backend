@@ -22,6 +22,8 @@ func InitializeCustomerServiceInterface() *CustomerServiceInterface {
 func (service *CustomerServiceInterface) SaveDataCustomer(data *dbmodels.Customer) models.Response {
 	var res models.Response
 
+	data.ManualRestoID = dto.CurrRestoID
+
 	dataCustomer := dbmodels.Customer{
 		ID:             data.ID,
 		Name:           data.Name,
