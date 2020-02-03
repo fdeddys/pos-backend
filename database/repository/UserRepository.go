@@ -16,7 +16,7 @@ func GetUserByEmail(email string) (dbmodels.User, error) {
 	var user dbmodels.User
 	var err error
 
-	db.Where("email = ?", email).Find(&user)
+	db.Preload("Resto").Where("email = ?", email).Find(&user)
 
 	fmt.Println("User => ", user)
 	return user, err

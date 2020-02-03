@@ -18,11 +18,11 @@ const (
 )
 
 const (
-	ERR_CODE_20		= "20"
-	ERR_CODE_20_MSG		= "You are not allowed "
+	ERR_CODE_20     = "20"
+	ERR_CODE_20_MSG = "You are not allowed "
 
-	ERR_CODE_21		= "21"
-	ERR_CODE_21_MSG		= "Error send to host "
+	ERR_CODE_21     = "21"
+	ERR_CODE_21_MSG = "Error send to host "
 )
 
 const (
@@ -48,6 +48,9 @@ const (
 
 	ERR_CODE_12     = "12"
 	ERR_CODE_12_MSG = "Failed remove data from DB"
+
+	ERR_CODE_13     = "13"
+	ERR_CODE_13_MSG = "Failed Update data to DB"
 )
 
 const (
@@ -61,69 +64,70 @@ const (
 )
 
 const (
-	STOCK_UNAVAILABLE = 0
+	STOCK_UNAVAILABLE      = 0
 	STOCK_UNAVAILABLE_DESC = "Tidak Tersedia"
-	STOCK_AVAILABLE = 1
-	STOCK_AVAILABLE_DESC = "Tersedia"
+	STOCK_AVAILABLE        = 1
+	STOCK_AVAILABLE_DESC   = "Tersedia"
 )
 
 const (
-	ORDER_STATUS_DIPESAN = 10
+	ORDER_STATUS_DIPESAN      = 10
 	ORDER_STATUS_DIPESAN_DESC = "DIPESAN"
 
-	ORDER_STATUS_DIMASAK = 20
+	ORDER_STATUS_DIMASAK      = 20
 	ORDER_STATUS_DIMASAK_DESC = "DIMASAK"
 
-	ORDER_STATUS_DIANTAR= 30
+	ORDER_STATUS_DIANTAR      = 30
 	ORDER_STATUS_DIANTAR_DESC = "DIANTAR"
 
-	ORDER_STATUS_DIMEJA = 40
+	ORDER_STATUS_DIMEJA      = 40
 	ORDER_STATUS_DIMEJA_DESC = "DIMEJA"
-
 )
 
 const (
-	NOT_YET_PAID = "00"
+	NOT_YET_PAID      = "00"
 	NOT_YET_PAID_DESC = "BELUM DIBAYAR"
 
-	PAID = "10"
+	PAID      = "10"
 	PAID_DESC = "SUDAH DIBAYAR"
 
+	CANCEL      = "20"
+	CANCEL_DESC = "CANCEL"
 )
 
 const (
-	GROUP_ACTIVE = 1
+	GROUP_ACTIVE      = 1
 	GROUP_ACTIVE_DESC = "Active"
 
-	GROUP_IN_ACTIVE = 0
+	GROUP_IN_ACTIVE      = 0
 	GROUP_IN_ACTIVE_DESC = "In Active"
 )
 
 const (
-	RESTO_ACTIVE = 1
+	RESTO_ACTIVE      = 1
 	RESTO_ACTIVE_DESC = "Active"
 
-	RESTO_IN_ACTIVE = 0
+	RESTO_IN_ACTIVE      = 0
 	RESTO_IN_ACTIVE_DESC = "In Active"
 
-	ERR_CODE_60 = "60"
+	ERR_CODE_60     = "60"
 	ERR_CODE_60_MSG = "Kode Resto Telah Digunakan"
 )
 
 const (
-	MENU_ITEM_ACTIVE = 1
+	MENU_ITEM_ACTIVE      = 1
 	MENU_ITEM_ACTIVE_DESC = "Active"
 )
 
 const (
-	IMAGE_ACTIVE = 1
+	IMAGE_ACTIVE      = 1
 	IMAGE_ACTIVE_DESC = "Active"
 
-	IMAGE_IN_ACTIVE = 0
+	IMAGE_IN_ACTIVE      = 0
 	IMAGE_IN_ACTIVE_DESC = "In Active"
 )
 
 const (
-	BUCKET_RESTO = "resto"
+	BUCKET_RESTO     = "resto"
 	BUCKET_MENU_ITEM = "menu-item"
 )

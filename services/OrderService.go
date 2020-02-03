@@ -8,6 +8,8 @@ import (
 	"resto-be/models"
 	"resto-be/models/dto"
 	"time"
+
+	"github.com/astaxie/beego/logs"
 )
 
 type OrderServiceInterface struct {
@@ -34,7 +36,7 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 	log.Println("get data : ", res)
 	log.Println("result : ", users)
 
-	for i:=0; i<len(users); i++ {
+	for i := 0; i < len(users); i++ {
 		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
 	}
 
@@ -181,4 +183,124 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 
 	return res
 
+}
+
+// GetByRestoPage ...
+func (service *OrderServiceInterface) GetByRestoPage(req *dto.OrderRequestDto, page int, count int) models.Response {
+	var res models.Response
+
+	log.Println("reqq ->", req)
+	users, err := repository.GetByRestoIDPage(*req, page, count)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+	log.Println("result : ", users)
+
+	for i := 0; i < len(users); i++ {
+		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = users
+
+	return res
+
+}
+
+// UpdatePayment ...
+func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) models.Response {
+	var res models.Response
+
+	log.Println("reqq ->", req)
+	orderID := req.ID
+	order, err := repository.GetOrderById(orderID)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	// proses REQ paid hanya bisa ORDER dg status 00
+	if req.Status == "10" && order.IsPaid != "00" {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+
+		switch order.IsPaid {
+		case "10":
+			res.Data = "Status order already paid "
+		case "20":
+			res.Data = "Status order already cancel "
+		}
+		return res
+	}
+	// proses cancel (REQ) hanya bisa status ORDER 00 atau 10
+	// jika status sdh 20 reject
+	if req.Status == "20" && order.IsPaid == "20" {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+		res.Data = "Status order already cancel"
+		return res
+	}
+
+	if errUpdate := repository.UpdatePayment(orderID, req.Status); errUpdate != nil {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+		res.Data = nil
+		return res
+	}
+
+	reCalculate(orderID)
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = order
+
+	return res
+
+}
+
+// UpdateQty ...
+func (service *OrderServiceInterface) UpdateQty(req *dto.OrderDetailRequest) models.Response {
+	var res models.Response
+
+	logs.Info("Update detail", req)
+	detail, errUpdate := repository.UpdateQty(req.ID, req.Qty)
+	if errUpdate != nil {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+		res.Data = nil
+		return res
+	}
+	logs.Info("isi detail ", detail)
+
+	orderDetail := repository.GetOrderDetailByOrderDetailID(req.ID)
+	reCalculate(orderDetail.OrderId)
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = orderDetail
+
+	return res
+
+}
+
+func reCalculate(orderID int64) {
+	orders := repository.GetOrderDetailByOrderID(orderID)
+
+	var total int64
+	total = 0
+	if len(orders) > 0 {
+		for _, order := range orders {
+			total = total + (int64(order.Qty) * int64(order.Price))
+		}
+	}
+
+	repository.UpdateTotal(orderID, total)
 }
