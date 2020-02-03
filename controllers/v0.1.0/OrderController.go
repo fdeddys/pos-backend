@@ -160,24 +160,15 @@ func (controller *OrderController) GetOrderDetail(ctx *gin.Context) {
 
 }
 
-<<<<<<< HEAD
+
 func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
 	fmt.Println(">>> OrderController - Get By GetByFilterPaging <<<")
-=======
-// GetByRestoPage ...
-func (controller *OrderController) GetByRestoPage(ctx *gin.Context) {
-	fmt.Println(">>> Order Controoler - Get by cust PAGE <<<")
->>>>>>> 480458683daf9f138e1779cdb0ee39fdd96e9c47
 	parent := context.Background()
 	defer parent.Done()
 
 	req := dto.OrderRequestDto{}
 	res := models.Response{}
 
-<<<<<<< HEAD
-
-
-=======
 	page, errPage := strconv.Atoi(ctx.Param("page"))
 	if errPage != nil {
 		log.Println("error", errPage)
@@ -271,7 +262,7 @@ func (controller *OrderController) UpdateQty(ctx *gin.Context) {
 
 	resByte, _ := json.Marshal(res)
 	log.Println("res update qty order --> ", string(resByte))
->>>>>>> 480458683daf9f138e1779cdb0ee39fdd96e9c47
+
 	ctx.JSON(http.StatusOK, res)
 
 }

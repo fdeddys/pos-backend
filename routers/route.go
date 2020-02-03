@@ -110,18 +110,14 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/order")
 	api.POST("/add", OrderController.Add)
 	api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
-	api.POST("/resto/page/:page/count/:count", OrderController.GetByRestoPage)
+	//api.POST("/resto/page/:page/count/:count", OrderController.GetByRestoPage)
 	api.GET("/preview/:id", OrderController.PrintPreview)
 	api.GET("/id/:id", OrderController.GetByID)
 	api.GET("/detail/:orderId", OrderController.GetOrderDetail)
-<<<<<<< HEAD
 	api.POST("/page/:page/count/:count", cekToken, OrderController.GetByFilterPaging)
 
-=======
 	api.POST("/update-status", OrderController.UpdateStatusOrder)
 	api.POST("/update-qty", OrderController.UpdateQty)
->>>>>>> 480458683daf9f138e1779cdb0ee39fdd96e9c47
-
 	UserController := new(v1.UserController)
 	api = r.Group(version + "/user")
 	api.POST("/page/:page/count/:count", cekToken, UserController.GetByFilterPaging)
