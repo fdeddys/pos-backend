@@ -159,3 +159,17 @@ func (controller *OrderController) GetOrderDetail(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 
 }
+
+func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
+	fmt.Println(">>> OrderController - Get By GetByFilterPaging <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.OrderRequestDto{}
+	res := models.Response{}
+
+
+
+	ctx.JSON(http.StatusOK, res)
+
+}
