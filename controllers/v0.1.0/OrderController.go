@@ -195,11 +195,12 @@ func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
 		return
 	}
 	json.Marshal(req)
-	res = services.InitializeOrderServiceInterface().GetByRestoPage(&req, page, count)
+	res = services.InitializeOrderServiceInterface().GetByFilterPaging(&req, page, count)
 
 	ctx.JSON(http.StatusOK, res)
 
 }
+
 
 // UpdateStatusPayment ...
 func (controller *OrderController) UpdateStatusOrder(ctx *gin.Context) {

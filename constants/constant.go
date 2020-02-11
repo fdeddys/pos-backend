@@ -89,10 +89,19 @@ const (
 	NOT_YET_PAID_DESC = "BELUM DIBAYAR"
 
 	PAID      = "10"
-	PAID_DESC = "SUDAH DIBAYAR"
+	PAID_DESC = "PAID"
 
 	CANCEL      = "20"
 	CANCEL_DESC = "CANCEL"
+
+)
+
+const (
+	ERR_CODE_14= "14"
+	ERR_CODE_14_MSG = "Status order already paid"
+
+	ERR_CODE_15= "15"
+	ERR_CODE_15_MSG = "Status order already cancel"
 )
 
 const (

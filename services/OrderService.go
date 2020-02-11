@@ -186,7 +186,9 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 }
 
 // GetByRestoPage ...
-func (service *OrderServiceInterface) GetByRestoPage(req *dto.OrderRequestDto, page int, count int) models.Response {
+
+// GetByRestoPage ...
+func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto, page int, count int) models.Response {
 	var res models.Response
 
 	log.Println("reqq ->", req)
@@ -221,6 +223,7 @@ func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) mo
 	log.Println("reqq ->", req)
 	orderID := req.ID
 	order, err := repository.GetOrderById(orderID)
+
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -231,23 +234,23 @@ func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) mo
 
 	// proses REQ paid hanya bisa ORDER dg status 00
 	if req.Status == "10" && order.IsPaid != "00" {
-		res.Rc = constants.ERR_CODE_13
-		res.Msg = constants.ERR_CODE_13_MSG
+
 
 		switch order.IsPaid {
-		case "10":
-			res.Data = "Status order already paid "
-		case "20":
-			res.Data = "Status order already cancel "
+		case constants.PAID:
+			res.Rc = constants.ERR_CODE_14
+			res.Msg = constants.ERR_CODE_14_MSG
+		case constants.CANCEL:
+			res.Rc = constants.ERR_CODE_15
+			res.Msg = constants.ERR_CODE_15_MSG
 		}
 		return res
 	}
 	// proses cancel (REQ) hanya bisa status ORDER 00 atau 10
 	// jika status sdh 20 reject
-	if req.Status == "20" && order.IsPaid == "20" {
-		res.Rc = constants.ERR_CODE_13
-		res.Msg = constants.ERR_CODE_13_MSG
-		res.Data = "Status order already cancel"
+	if req.Status == constants.CANCEL && order.IsPaid == constants.CANCEL {
+		res.Rc = constants.ERR_CODE_15
+		res.Msg = constants.ERR_CODE_15_MSG
 		return res
 	}
 
@@ -259,8 +262,21 @@ func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) mo
 	}
 
 	reCalculate(orderID)
+
+	log.Println("req.Status -->", req.Status)
+
+	switch req.Status {
+	case constants.PAID:
+		order.IsPaid = constants.PAID
+		order.IsPaidDesc = constants.PAID_DESC
+	case constants.CANCEL:
+		order.IsPaid = constants.CANCEL
+		order.IsPaidDesc = constants.CANCEL_DESC
+	}
+
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
+
 	res.Data = order
 
 	return res
