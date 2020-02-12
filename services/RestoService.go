@@ -96,7 +96,7 @@ func (service *RestoServiceInterface) GenerateRestoCode() string {
 	x:= xid.New().Counter()
 	log.Println("x--> ", x)
 
-	restoCode := fmt.Sprintf("RST%v", x)
+	restoCode := fmt.Sprintf("%v", x)
 
 	return restoCode
 }

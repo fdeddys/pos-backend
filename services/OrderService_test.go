@@ -10,3 +10,9 @@ func TestOrderServiceInterface_GetStatusOrder(t *testing.T) {
 
 	log.Println("res --> ", res)
 }
+
+func TestGenerateOrderNumber(t *testing.T)  {
+	res := InitializeOrderServiceInterface().GenerateOrderNumber(78)
+	log.Println("res -->", res)
+
+}

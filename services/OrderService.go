@@ -1,6 +1,8 @@
 package services
 
 import (
+	"fmt"
+	"github.com/rs/xid"
 	"log"
 	"resto-be/constants"
 	"resto-be/database/dbmodels"
@@ -59,12 +61,24 @@ func (service *OrderServiceInterface) GetStatusOrder(status string) string {
 	return "-"
 }
 
+func (service *OrderServiceInterface) GenerateOrderNumber(restoId int64) string {
+
+	resto, _ := repository.GetRestoById(restoId)
+	x:= xid.New().Counter()
+
+	orderNo := fmt.Sprintf("%v%v", resto.RestoCode, x)
+
+	return orderNo
+}
+
 func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Response {
 	var res models.Response
 
+	orderNo := service.GenerateOrderNumber(reqDto.RestoId)
+
 	/*pack message order*/
 	order := dbmodels.Order{
-		OrderNo:    reqDto.OrderNo,
+		OrderNo:    orderNo,
 		TableId:    reqDto.TableId,
 		RestoId:    reqDto.RestoId,
 		CustomerId: reqDto.CustomerId,
