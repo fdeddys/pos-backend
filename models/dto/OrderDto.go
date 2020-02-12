@@ -10,6 +10,9 @@ type OrderRequestDto struct {
 	Total        int64                `json:"total"`
 	Notes        string               `json:"notes"`
 	Status       string               `json:"status"`
+	StartDate 	 string				  `json:"startDate"`
+	EndDate		 string 			  `json:"endDate"`
+	PaymentStatus string 			  `json:"paymentStatus"`
 }
 
 type OrderDetailRequest struct {

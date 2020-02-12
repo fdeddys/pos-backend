@@ -1,6 +1,9 @@
 package repository
 
 import (
+	"fmt"
+	"log"
+	"resto-be/constants"
 	"resto-be/database"
 	"resto-be/database/dbmodels"
 	"resto-be/models/dto"
@@ -64,9 +67,37 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	var orders []dbmodels.Order
 
-	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ?", req.RestoId).Find(&orders).Error; err != nil {
+	query := fmt.Sprintf("where resto_id = %d ", req.RestoId)
+
+	if req.StartDate != "" {
+		startDate := req.StartDate + " 00:00:00"
+		query = fmt.Sprintf("%v AND order_date >= '%v' ", query, startDate)
+	}
+
+	if req.EndDate != "" {
+		endDate := req.EndDate + " 23:59:59"
+		query = fmt.Sprintf("%v AND order_date <= '%v' ", query, endDate)
+	}
+
+	switch req.PaymentStatus {
+	case constants.PAID_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.PAID)
+	case constants.UNPAID_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.UNPAID)
+	case constants.CANCEL_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.CANCEL)
+	}
+
+	log.Println("query --> ", query)
+
+	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
 		return orders, err
 	}
+	//
+	//
+	//if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ? and order_date BETWEEN 'cas' AND 'cascsa'", req.RestoId).Find(&orders).Error; err != nil {
+	//	return orders, err
+	//}
 
 	return orders, nil
 }

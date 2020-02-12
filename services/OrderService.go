@@ -54,8 +54,10 @@ func (service *OrderServiceInterface) GetStatusOrder(status string) string {
 	switch status {
 	case constants.PAID:
 		return constants.PAID_DESC
-	case constants.NOT_YET_PAID:
-		return constants.NOT_YET_PAID_DESC
+	case constants.UNPAID:
+		return constants.UNPAID_DESC
+	case constants.CANCEL:
+		return constants.CANCEL_DESC
 	}
 
 	return "-"
@@ -85,7 +87,7 @@ func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Re
 		Total:      reqDto.Total,
 		UserId:     dto.CurrUserID,
 		Status:     constants.ORDER_STATUS_DIPESAN,
-		IsPaid:     constants.NOT_YET_PAID,
+		IsPaid:     constants.UNPAID,
 		OrderDate:  time.Now(),
 		Notes:      reqDto.Notes,
 	}

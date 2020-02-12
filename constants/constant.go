@@ -85,8 +85,8 @@ const (
 )
 
 const (
-	NOT_YET_PAID      = "00"
-	NOT_YET_PAID_DESC = "BELUM DIBAYAR"
+	UNPAID      = "00"
+	UNPAID_DESC = "UNPAID"
 
 	PAID      = "10"
 	PAID_DESC = "PAID"
