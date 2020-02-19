@@ -183,6 +183,22 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 	var res models.Response
 
 	order := repository.GetOrderDetailByOrderID(id)
+
+	for i:=0; i< len(order); i++ {
+		switch order[i].Status {
+		case constants.COOK_WAITING:
+			order[i].StatusDesc = constants.COOK_WAITING_DESC
+		case constants.COOK_COOKING:
+			order[i].StatusDesc = constants.COOK_COOKING_DESC
+		case constants.COOK_DELIVERY:
+			order[i].StatusDesc = constants.COOK_DELIVERY_DESC
+		case constants.COOK_CANCEL:
+			order[i].StatusDesc = constants.COOK_CANCEL_DESC
+
+		}
+	}
+
+
 	// if err != nil {
 	// 	log.Println("err get from database : ", err)
 
@@ -232,6 +248,50 @@ func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto
 
 }
 
+
+
+func (service *OrderServiceInterface) UpdateCookStatus(req *dto.OrderRequestDto) models.Response {
+	var res models.Response
+
+	orderDetailID := req.ID
+	orderDetail := repository.GetOrderDetailByID(orderDetailID)
+
+	if orderDetail.ID == 0 {
+		log.Println("data not found")
+
+		res.Rc = constants.ERR_CODE_30
+		res.Msg = constants.ERR_CODE_30_MSG
+		return res
+	}
+
+	if errUpdate := repository.UpdateCookStatus(orderDetailID, req.Status); errUpdate != nil {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+		res.Data = nil
+		return res
+	}
+
+	switch req.Status {
+	case constants.COOK_COOKING:
+		orderDetail.Status = constants.COOK_COOKING
+		orderDetail.StatusDesc = constants.COOK_COOKING_DESC
+	case constants.COOK_DELIVERY:
+		orderDetail.Status = constants.COOK_DELIVERY
+		orderDetail.StatusDesc = constants.COOK_DELIVERY_DESC
+	case constants.COOK_CANCEL:
+		orderDetail.Status = constants.COOK_CANCEL
+		orderDetail.StatusDesc = constants.COOK_CANCEL_DESC
+
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+
+	res.Data = orderDetail
+
+
+	return res
+}
 // UpdatePayment ...
 func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) models.Response {
 	var res models.Response

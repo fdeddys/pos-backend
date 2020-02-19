@@ -100,6 +100,7 @@ func InitRouter() *gin.Engine {
 	api.GET("/id/:id", EMenuItemController.GetById)
 	api.GET("/menu-group/:groupId", EMenuItemController.GetByMenuGroupId)
 	api.GET("/resto/:restoId", EMenuItemController.GetByRestoId)
+	api.GET("/favorite/resto/:restoId", EMenuItemController.GetFavoriteByRestoId)
 	api.POST("/page/:page/count/:count", EMenuItemController.GetByFilterPaging)
 	api.POST("/upload-image", cekToken, EMenuItemController.UploadImage)
 	api.POST("/remove-image", cekToken, EMenuItemController.RemoveImage)
@@ -117,6 +118,7 @@ func InitRouter() *gin.Engine {
 	api.POST("/page/:page/count/:count", OrderController.GetByFilterPaging)
 
 	api.POST("/update-status", OrderController.UpdateStatusOrder)
+	api.POST("/update-status-detail", OrderController.UpdateStatusOrderDetail)
 	api.POST("/update-qty", OrderController.UpdateQty)
 	UserController := new(v1.UserController)
 	api = r.Group(version + "/user")

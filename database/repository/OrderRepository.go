@@ -61,6 +61,18 @@ func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
 	return orderDetails
 }
 
+func GetOrderDetailByID(orderDetailID int64) dbmodels.OrderDetail {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var orderDetail dbmodels.OrderDetail
+
+	db.Preload("MenuItem").Find(&orderDetail, " id = ? ", orderDetailID)
+
+	return orderDetail
+}
+
 // GetByRestoIDPage ...
 func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
 	db := database.GetDbCon()
@@ -111,6 +123,18 @@ func UpdatePayment(orderID int64, statusPay string) error {
 	var order dbmodels.Order
 
 	err := db.Model(&order).Where(" Id = ?", orderID).Update("IsPaid", statusPay).Error
+
+	return err
+}
+
+func UpdateCookStatus(orderDetailID int64, status string) error {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var orderDetail dbmodels.OrderDetail
+
+	err := db.Model(&orderDetail).Where(" Id = ?", orderDetailID).Update("status", status).Error
 
 	return err
 }

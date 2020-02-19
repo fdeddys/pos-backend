@@ -9,6 +9,8 @@ type OrderDetail struct {
 
 	Qty int	`json:"qty"`
 	Price 	float64 `json:"price"`
+	Status string `json:"status"`
+	StatusDesc string `json:"statusDesc"gorm:"-"`
 }
 
 func (t *OrderDetail) TableName() string{

@@ -79,6 +79,18 @@ func GetMenuItemByRestoId(id int64) ([]dbmodels.MenuItem, error) {
 	return menuItems, err
 }
 
+func GetMenuItemFavoriteByRestoId(id int64) ([]dbmodels.MenuItem, error) {
+	db := database.GetDbCon()
+
+	var menuItems []dbmodels.MenuItem
+
+	if id == 0 {
+		return menuItems, errors.New("id = 0")
+	}
+	err := db.Where(dbmodels.MenuItem{RestoID:id, IsFavorite: 1}).Preload("Pictures").Find(&menuItems).Error
+	return menuItems, err
+}
+
 func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	db := database.GetDbCon()
 

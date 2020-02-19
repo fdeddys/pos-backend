@@ -202,6 +202,43 @@ func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
 }
 
 
+func (controller *OrderController) UpdateStatusOrderDetail(ctx *gin.Context) {
+	fmt.Println(">>> OrderController -  UpdateStatusOrderDetail <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+	req := dto.OrderRequestDto{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	json.Marshal(req)
+
+	switch req.Status {
+	case constants.COOK_COOKING_DESC:
+		req.Status = constants.COOK_COOKING
+		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
+	case constants.COOK_DELIVERY_DESC:
+		req.Status = constants.COOK_DELIVERY
+		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
+	case constants.COOK_CANCEL_DESC:
+		req.Status = constants.COOK_CANCEL
+		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
+	}
+
+	// logs.Info(statusPayment)
+	// res = services.InitializeOrderServiceInterface().Add(&req)
+	resByte, _ := json.Marshal(res)
+	log.Println("res update pay order --> ", string(resByte))
+	ctx.JSON(http.StatusOK, res)
+
+}
+
 // UpdateStatusPayment ...
 func (controller *OrderController) UpdateStatusOrder(ctx *gin.Context) {
 	fmt.Println(">>> OrderController - Update status <<<")

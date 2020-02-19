@@ -100,6 +100,26 @@ func (controller *EMenuItemController) GetByRestoId(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+func (controller *EMenuItemController) GetFavoriteByRestoId(ctx *gin.Context) {
+	fmt.Println(">>> EMenuItemController - Get By GetFavoriteByRestoId <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	id, errId := strconv.Atoi(ctx.Param("restoId"))
+	if errId != nil {
+		log.Println("error", errId)
+		res.Rc = constants.ERR_CODE_02
+		res.Msg = constants.ERR_CODE_02_MSG
+		ctx.JSON(http.StatusOK, res)
+		return
+	}
+	res = services.InitializeMenuItemServiceInterface().GetFavoriteByRestoId(int64(id))
+
+	ctx.JSON(http.StatusOK, res)
+}
+
 func (controller *EMenuItemController) GetByMenuGroupId (ctx *gin.Context) {
 	fmt.Println(">>> EMenuItemController - Get By GetByMenuGroupId <<<")
 	parent := context.Background()

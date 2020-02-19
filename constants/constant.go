@@ -97,6 +97,22 @@ const (
 )
 
 const (
+
+	COOK_WAITING = "00"
+	COOK_WAITING_DESC = "WAITING"
+
+	COOK_COOKING      = "10"
+	COOK_COOKING_DESC = "COOKING"
+
+	COOK_DELIVERY      = "20"
+	COOK_DELIVERY_DESC = "DELIVERY"
+
+	COOK_CANCEL      = "30"
+	COOK_CANCEL_DESC = "CANCEL"
+
+)
+
+const (
 	ERR_CODE_14= "14"
 	ERR_CODE_14_MSG = "Status order already paid"
 

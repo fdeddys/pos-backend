@@ -10,6 +10,7 @@ type MenuItem struct {
 	Price   float64 `json:"price"`
 	Stock   int `json:"stock"`
 	Status  int     `json:"status"`
+	IsFavorite  int     `json:"isFavorite"`
 	Pictures []MenuItemPicture `json:"pictures,omitempty"gorm:"foreignkey:menuItemId"`
 
 }
