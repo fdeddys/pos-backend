@@ -131,6 +131,7 @@ func (service *OrderServiceInterface) AddOrderDetail(orderId int64, orderDetails
 			EMenuItem: detail.EMenuItem,
 			Qty:       detail.Qty,
 			OrderId:   orderId,
+			Status: constants.COOK_WAITING,
 		}
 
 		// save order detail to db
@@ -272,6 +273,9 @@ func (service *OrderServiceInterface) UpdateCookStatus(req *dto.OrderRequestDto)
 	}
 
 	switch req.Status {
+	case constants.COOK_WAITING:
+		orderDetail.Status = constants.COOK_WAITING
+		orderDetail.StatusDesc = constants.COOK_WAITING_DESC
 	case constants.COOK_COOKING:
 		orderDetail.Status = constants.COOK_COOKING
 		orderDetail.StatusDesc = constants.COOK_COOKING_DESC
