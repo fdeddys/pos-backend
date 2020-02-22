@@ -26,6 +26,7 @@ func (service *UserServiceInterface) SaveDataUser(data *dbmodels.User) models.Re
 		Email:     data.Email,
 		PhoneNumb: data.PhoneNumb,
 		Fb:        data.PhoneNumb,
+		RestoId: data.RestoId,
 	}
 
 	newPass := ""
