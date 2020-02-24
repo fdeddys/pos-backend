@@ -29,7 +29,7 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 
 	var orders []dbmodels.Order
 
-	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
+	if err := db.Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 
@@ -102,7 +102,7 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+	if err := db.Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 	//

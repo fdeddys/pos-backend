@@ -10,6 +10,7 @@ type Order struct {
 	RestoId    int64     `json:"restoId"`
 	Resto      Resto     `gorm:"foreignkey:id; association_foreignkey:RestoId; association_autoupdate:false;association_autocreate:false"`
 	UserId     int64     `json:"userId"`
+	User       User      `gorm:"foreignkey:id; association_foreignkey:UserId; association_autoupdate:false;association_autocreate:false"`
 	Total      int64     `json:"total"`
 	Status     int64     `json:"status"`
 	IsPaid     string     `json:"isPaid"`
