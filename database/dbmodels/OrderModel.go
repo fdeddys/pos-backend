@@ -15,7 +15,10 @@ type Order struct {
 	Status     int64     `json:"status"`
 	IsPaid     string     `json:"isPaid"`
 	IsPaidDesc string		`json:"isPaidDesc"gorm:"-"`
+	IsComplete string	`json:"isComplete"`
+	IsCompleteDesc string	`json:"isCompleteDesc" gorm:"-"`
 	CustomerId int64     `json:"customerId"`
+	Customer       Customer      `gorm:"foreignkey:id; association_foreignkey:CustomerId; association_autoupdate:false;association_autocreate:false"`
 	Notes      string    `json:"notes"`
 }
 

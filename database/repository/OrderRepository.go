@@ -29,7 +29,7 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 
 	var orders []dbmodels.Order
 
-	if err := db.Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
+	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 
@@ -42,7 +42,7 @@ func GetOrderById(id int64) (dbmodels.Order, error) {
 	db.Debug().LogMode(true)
 	order := dbmodels.Order{}
 
-	err := db.Preload("Resto").Where(" id = ?  ", id).First(&order).Error
+	err := db.Preload("Customer").Preload("Resto").Where(" id = ?  ", id).First(&order).Error
 
 	return order, err
 
@@ -102,7 +102,7 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 	//
@@ -112,6 +112,19 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 	//}
 
 	return orders, nil
+}
+
+// UpdateStatusCompleteOrder ...
+func UpdateStatusCompleteOrder(orderID int64, status string) error {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var order dbmodels.Order
+
+	err := db.Model(&order).Where(" Id = ?", orderID).Update("IsComplete", status).Error
+
+	return err
 }
 
 // UpdatePayment ...

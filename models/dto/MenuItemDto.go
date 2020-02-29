@@ -8,6 +8,7 @@ type MenuItemRequestDto struct {
 	ImgUrl string `json:"imgURL"`
 	Price float64 `json:"price"`
 	Stock   int `json:"stock"`
+	IsFavorite  int     `json:"isFavorite"`
 	Status 	int `json:"status"`
 	RestoId int64 `json:"restoId"`
 }

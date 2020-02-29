@@ -97,6 +97,15 @@ const (
 )
 
 const (
+	ONPROGRESS      = "00"
+	ONPROGRESS_DESC = "ONPROGRESS"
+
+	COMPLETE      = "10"
+	COMPLETE_DESC = "COMPLETE"
+
+)
+
+const (
 
 	COOK_WAITING = "00"
 	COOK_WAITING_DESC = "WAITING"

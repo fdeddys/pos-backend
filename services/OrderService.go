@@ -40,6 +40,7 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 
 	for i := 0; i < len(users); i++ {
 		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
+		users[i].IsCompleteDesc = service.GetStatusComplete(users[i].IsComplete)
 	}
 
 	res.Rc = constants.ERR_CODE_00
@@ -48,6 +49,17 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 
 	return res
 
+}
+
+func (service *OrderServiceInterface) GetStatusComplete(status string) string {
+	switch status {
+	case constants.COMPLETE:
+		return constants.COMPLETE_DESC
+	case constants.ONPROGRESS:
+		return constants.ONPROGRESS_DESC
+	}
+
+	return "-"
 }
 
 func (service *OrderServiceInterface) GetStatusOrder(status string) string {
@@ -170,6 +182,7 @@ func (service *OrderServiceInterface) GetById(id int64) models.Response {
 	log.Println("get data : ", res)
 
 	order.IsPaidDesc = service.GetStatusOrder(order.IsPaid)
+	order.IsCompleteDesc = service.GetStatusComplete(order.IsComplete)
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
@@ -239,6 +252,7 @@ func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto
 
 	for i := 0; i < len(users); i++ {
 		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
+		users[i].IsCompleteDesc = service.GetStatusComplete(users[i].IsComplete)
 	}
 
 	res.Rc = constants.ERR_CODE_00
@@ -296,6 +310,49 @@ func (service *OrderServiceInterface) UpdateCookStatus(req *dto.OrderRequestDto)
 
 	return res
 }
+
+// UpdatePayment ...
+func (service *OrderServiceInterface) UpdateStatusComplete(req *dto.OrderRequestDto) models.Response {
+	var res models.Response
+
+	log.Println("reqq ->", req)
+	orderID := req.ID
+	order, err := repository.GetOrderById(orderID)
+
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+
+	if errUpdate := repository.UpdateStatusCompleteOrder(orderID, req.Status); errUpdate != nil {
+		res.Rc = constants.ERR_CODE_13
+		res.Msg = constants.ERR_CODE_13_MSG
+		res.Data = nil
+		return res
+	}
+
+	switch req.Status {
+	case constants.COMPLETE:
+		order.IsComplete = constants.COMPLETE
+		order.IsCompleteDesc = constants.COMPLETE_DESC
+	case constants.ONPROGRESS:
+		order.IsComplete = constants.ONPROGRESS
+		order.IsCompleteDesc = constants.ONPROGRESS_DESC
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+
+	res.Data = order
+
+	return res
+
+}
+
 // UpdatePayment ...
 func (service *OrderServiceInterface) UpdatePayment(req *dto.OrderRequestDto) models.Response {
 	var res models.Response
