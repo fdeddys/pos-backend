@@ -22,4 +22,7 @@ export RESTO_BE__POSTGRES_SSL_MODE=disable
 export MENU_STORAGE_HOST=http://156.67.214.228:9001
 export STORAGE_MINIO_URLACCESS=http://156.67.214.228:9000
 
+
+export PATH_REPORT="/opt/report/"
+
 go run main.go

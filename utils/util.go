@@ -45,3 +45,19 @@ func HashPassword(pass string) string {
 
 }
 
+func ConvertDateFormat(reqDate string) string {
+	reqDateLayout := "02-01-2006"
+	dateLayout := "2006-01-02"
+
+	date, _ := time.Parse(reqDateLayout, reqDate)
+
+	return date.Format(dateLayout)
+}
+
+// ConvertTime ...
+func ConvertTime(t time.Time) string {
+	return t.Format("2006-01-02 15:04:05")
+
+}
+
+

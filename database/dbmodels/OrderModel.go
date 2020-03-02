@@ -13,6 +13,7 @@ type Order struct {
 	User       User      `gorm:"foreignkey:id; association_foreignkey:UserId; association_autoupdate:false;association_autocreate:false"`
 	Total      int64     `json:"total"`
 	Status     int64     `json:"status"`
+	StatusDesc     string     `json:"statusDesc"gorm:"-"`
 	IsPaid     string     `json:"isPaid"`
 	IsPaidDesc string		`json:"isPaidDesc"gorm:"-"`
 	IsComplete string	`json:"isComplete"`
