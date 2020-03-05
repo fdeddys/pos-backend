@@ -73,6 +73,54 @@ func GetOrderDetailByID(orderDetailID int64) dbmodels.OrderDetail {
 	return orderDetail
 }
 
+// GetByRestoCodePage ...
+func GetByRestoCodePage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
+	db := database.GetDbCon()
+
+
+
+	var orders []dbmodels.Order
+
+	resto,err:= GetRestoBycode(req.RestoCode)
+	if err != nil {
+		return orders, err
+	}
+
+	query := fmt.Sprintf("where resto_id = %d ", resto.ID)
+
+	if req.StartDate != "" {
+		startDate := req.StartDate + " 00:00:00"
+		query = fmt.Sprintf("%v AND order_date >= '%v' ", query, startDate)
+	}
+
+	if req.EndDate != "" {
+		endDate := req.EndDate + " 23:59:59"
+		query = fmt.Sprintf("%v AND order_date <= '%v' ", query, endDate)
+	}
+
+	switch req.PaymentStatus {
+	case constants.PAID_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.PAID)
+	case constants.UNPAID_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.UNPAID)
+	case constants.CANCEL_DESC:
+		query = fmt.Sprintf("%v AND is_paid = '%v'", query, constants.CANCEL)
+	}
+
+	log.Println("query --> ", query)
+
+	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+		return orders, err
+	}
+	//
+	//
+	//if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ? and order_date BETWEEN 'cas' AND 'cascsa'", req.RestoId).Find(&orders).Error; err != nil {
+	//	return orders, err
+	//}
+
+	return orders, nil
+}
+
 // GetByRestoIDPage ...
 func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
 	db := database.GetDbCon()

@@ -67,6 +67,22 @@ func GetRestoById(id int64) (dbmodels.Resto, error) {
 	return resto, err
 }
 
+func GetRestoBycode(restoCode string) (dbmodels.Resto, error) {
+	db := database.GetDbCon()
+
+	var resto dbmodels.Resto
+	//var pictures dbmodels.RestoPicture
+	log.Println("restoCode ==> ", restoCode)
+	if restoCode == "" {
+		return resto, errors.New("resto code kosong")
+	}
+
+
+	err := db.Where(dbmodels.Resto{RestoCode:restoCode}).First(&resto).Error
+
+	return resto, err
+}
+
 func GetRestoFilterPaging(req dto.RestoRequesDto, page int, limit int) ([]dbmodels.Resto, int, error) {
 	db := database.GetDbCon()
 

@@ -5,6 +5,7 @@ type OrderRequestDto struct {
 	OrderNo      string               `json:"orderNo"`
 	TableId      int64                `json:"tableId"`
 	RestoId      int64                `json:"restoId"`
+	RestoCode    string                `json:"restoCode"`
 	CustomerId   int64                `json:"customerId"`
 	OrderDetails []OrderDetailRequest `json:"orderDetails"`
 	Total        int64                `json:"total"`

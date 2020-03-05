@@ -148,6 +148,10 @@ func InitRouter() *gin.Engine {
 	ReportController := new(v1.ReportController)
 	api = r.Group(version + "/report")
 	api.POST("/order", cekToken, ReportController.Order)
+	api.POST("/order/page/:page/count/:count", cekToken, ReportController.GetOrderByFilterPaging)
+
+	//api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
+
 
 
 	return r

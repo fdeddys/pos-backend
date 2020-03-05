@@ -238,7 +238,7 @@ func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto
 	var res models.Response
 
 	log.Println("reqq ->", req)
-	users, err := repository.GetByRestoIDPage(*req, page, count)
+	users, err := repository.GetByRestoCodePage(*req, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
