@@ -2,6 +2,7 @@ package routers
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"resto-be/constants"
 	"resto-be/models"
@@ -168,6 +169,7 @@ func cekToken(c *gin.Context) {
 
 	res := models.Response{}
 	tokenString := c.Request.Header.Get("Authorization")
+	log.Println("tokenString -> ", tokenString)
 
 	if strings.HasPrefix(tokenString, "Bearer ") == false {
 		res.Rc = constants.ERR_CODE_53
@@ -179,6 +181,7 @@ func cekToken(c *gin.Context) {
 
 	tokenString = strings.Replace(tokenString, "Bearer ", "", -1)
 	token, err := jwt.Parse(tokenString, func(token *jwt.Token) (interface{}, error) {
+
 		if jwt.GetSigningMethod("HS256") != token.Method {
 			res.Rc = constants.ERR_CODE_53
 			res.Msg = constants.ERR_CODE_53_MSG + " [02] "

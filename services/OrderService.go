@@ -25,7 +25,20 @@ func InitializeOrderServiceInterface() *OrderServiceInterface {
 func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto, page int, count int) models.Response {
 	var res models.Response
 
-	log.Println("reqq ->", req)
+
+	customer, err := repository.GetCustomerByID(req.CustomerId)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	if customer.ManualRestoID > 0 {
+		page = 1
+		count = 1
+	}
 	users, err := repository.GetByCustomerIdPage(*req, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
