@@ -11,7 +11,10 @@ type MenuItem struct {
 	Stock   int `json:"stock"`
 	Status  int     `json:"status"`
 	IsFavorite  int     `json:"isFavorite"`
+	CategoryId  int64 `json:"categoryId" gorm:"category_id"`
+	Category 	Category `json:"category" gorm:"foreignkey:id; association_foreignkey:CategoryId; association_autoupdate:false;association_autocreate:false"`
 	Pictures []MenuItemPicture `json:"pictures,omitempty"gorm:"foreignkey:menuItemId"`
+
 
 }
 

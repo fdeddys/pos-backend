@@ -11,6 +11,7 @@ type MenuItemRequestDto struct {
 	IsFavorite  int     `json:"isFavorite"`
 	Status 	int `json:"status"`
 	RestoId int64 `json:"restoId"`
+	CategoryId int64 `json:"categoryId"`
 }
 
 type UploadImageMenuItemRequestDto struct {

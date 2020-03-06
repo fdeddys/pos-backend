@@ -76,6 +76,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 		Price: reqDto.Price,
 		Stock:reqDto.Stock,
 		IsFavorite: reqDto.IsFavorite,
+		CategoryId: reqDto.CategoryId,
 		Status: constants.MENU_ITEM_ACTIVE,
 	}
 
