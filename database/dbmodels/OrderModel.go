@@ -19,8 +19,9 @@ type Order struct {
 	IsComplete string	`json:"isComplete"`
 	IsCompleteDesc string	`json:"isCompleteDesc" gorm:"-"`
 	CustomerId int64     `json:"customerId"`
-	Customer       Customer      `gorm:"foreignkey:id; association_foreignkey:CustomerId; association_autoupdate:false;association_autocreate:false"`
+	Customer       Customer      `json:"customer" gorm:"foreignkey:id; association_foreignkey:CustomerId; association_autoupdate:false;association_autocreate:false"`
 	Notes      string    `json:"notes"`
+	OrderDetail		[]OrderDetail `gorm:"foreignkey:OrderId;association_foreignkey:id"`
 }
 
 func (t *Order) TableName() string {

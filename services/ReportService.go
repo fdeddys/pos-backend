@@ -1,6 +1,7 @@
 package services
 
 import (
+	"encoding/json"
 	"fmt"
 	"log"
 	"os"
@@ -37,8 +38,13 @@ func (service *ReportServiceInterface) Order(req *dto.OrderRequestDto) (models.R
 	log.Println("restoId -> ", restoId)
 
 	req.RestoId = restoId
-	order, err := repository.GetByRestoIDPage(*req, 1, 99999999)
+	orders,_, err := repository.GetByRestoIDPage(*req, 1, 99999999)
 
+	ordersByte,_ := json.Marshal(orders)
+	log.Println(string(ordersByte))
+
+	//res.Data = orders
+	//return res, ""
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -47,7 +53,7 @@ func (service *ReportServiceInterface) Order(req *dto.OrderRequestDto) (models.R
 		return res, ""
 	}
 
-	fileName := service.GenerateXlsx(restoId, order, *req)
+	fileName := service.GenerateXlsx(restoId, orders, *req)
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 

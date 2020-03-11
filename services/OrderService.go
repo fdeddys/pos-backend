@@ -251,7 +251,8 @@ func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto
 	var res models.Response
 
 	log.Println("reqq ->", req)
-	users, err := repository.GetByRestoCodePage(*req, page, count)
+	orders, total,  err := repository.GetByRestoIDPage(*req, page, count)
+
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -261,16 +262,17 @@ func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto
 	}
 
 	log.Println("get data : ", res)
-	log.Println("result : ", users)
+	log.Println("result : ", orders)
 
-	for i := 0; i < len(users); i++ {
-		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
-		users[i].IsCompleteDesc = service.GetStatusComplete(users[i].IsComplete)
+	for i := 0; i < len(orders); i++ {
+		orders[i].IsPaidDesc = service.GetStatusOrder(orders[i].IsPaid)
+		orders[i].IsCompleteDesc = service.GetStatusComplete(orders[i].IsComplete)
 	}
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = users
+	res.Data = orders
+	res.TotalData = total
 
 	return res
 

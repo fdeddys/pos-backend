@@ -122,10 +122,12 @@ func GetByRestoCodePage(req dto.OrderRequestDto, page int, limit int) ([]dbmodel
 }
 
 // GetByRestoIDPage ...
-func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
+func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, int,  error) {
 	db := database.GetDbCon()
 
 	var orders []dbmodels.Order
+	var total int
+
 
 	query := fmt.Sprintf("where resto_id = %d ", req.RestoId)
 
@@ -150,16 +152,20 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
-		return orders, err
+	if err := db.Preload("OrderDetail").Preload("OrderDetail.MenuItem").Preload("OrderDetail.MenuItem.Category").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+		return orders, 0, err
 	}
+	if err:= db.Raw("select count(*) from public.order " + query).Count(&total).Error; err != nil{
+		return orders, 0, err
+	}
+
 	//
 	//
 	//if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ? and order_date BETWEEN 'cas' AND 'cascsa'", req.RestoId).Find(&orders).Error; err != nil {
 	//	return orders, err
 	//}
 
-	return orders, nil
+	return orders,  total, nil
 }
 
 // UpdateStatusCompleteOrder ...
