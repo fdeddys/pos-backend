@@ -116,7 +116,11 @@ func InitRouter() *gin.Engine {
 
 	VoucherController := new(v1.VoucherController)
 	api = r.Group(version + "/voucher")
+	api.POST("", cekToken, VoucherController.Save)
 	api.POST("/getbycode",VoucherController.GetByCodeVoucher)
+	api.GET("/:id", VoucherController.GetById)
+	api.POST("/page/:page/count/:count", VoucherController.GetByFilterPaging)
+
 
 
 

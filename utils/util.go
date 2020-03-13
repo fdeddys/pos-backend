@@ -60,4 +60,11 @@ func ConvertTime(t time.Time) string {
 
 }
 
+func ConvertStringToTime(reqDate string) time.Time {
+	reqDateLayout := "02-01-2006"
+
+	date, _ := time.Parse(reqDateLayout, reqDate)
+	return date
+}
+
 
