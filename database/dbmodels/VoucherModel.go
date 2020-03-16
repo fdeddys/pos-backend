@@ -12,6 +12,7 @@ type Voucher struct {
 	MaxValue int64 `json:"maxValue"`
 	MinPayment	int64 `json:"minPayment"`
 	Code 		string `json:"code"`
+	RestoId   	int64 `json:"restoId"`
 }
 
 

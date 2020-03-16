@@ -57,7 +57,7 @@ func (controller *VoucherController) GetByCodeVoucher(ctx *gin.Context)  {
 		return
 	}
 
-	res = services.InitializeVoucherServiceInterface().GetByCode(req.Code)
+	res = services.InitializeVoucherServiceInterface().GetByCode(req)
 
 
 	ctx.JSON(http.StatusOK, res)

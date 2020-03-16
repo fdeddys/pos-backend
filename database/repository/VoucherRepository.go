@@ -9,12 +9,12 @@ import (
 	"time"
 )
 
-func GetVoucherByCode(code string) (dbmodels.Voucher, error) {
+func GetVoucherByCode(req dto.VoucherRequestDto) (dbmodels.Voucher, error) {
 	db := database.GetDbCon()
 
 	var voucher dbmodels.Voucher
 
-	err := db.Where("code = ?", code).First(&voucher).Error
+	err := db.Where("code = ? and resto_id = ?", req.Code, req.RestoId).First(&voucher).Error
 
 	if err != nil {
 		return voucher, errors.New("Kode Voucher Tidak Ditemukan")
@@ -60,13 +60,13 @@ func GetVoucherById(id int64) (dbmodels.Voucher, error) {
 func GetVoucherFilterPaging(req dto.VoucherRequestDto, page int, limit int) ([]dbmodels.Voucher, int, error) {
 	db := database.GetDbCon()
 
+	restoId:= dto.CurrRestoID
 	var vouchers []dbmodels.Voucher
 
 	var total int
 
 
-	err := db.Where(dbmodels.Voucher{
-	}).Limit(limit).Offset((page-1) * limit).Order("id").Find(&vouchers).Limit(-1).Offset(0).Count(&total).Error // query
+	err := db.Where("resto_id = ?", restoId).Limit(limit).Offset((page-1) * limit).Order("id").Find(&vouchers).Limit(-1).Offset(0).Count(&total).Error // query
 
 	if err != nil {
 		log.Println("<<< Error get data voucher by filter paging >>>")

@@ -119,7 +119,7 @@ func InitRouter() *gin.Engine {
 	api.POST("", cekToken, VoucherController.Save)
 	api.POST("/getbycode",VoucherController.GetByCodeVoucher)
 	api.GET("/:id", VoucherController.GetById)
-	api.POST("/page/:page/count/:count", VoucherController.GetByFilterPaging)
+	api.POST("/page/:page/count/:count", cekToken, VoucherController.GetByFilterPaging)
 
 
 

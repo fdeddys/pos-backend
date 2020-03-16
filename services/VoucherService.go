@@ -20,6 +20,8 @@ func InitializeVoucherServiceInterface() *VoucherServiceInterface {
 func (service *VoucherServiceInterface) Save (voucherDto *dto.VoucherRequestDto) models.Response{
 	var res models.Response
 
+	log.Println("restoId ==>", dto.CurrRestoID )
+
 	voucher := dbmodels.Voucher{
 		ID: voucherDto.ID,
 		DateStart: utils.ConvertStringToTime(voucherDto.DateStart),
@@ -30,6 +32,7 @@ func (service *VoucherServiceInterface) Save (voucherDto *dto.VoucherRequestDto)
 		DiscType: voucherDto.DiscType,
 		MaxValue: voucherDto.MaxValue,
 		MinPayment: voucherDto.MinPayment,
+		RestoId: dto.CurrRestoID,
 	}
 
 	err := repository.SaveVoucher(&voucher)
@@ -51,11 +54,11 @@ func (service *VoucherServiceInterface) Save (voucherDto *dto.VoucherRequestDto)
 	return res
 }
 
-func (service *VoucherServiceInterface) GetByCode(code string) models.Response {
+func (service *VoucherServiceInterface) GetByCode(req dto.VoucherRequestDto) models.Response {
 
 	var res models.Response
 
-	voucher, err := repository.GetVoucherByCode(code)
+	voucher, err := repository.GetVoucherByCode(req)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
