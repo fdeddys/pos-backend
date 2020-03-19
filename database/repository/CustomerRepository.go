@@ -38,8 +38,9 @@ func GetCustomerFilterPaging(req dto.CustomerDto, page int, limit int) ([]dbmode
 
 	var customers []dbmodels.Customer
 	var total int
+	restoId := dto.CurrRestoID
 
-	if err := db.Limit(limit).Offset((page - 1) * limit).Order("id").Find(&customers).Limit(-1).Offset(0).Count(&total).Error; err != nil {
+	if err := db.Where("manual_resto_id = ? ", restoId).Limit(limit).Offset((page - 1) * limit).Order("id").Find(&customers).Limit(-1).Offset(0).Count(&total).Error; err != nil {
 		log.Println("<<< Error get data Customer by filter paging >>>")
 
 		return customers, 0, err
@@ -57,6 +58,17 @@ func GetCustomerByID(id int64) (dbmodels.Customer, error) {
 	//var pictures dbmodels.RestoPicture
 
 	err := db.Where("id = ?", id).First(&resto).Error
+
+	return resto, err
+}
+
+// GetCustomerByID ...
+func GetCustomerEmailAndRestoId(email string, restoId int64) (dbmodels.Customer, error) {
+	db := database.GetDbCon()
+
+	var resto dbmodels.Customer
+
+	err := db.Where("email = ? and manual_resto_id = ?", email, restoId).First(&resto).Error
 
 	return resto, err
 }

@@ -22,6 +22,21 @@ func InitializeCustomerServiceInterface() *CustomerServiceInterface {
 func (service *CustomerServiceInterface) SaveDataCustomer(data *dbmodels.Customer) models.Response {
 	var res models.Response
 
+	if data.Email == "" || data.Password == ""{
+		res.Rc = constants.ERR_CODE_41
+		res.Msg = constants.ERR_CODE_41_MSG
+		return res
+	}
+
+	c:= service.CekDataCustomer(data.Email)
+	log.Println("c ==>", c)
+
+	if c == false {
+		res.Rc = constants.ERR_CODE_42
+		res.Msg = constants.ERR_CODE_42_MSG
+		return res
+	}
+
 	data.ManualRestoID = dto.CurrRestoID
 
 	dataCustomer := dbmodels.Customer{
@@ -31,9 +46,11 @@ func (service *CustomerServiceInterface) SaveDataCustomer(data *dbmodels.Custome
 		PhoneNumb:      data.PhoneNumb,
 		Fb:             data.Fb,
 		Password:       data.Password,
-		ManualCustomer: data.ManualCustomer,
+		ManualCustomer: 1,
 		ManualRestoID:  data.ManualRestoID,
 	}
+
+
 
 	err := repository.SaveCustomer(&dataCustomer)
 	if err != nil {
@@ -50,6 +67,17 @@ func (service *CustomerServiceInterface) SaveDataCustomer(data *dbmodels.Custome
 
 	return res
 
+}
+
+func (service *CustomerServiceInterface) CekDataCustomer(email string) bool{
+	restoId := dto.CurrRestoID
+
+	_, err:= repository.GetCustomerEmailAndRestoId(email,restoId)
+	log.Println("err ==> ", err)
+	if err == nil {
+		return false
+	}
+	return true
 }
 
 // GetDataCustomerByFilterPaging ...

@@ -2,6 +2,7 @@ package v0_1_0
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"log"
 	"net/http"
@@ -54,6 +55,8 @@ func (controller *CustomerController) Login(ctx *gin.Context) {
 		ctx.JSON(http.StatusBadRequest, res)
 		return
 	}
+	reqByte,_ := json.Marshal(req)
+	log.Println("req --> ", string(reqByte))
 
 	res = services.InitializeAuthServiceInterface().AuthLoginCustomer(&req)
 

@@ -61,6 +61,12 @@ const (
 const (
 	ERR_CODE_40     = "40"
 	ERR_CODE_40_MSG = "Resto Id harus diisi"
+
+	ERR_CODE_41     = "41"
+	ERR_CODE_41_MSG = "Email & Password harus diisi"
+
+	ERR_CODE_42     = "42"
+	ERR_CODE_42_MSG = "Username telah digunakan"
 )
 
 const (
