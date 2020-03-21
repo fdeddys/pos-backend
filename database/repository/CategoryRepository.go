@@ -2,7 +2,7 @@ package repository
 
 import (
 	"resto-be/database"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 )
 
 func GetAllCategory() ([]dbmodels.Category, error) {

@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/hosts/menustorage"
 	"resto-be/models"

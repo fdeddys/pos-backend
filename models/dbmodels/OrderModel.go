@@ -22,6 +22,8 @@ type Order struct {
 	Customer       Customer      `json:"customer" gorm:"foreignkey:id; association_foreignkey:CustomerId; association_autoupdate:false;association_autocreate:false"`
 	Notes      string    `json:"notes"`
 	OrderDetail		[]OrderDetail `gorm:"foreignkey:OrderId;association_foreignkey:id"`
+	Disc 		int64		`json:"disc"`
+	VoucherCode	string		`json:"voucherCode"`
 }
 
 func (t *Order) TableName() string {

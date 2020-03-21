@@ -64,6 +64,33 @@ func (controller *RestoController) Save (ctx *gin.Context) {
 
 }
 
+func (controller *RestoController) SaveByResto (ctx *gin.Context) {
+	fmt.Println(">>> RestoController - EditByResto <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.RestoRequesDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	byteReq,_ := json.Marshal(req)
+	log.Println(string(byteReq))
+
+	res = services.InitializeRestoServiceInterface().SaveByResto(&req)
+
+
+
+	ctx.JSON(http.StatusOK, res)
+
+
+}
+
 //func (controller *RestoController) UploadImage (ctx *gin.Context) {
 //	fmt.Println(">>> RestoControoler - Upload Image <<<")
 //	parent := context.Background()

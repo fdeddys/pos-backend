@@ -6,7 +6,7 @@ import (
 	"log"
 	"os"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models"
 	"resto-be/models/dto"

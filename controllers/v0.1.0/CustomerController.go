@@ -7,7 +7,7 @@ import (
 	"log"
 	"net/http"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/models"
 	"resto-be/models/dto"
 	"resto-be/services"

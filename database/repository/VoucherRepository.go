@@ -4,7 +4,7 @@ import (
 	"errors"
 	"log"
 	"resto-be/database"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/models/dto"
 	"time"
 )

@@ -4,7 +4,7 @@ import (
 	// "distribution-system-be/database"
 	"fmt"
 	"log"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 
 	// database "resto-be/database/repository"

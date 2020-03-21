@@ -14,6 +14,8 @@ type OrderRequestDto struct {
 	StartDate 	 string				  `json:"startDate"`
 	EndDate		 string 			  `json:"endDate"`
 	PaymentStatus string 			  `json:"paymentStatus"`
+	Disc 		int64		`json:"disc"`
+	VoucherCode	string		`json:"voucherCode"`
 }
 
 type OrderDetailRequest struct {

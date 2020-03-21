@@ -3,7 +3,7 @@ package services
 import (
 	"fmt"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models/dto"
 	"time"

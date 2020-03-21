@@ -5,7 +5,7 @@ import (
 	"github.com/rs/xid"
 	"log"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models"
 	"resto-be/models/dto"
@@ -115,6 +115,8 @@ func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Re
 		IsPaid:     constants.UNPAID,
 		OrderDate:  time.Now(),
 		Notes:      reqDto.Notes,
+		Disc:		reqDto.Disc,
+		VoucherCode: reqDto.VoucherCode,
 	}
 
 	// save order to db

@@ -3,7 +3,7 @@ package services
 import (
 	"log"
 	"resto-be/constants"
-	dbmodels "resto-be/database/dbmodels"
+	dbmodels "resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models"
 	"resto-be/models/dto"

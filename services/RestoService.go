@@ -5,7 +5,7 @@ import (
 	"github.com/rs/xid"
 	"log"
 	"resto-be/constants"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/hosts/menustorage"
 	"resto-be/models"
@@ -345,4 +345,42 @@ func (service *RestoServiceInterface) GenerateFileNameImage (idResto int64, seq 
 	imgUrl = fmt.Sprintf("%v/%v/%v",hostMinio,bucketNameResto,fileName)
 
 	return fileName, imgUrl
+}
+
+//
+func (service *RestoServiceInterface) SaveByResto(req *dto.RestoRequesDto) models.Response {
+	var res models.Response
+	//var resto dbmodels.Resto
+
+	log.Println("dto.CurrRestoID", dto.CurrRestoID)
+	restoId := dto.CurrRestoID
+
+	resto, err := repository.GetRestoById(restoId)
+	if err!=nil {
+		res.Rc = constants.ERR_CODE_20
+		res.Msg = constants.ERR_CODE_20_MSG
+
+		return res
+	}
+
+	resto.Name = req.Name
+	resto.Desc = req.Desc
+	resto.Address = req.Address
+	resto.City = req.City
+	resto.Province = req.Province
+	resto.Tax = req.Tax
+	resto.ServiceCharge = req.ServiceCharge
+
+
+	if err := repository.SaveResto(&resto); err != nil{
+		res.Rc = constants.ERR_CODE_10
+		res.Msg = constants.ERR_CODE_10_MSG
+		return res
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = resto
+
+	return res
 }

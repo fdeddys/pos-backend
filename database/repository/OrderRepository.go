@@ -5,7 +5,7 @@ import (
 	"log"
 	"resto-be/constants"
 	"resto-be/database"
-	"resto-be/database/dbmodels"
+	"resto-be/models/dbmodels"
 	"resto-be/models/dto"
 	// "github.com/astaxie/beego/logs"
 )
@@ -28,6 +28,9 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 	db := database.GetDbCon()
 
 	var orders []dbmodels.Order
+
+	log.Println("limit", limit)
+	log.Println("offset", (page-1)*limit)
 
 	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
 		return orders, err

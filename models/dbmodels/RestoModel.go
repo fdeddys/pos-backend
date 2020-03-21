@@ -9,6 +9,8 @@ type Resto struct {
 	City string `json:"city"`
 	Province string `json:"province"`
 	Status 	int `json:"status"`
+	Tax 	int `json:"tax"`
+	ServiceCharge 	int `json:"serviceCharge"`
 	Pictures []RestoPicture `json:"pictures,omitempty"gorm:"foreignkey:RestoId"`
 }
 

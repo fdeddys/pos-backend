@@ -8,6 +8,8 @@ type RestoRequesDto struct {
 	Address string `json:"address"`
 	City string `json:"city"`
 	Province string `json:"province"`
+	Tax 	int `json:"tax"`
+	ServiceCharge 	int `json:"serviceCharge"`
 	//Pictures []ImageDto `json:"pictures"`
 	Status 	int `json:"status"`
 }
