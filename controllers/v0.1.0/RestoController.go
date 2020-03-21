@@ -154,6 +154,23 @@ func (controller *RestoController) GetById (ctx *gin.Context) {
 
 }
 
+func (controller *RestoController) GetByRestoToken (ctx *gin.Context) {
+	fmt.Println(">>> RestoControoler - GetByRestoToken <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	restoId := dto.CurrRestoID
+
+
+	res = services.InitializeRestoServiceInterface().GetById(restoId)
+
+	ctx.JSON(http.StatusOK, res)
+
+
+}
+
 func (controller *RestoController) GetByFilterPaging (ctx *gin.Context) {
 	fmt.Println(">>> RestoControoler - Get All <<<")
 	parent := context.Background()
