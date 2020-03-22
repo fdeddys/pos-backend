@@ -16,3 +16,7 @@ func TestGenerateOrderNumber(t *testing.T)  {
 	log.Println("res -->", res)
 
 }
+
+func TestReCalculate(t *testing.T) {
+	reCalculate(116)
+}

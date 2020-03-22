@@ -24,6 +24,12 @@ type Order struct {
 	OrderDetail		[]OrderDetail `gorm:"foreignkey:OrderId;association_foreignkey:id"`
 	Disc 		int64		`json:"disc"`
 	VoucherCode	string		`json:"voucherCode"`
+	Voucher       Voucher      `json:"voucher" gorm:"foreignkey:code; association_foreignkey:voucherCode; association_autoupdate:false;association_autocreate:false"`
+
+	SubTotal 	int64		`json:"subTotal"`
+	Tax 		int64 		`json:"tax"`
+	ServiceCharge 	int64 	`json:"serviceCharge"`
+	GrandTotal 		int64 	`json:"grandTotal"`
 }
 
 func (t *Order) TableName() string {

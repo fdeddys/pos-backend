@@ -32,7 +32,7 @@ func GetByCustomerIdPage(req dto.OrderRequestDto, page int, limit int) ([]dbmode
 	log.Println("limit", limit)
 	log.Println("offset", (page-1)*limit)
 
-	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
+	if err := db.Preload("Voucher").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("customer_Id = ?", req.CustomerId).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 
@@ -45,7 +45,7 @@ func GetOrderById(id int64) (dbmodels.Order, error) {
 	db.Debug().LogMode(true)
 	order := dbmodels.Order{}
 
-	err := db.Preload("Customer").Preload("Resto").Where(" id = ?  ", id).First(&order).Error
+	err := db.Preload("Voucher").Preload("Customer").Preload("Resto").Where(" id = ?  ", id).First(&order).Error
 
 	return order, err
 
@@ -155,7 +155,7 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("OrderDetail").Preload("OrderDetail.MenuItem").Preload("OrderDetail.MenuItem.Category").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+	if err := db.Preload("Voucher").Preload("OrderDetail").Preload("OrderDetail.MenuItem").Preload("OrderDetail.MenuItem.Category").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
 		return orders, 0, err
 	}
 	if err:= db.Raw("select count(*) from public.order " + query).Count(&total).Error; err != nil{
@@ -227,14 +227,22 @@ func UpdateQty(orderDetailID int64, qty int) (dbmodels.OrderDetail, error) {
 }
 
 // UpdateTotal ...
-func UpdateTotal(orderID int64, total int64) error {
+func UpdateTotal(orderID int64, subTotal int64, disc float64, total int64, tax float64, serviceCharge float64, grandTotal float64) error {
 
 	db := database.GetDbCon()
 	db.Debug().LogMode(true)
 
 	var order dbmodels.Order
 
-	err := db.Model(&order).Where("id = ?", orderID).Update("total", total).Error
+	err := db.Model(&order).Where("id = ?", orderID).Update(dbmodels.Order{
+		SubTotal: subTotal,
+		Disc: int64(disc),
+		Total: total,
+		Tax: int64(tax),
+		ServiceCharge: int64(serviceCharge),
+		GrandTotal: int64(grandTotal),
+
+	}).Error
 
 	return err
 }

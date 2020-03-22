@@ -133,6 +133,8 @@ func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Re
 	orderId := order.ID
 
 	res = service.AddOrderDetail(orderId, reqDto.OrderDetails)
+	//reCalculate(orderId)
+
 
 	return res
 }
@@ -462,15 +464,52 @@ func (service *OrderServiceInterface) UpdateQty(req *dto.OrderDetailRequest) mod
 }
 
 func reCalculate(orderID int64) {
+	order,_ := repository.GetOrderById(orderID)
 	orders := repository.GetOrderDetailByOrderID(orderID)
+	resto,_ := repository.GetRestoById(order.RestoId)
 
-	var total int64
-	total = 0
+	var subTotal int64
+	subTotal = 0
 	if len(orders) > 0 {
 		for _, order := range orders {
-			total = total + (int64(order.Qty) * int64(order.Price))
+			subTotal = subTotal + (int64(order.Qty) * int64(order.Price))
+		}
+	}
+	log.Println("voucher ", order.VoucherCode)
+	log.Println("subTotal -->", subTotal)
+
+	// validasi voucher
+	reqVoucher:= dto.VoucherRequestDto{
+		RestoId: order.RestoId,
+		Code: order.VoucherCode,
+	}
+
+	voucher, err:=repository.GetVoucherByCode(reqVoucher)
+	if err!= nil {
+		log.Println("err coucher ", err)
+	}
+	log.Println("voucher --> ", voucher)
+	var disc float64
+	maxValue := float64(voucher.MaxValue)
+	voucherValue := float64(voucher.Value)
+	if subTotal >= voucher.MinPayment {
+		disc = float64(subTotal) * voucherValue/100
+		log.Println("disc ", disc)
+		if disc > maxValue {
+			disc = maxValue
 		}
 	}
 
-	repository.UpdateTotal(orderID, total)
+	total := subTotal - int64(disc)
+	tax := (float64(resto.Tax)/100) * float64(total)
+	serviceCharge := (float64(resto.ServiceCharge)/100) * float64(total)
+
+	grandTotal := float64(total) + tax + serviceCharge
+	log.Println("total --> ", total)
+	log.Println("serviceCharge --> ", serviceCharge)
+	log.Println("tax --> ", tax)
+	log.Println("grandTotal --> ", grandTotal)
+
+
+	repository.UpdateTotal(orderID, subTotal, disc, total, tax, serviceCharge, grandTotal)
 }
