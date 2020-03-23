@@ -5,6 +5,7 @@ import (
 	"log"
 	"resto-be/constants"
 	"resto-be/database"
+	"resto-be/models"
 	"resto-be/models/dbmodels"
 	"resto-be/models/dto"
 	// "github.com/astaxie/beego/logs"
@@ -50,6 +51,8 @@ func GetOrderById(id int64) (dbmodels.Order, error) {
 	return order, err
 
 }
+
+
 
 // GetOrderDetailByOrderID ...
 func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
@@ -162,12 +165,6 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 		return orders, 0, err
 	}
 
-	//
-	//
-	//if err := db.Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Where("resto_Id = ? and order_date BETWEEN 'cas' AND 'cascsa'", req.RestoId).Find(&orders).Error; err != nil {
-	//	return orders, err
-	//}
-
 	return orders,  total, nil
 }
 
@@ -258,4 +255,25 @@ func GetOrderDetailByOrderDetailID(orderDetailID int64) dbmodels.OrderDetail {
 	db.Preload("MenuItem").Find(&orderDetail, " Id = ?", orderDetailID)
 
 	return orderDetail
+}
+
+
+// GetOrderDetailReport ...
+func GetOrderDetailReport(req dto.OrderRequestDto,) ([]models.OrderDetailReport, error) {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var orderDetails []models.OrderDetailReport
+
+	err:= db.Table("order_detail a").Select("a.*,b.order_no, b.order_date, b.status order_status, c.name customer, b.is_paid, b.is_complete, b.notes, d.name menu_item,  b.grand_total").
+				Joins("left join public.order b on a.order_id= b.id").
+				Joins("left join public.customer c on b.customer_id = c.id").
+				Joins("left join public.e_menu_item d on d.id = a.e_menu_item").
+				Where("b.order_date BETWEEN ? AND ?", req.StartDate, req.EndDate).
+				Where("b.resto_id = ?", req.RestoId).
+				Order("b.id desc").
+				Scan(&orderDetails).Error
+
+	return orderDetails, err
 }

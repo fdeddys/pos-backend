@@ -133,7 +133,7 @@ func (service *OrderServiceInterface) Add(reqDto *dto.OrderRequestDto) models.Re
 	orderId := order.ID
 
 	res = service.AddOrderDetail(orderId, reqDto.OrderDetails)
-	//reCalculate(orderId)
+	reCalculate(orderId)
 
 
 	return res
@@ -248,7 +248,6 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 
 }
 
-// GetByRestoPage ...
 
 // GetByRestoPage ...
 func (service *OrderServiceInterface) GetByFilterPaging(req *dto.OrderRequestDto, page int, count int) models.Response {

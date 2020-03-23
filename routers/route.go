@@ -137,7 +137,7 @@ func InitRouter() *gin.Engine {
 	//api.POST("/resto/:restoId/page/:page/count/:count", OrderController.GetByRestoFilterPaging)
 	api.GET("/preview/:id", OrderController.PrintPreview)
 	api.GET("/id/:id", OrderController.GetByID)
-	api.GET("/detail/:orderId", OrderController.GetOrderDetail)
+	api.GET("/detail/:orderId", OrderController.GetOrderDetailByOrderId)
 	api.POST("/page/:page/count/:count", OrderController.GetByFilterPaging)
 
 	api.POST("/update-status", OrderController.UpdateStatusOrder)
@@ -172,6 +172,8 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/report")
 	api.POST("/order", cekToken, ReportController.Order)
 	api.POST("/order/page/:page/count/:count", cekToken, ReportController.GetOrderByFilterPaging)
+	api.POST("/order/detail", cekToken, ReportController.OrderDetail)
+
 
 	//api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
 

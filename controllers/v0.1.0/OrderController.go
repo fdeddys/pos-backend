@@ -139,7 +139,7 @@ func (controller *OrderController) GetByID(ctx *gin.Context) {
 }
 
 // GetOrderDetail ...
-func (controller *OrderController) GetOrderDetail(ctx *gin.Context) {
+func (controller *OrderController) GetOrderDetailByOrderId(ctx *gin.Context) {
 	fmt.Println(">>> Order Controoler - Get order detail by Order ID <<<")
 	parent := context.Background()
 	defer parent.Done()
