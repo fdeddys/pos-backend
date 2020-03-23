@@ -118,6 +118,8 @@ func (service *ReportServiceInterface) GenerateXlsxOrderDetail (orderDetails []m
 			order.IsPaidDesc = constants.PAID_DESC
 		case constants.CANCEL:
 			order.IsPaidDesc = constants.CANCEL_DESC
+		case constants.UNPAID:
+			order.IsPaidDesc = constants.UNPAID_DESC
 		}
 
 		switch order.OrderStatus {
