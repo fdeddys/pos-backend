@@ -219,6 +219,8 @@ func (service *ReportServiceInterface) GenerateXlsxOrder (restoId int64, orders 
 		case constants.CANCEL:
 			order.IsPaidDesc = constants.CANCEL_DESC
 			totalCancel = order.Total + totalCancel
+		case constants.UNPAID:
+			order.IsPaidDesc = constants.UNPAID_DESC
 
 		}
 
