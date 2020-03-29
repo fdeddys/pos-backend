@@ -122,7 +122,13 @@ const (
 	COOK_DELIVERY      = "20"
 	COOK_DELIVERY_DESC = "DELIVERY"
 
-	COOK_CANCEL      = "30"
+	COOK_AT_LOCATION      = "30"
+	COOK_AT_LOCATION_DESC = "AT_LOCATION"
+
+	COOK_ON_HAND      = "40"
+	COOK_ON_HAND_DESC = "ON_HAND"
+
+	COOK_CANCEL      = "99"
 	COOK_CANCEL_DESC = "CANCEL"
 
 )
@@ -157,6 +163,9 @@ const (
 const (
 	MENU_ITEM_ACTIVE      = 1
 	MENU_ITEM_ACTIVE_DESC = "Active"
+
+	MENU_ITEM_IN_ACTIVE      = 0
+	MENU_ITEM_IN_ACTIVE_DESC = "In Active"
 )
 
 const (

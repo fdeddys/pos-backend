@@ -77,7 +77,7 @@ func (service *MenuItemServiceInterface) Save (reqDto *dto.MenuItemRequestDto) m
 		Stock:reqDto.Stock,
 		IsFavorite: reqDto.IsFavorite,
 		CategoryId: reqDto.CategoryId,
-		Status: constants.MENU_ITEM_ACTIVE,
+		Status: reqDto.Status,
 	}
 
 	err := repository.SaveMenuItem(&menuItem)

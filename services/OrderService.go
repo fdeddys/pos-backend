@@ -223,6 +223,10 @@ func (service *OrderServiceInterface) GetOrderDetailByOrderID(id int64) models.R
 			order[i].StatusDesc = constants.COOK_COOKING_DESC
 		case constants.COOK_DELIVERY:
 			order[i].StatusDesc = constants.COOK_DELIVERY_DESC
+		case constants.COOK_AT_LOCATION:
+			order[i].StatusDesc = constants.COOK_AT_LOCATION_DESC
+		case constants.COOK_ON_HAND:
+			order[i].StatusDesc = constants.COOK_ON_HAND_DESC
 		case constants.COOK_CANCEL:
 			order[i].StatusDesc = constants.COOK_CANCEL_DESC
 
@@ -314,6 +318,12 @@ func (service *OrderServiceInterface) UpdateCookStatus(req *dto.OrderRequestDto)
 	case constants.COOK_DELIVERY:
 		orderDetail.Status = constants.COOK_DELIVERY
 		orderDetail.StatusDesc = constants.COOK_DELIVERY_DESC
+	case constants.COOK_AT_LOCATION:
+		orderDetail.Status = constants.COOK_AT_LOCATION
+		orderDetail.StatusDesc = constants.COOK_AT_LOCATION_DESC
+	case constants.COOK_ON_HAND:
+		orderDetail.Status = constants.COOK_ON_HAND_DESC
+		orderDetail.StatusDesc = constants.COOK_ON_HAND_DESC
 	case constants.COOK_CANCEL:
 		orderDetail.Status = constants.COOK_CANCEL
 		orderDetail.StatusDesc = constants.COOK_CANCEL_DESC

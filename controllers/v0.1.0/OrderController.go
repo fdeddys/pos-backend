@@ -226,6 +226,12 @@ func (controller *OrderController) UpdateStatusOrderDetail(ctx *gin.Context) {
 	case constants.COOK_DELIVERY_DESC:
 		req.Status = constants.COOK_DELIVERY
 		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
+	case constants.COOK_AT_LOCATION_DESC:
+		req.Status = constants.COOK_AT_LOCATION
+		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
+	case constants.COOK_ON_HAND_DESC:
+		req.Status = constants.COOK_ON_HAND
+		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)
 	case constants.COOK_CANCEL_DESC:
 		req.Status = constants.COOK_CANCEL
 		res = services.InitializeOrderServiceInterface().UpdateCookStatus(&req)

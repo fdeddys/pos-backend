@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"log"
+	"resto-be/constants"
 	"resto-be/database"
 	"resto-be/models/dbmodels"
 	"resto-be/models/dto"
@@ -99,7 +100,7 @@ func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	if id == 0 {
 		return menuItems, errors.New("id = 0")
 	}
-	err := db.Where(dbmodels.MenuItem{GroupID:id}).Preload("Pictures").Find(&menuItems).Error
+	err := db.Where(dbmodels.MenuItem{GroupID:id, Status:constants.MENU_ITEM_ACTIVE}).Preload("Pictures").Find(&menuItems).Error
 	return menuItems, err
 }
 
