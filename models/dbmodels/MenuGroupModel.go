@@ -5,6 +5,7 @@ type MenuGroup struct {
 	RestoId int64 `json:"restoId"`
 	Name   string `json:"name"`
 	ImgUrl string `json:"imgURL"`
+	JamBuka string `json:"jamBuka"`
 	Status int    `json:"status"`
 }
 

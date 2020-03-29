@@ -60,8 +60,9 @@ func (service *MenuGroupServiceInterface) Save (menuGroupDto *dto.MenuGroupReque
 		ID: menuGroupDto.ID,
 		Name: menuGroupDto.Name,
 		ImgUrl: menuGroupDto.ImgUrl,
+		JamBuka: menuGroupDto.JamBuka,
 		RestoId: menuGroupDto.RestoId,
-		Status: constants.GROUP_ACTIVE,
+		Status: menuGroupDto.Status,
 	}
 
 	err := repository.SaveMenuGroup(&menuGroup)

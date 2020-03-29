@@ -3,6 +3,7 @@ package repository
 import (
 	"errors"
 	"log"
+	"resto-be/constants"
 	"resto-be/database"
 	"resto-be/models/dbmodels"
 	"resto-be/models/dto"
@@ -71,7 +72,7 @@ func GetMenuGroupByIdResto(idResto int64) ([]dbmodels.MenuGroup, error) {
 		return menuGroups, errors.New("id = 0")
 	}
 
-	err := db.Raw("SELECT*FROM e_menu_group WHERE resto_id=? ORDER BY ID desc", idResto).Find(&menuGroups).Error
+	err := db.Raw("SELECT*FROM e_menu_group WHERE resto_id=? and status = ? ORDER BY ID desc", idResto, constants.GROUP_ACTIVE).Find(&menuGroups).Error
 
 	return menuGroups, err
 }
