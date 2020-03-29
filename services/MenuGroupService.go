@@ -1,8 +1,11 @@
 package services
 
 import (
+	"fmt"
+	"github.com/rs/xid"
 	"log"
 	"resto-be/constants"
+	"resto-be/hosts/menustorage"
 	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models"
@@ -10,12 +13,44 @@ import (
 )
 
 type MenuGroupServiceInterface struct {
+	Send func(menustorage.ReqUploadImageModel)(*menustorage.ResUploadImageModel, error)
 
 }
 
 func InitializeMenuGroupServiceInterface()  *MenuGroupServiceInterface {
 	return &MenuGroupServiceInterface{
+		Send: menustorage.UploadImage,
 	}
+}
+
+func (service *MenuGroupServiceInterface) UploadImage (req dto.UploadImageMenuGroupRequestDto) models.Response {
+	fmt.Println("<< MenuGroupServiceInterface -- Upload Image >>")
+	var res models.Response
+
+	id := xid.New()
+
+	fileName := fmt.Sprintf("%v.jpeg", id)
+	imgUrl := fmt.Sprintf("%v/%v/%v",hostMinio,bucketNameResto,fileName)
+
+
+	errSendToMinioChan := make(chan error)
+	go service.AsyncSendToMinio(fileName, req.Data, errSendToMinioChan)
+
+	errSendToMinio := <-errSendToMinioChan
+
+	log.Println("errSendToMinio ->", errSendToMinio)
+	if errSendToMinio != nil {
+		res.Rc = constants.ERR_CODE_21
+		res.Msg = constants.ERR_CODE_21_MSG
+		return res
+
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = imgUrl
+
+	return res
 }
 
 func (service *MenuGroupServiceInterface) Save (menuGroupDto *dto.MenuGroupRequestDto) models.Response{
@@ -138,4 +173,23 @@ func (service *MenuGroupServiceInterface) GetByIdResto (GetByIdResto int64) mode
 
 	return res
 
+}
+
+func (service *MenuGroupServiceInterface) AsyncSendToMinio (fileName string, data string, errChan chan error)  {
+
+	reqUpload := menustorage.ReqUploadImageModel{
+		BucketName: bucketNameResto,
+		NameFile: fileName,
+		Data: data,
+		ContentType: "image/jpeg",
+	}
+
+	_, err :=service.Send(reqUpload)
+	if err!=nil {
+		log.Println("gagal upload")
+	}
+
+	errChan <- err
+	close(errChan)
+	return
 }

@@ -11,6 +11,7 @@ type Resto struct {
 	Status 	int `json:"status"`
 	Tax 	int `json:"tax"`
 	ServiceCharge 	int `json:"serviceCharge"`
+	KetPayment	string `json:"ketPayment"`
 	Pictures []RestoPicture `json:"pictures,omitempty"gorm:"foreignkey:RestoId"`
 }
 

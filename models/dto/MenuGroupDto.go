@@ -7,3 +7,8 @@ type MenuGroupRequestDto struct {
 	ImgUrl 	string `json:"imgURL"`
 	Status 	int `json:"status"`
 }
+
+
+type UploadImageMenuGroupRequestDto struct {
+	Data string `json:"data"`
+}

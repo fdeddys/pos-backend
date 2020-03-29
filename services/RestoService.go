@@ -56,6 +56,7 @@ func (service *RestoServiceInterface) Save (restoDto *dto.RestoRequesDto) models
 		Desc: restoDto.Desc,
 		City: restoDto.City,
 		Province: restoDto.Province,
+		KetPayment: restoDto.KetPayment,
 		Status: constants.RESTO_ACTIVE,
 	}
 
@@ -369,6 +370,7 @@ func (service *RestoServiceInterface) SaveByResto(req *dto.RestoRequesDto) model
 	resto.City = req.City
 	resto.Province = req.Province
 	resto.Tax = req.Tax
+	resto.KetPayment = req.KetPayment
 	resto.ServiceCharge = req.ServiceCharge
 
 

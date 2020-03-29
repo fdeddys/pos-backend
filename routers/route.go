@@ -96,6 +96,8 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/menu-group")
 	api.POST("", cekToken, EMenuGroupController.Save)
 	api.GET("", EMenuGroupController.GetAll)
+	api.POST("/upload-image", cekToken, EMenuGroupController.UploadImage)
+
 	api.GET("/id/:id", EMenuGroupController.GetById)
 	api.POST("/resto/:restoId/page/:page/count/:count", EMenuGroupController.GetByFilterPaging)
 	api.GET("/resto/:restoId", EMenuGroupController.GetByIdResto)

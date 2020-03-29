@@ -2,6 +2,7 @@ package v0_1_0
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"github.com/astaxie/beego/logs"
 	"github.com/gin-gonic/gin"
@@ -15,6 +16,32 @@ import (
 )
 
 type EMenuGroupController struct {
+
+}
+
+func (controller *EMenuGroupController) UploadImage(ctx *gin.Context)  {
+	fmt.Println(">>> EMenuGroupController - UploadImage <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	var req dto.UploadImageMenuGroupRequestDto
+	var res models.Response
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	req2:= req
+	req2.Data = "--gambar base64--"
+	reqByte,_ := json.Marshal(req2)
+	log.Println("reqdata ==>", string(reqByte))
+
+	res = services.InitializeMenuGroupServiceInterface().UploadImage(req)
+
+	ctx.JSON(http.StatusOK, res)
 
 }
 
