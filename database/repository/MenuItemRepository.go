@@ -100,7 +100,11 @@ func GetMenuItemByMenuGroupId(id int64) ([]dbmodels.MenuItem, error) {
 	if id == 0 {
 		return menuItems, errors.New("id = 0")
 	}
-	err := db.Where(dbmodels.MenuItem{GroupID:id, Status:constants.MENU_ITEM_ACTIVE}).Preload("Pictures").Find(&menuItems).Error
+	err := db.Where(dbmodels.MenuItem{GroupID:id, Status:constants.MENU_ITEM_ACTIVE}).
+		Preload("MenuGroup").
+		Preload("Category").
+		Preload("Pictures").
+		Find(&menuItems).Error
 	return menuItems, err
 }
 

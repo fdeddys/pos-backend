@@ -75,6 +75,7 @@ func InitRouter() *gin.Engine {
 	AuthController := new(v1.AuthController)
 	api = r.Group(version + "/auth")
 	api.POST("/login", AuthController.Login)
+	api.GET("/:id/reset-password", cekToken, AuthController.ResetPassword)
 
 	RestoController := new(v1.RestoController)
 	api = r.Group(version + "/resto")
@@ -150,6 +151,9 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/user")
 	api.POST("/page/:page/count/:count", cekToken, UserController.GetByFilterPaging)
 	api.POST("/", cekToken, UserController.SaveUser)
+	api.GET("/reset-password/:id", cekToken, AuthController.ResetPassword)
+	api.POST("/change-password", cekToken, UserController.ChangePassword)
+
 	api.GET("/current-user", cekToken, UserController.GetUser)
 
 	//api.GET("/", EMenuItemController.GetAll)

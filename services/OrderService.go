@@ -39,7 +39,7 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 		page = 1
 		count = 1
 	}
-	users, err := repository.GetByCustomerIdPage(*req, page, count)
+	orders, err := repository.GetByCustomerIdPage(*req, page, count)
 	if err != nil {
 		log.Println("err get from database : ", err)
 
@@ -49,16 +49,29 @@ func (service *OrderServiceInterface) GetByCustomerPage(req *dto.OrderRequestDto
 	}
 
 	log.Println("get data : ", res)
-	log.Println("result : ", users)
+	log.Println("result : ", orders)
 
-	for i := 0; i < len(users); i++ {
-		users[i].IsPaidDesc = service.GetStatusOrder(users[i].IsPaid)
-		users[i].IsCompleteDesc = service.GetStatusComplete(users[i].IsComplete)
+
+	for i := 0; i < len(orders); i++ {
+		orders[i].IsPaidDesc = service.GetStatusOrder(orders[i].IsPaid)
+		orders[i].IsCompleteDesc = service.GetStatusComplete(orders[i].IsComplete)
+
+		switch orders[i].Status {
+		case constants.ORDER_STATUS_DIPESAN:
+			orders[i].StatusDesc = constants.ORDER_STATUS_DIPESAN_DESC
+		case constants.ORDER_STATUS_DIMASAK:
+			orders[i].StatusDesc = constants.ORDER_STATUS_DIMASAK_DESC
+		case constants.ORDER_STATUS_DIANTAR:
+			orders[i].StatusDesc = constants.ORDER_STATUS_DIANTAR_DESC
+		case constants.ORDER_STATUS_DIMEJA:
+			orders[i].StatusDesc = constants.ORDER_STATUS_DIMEJA_DESC
+		}
+
 	}
 
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = users
+	res.Data = orders
 
 	return res
 

@@ -23,6 +23,20 @@ func GetUserByEmail(email string) (dbmodels.User, error) {
 
 }
 
+// GetUserByEmail ...
+func GetUserById(id int64) (dbmodels.User, error) {
+	db := database.GetDbCon()
+
+	var user dbmodels.User
+	var err error
+
+	db.Preload("Resto").Where("id = ?", id).Find(&user)
+
+	fmt.Println("User => ", user)
+	return user, err
+
+}
+
 // GetUserFilterPaging ...
 func GetUserFilterPaging(req dto.UserRequesDto, page int, limit int) ([]dbmodels.User, int, error) {
 	db := database.GetDbCon()

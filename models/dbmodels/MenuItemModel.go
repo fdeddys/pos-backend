@@ -3,6 +3,7 @@ package dbmodels
 type MenuItem struct {
 	ID      int64   `json:"id"`
 	GroupID int64   `json:"groupId"`
+	MenuGroup 	MenuGroup `json:"menuGroup" gorm:"foreignkey:id; association_foreignkey:GroupId; association_autoupdate:false;association_autocreate:false"`
 	RestoID int64 	`json:"restoId"`
 	Name    string  `json:"name"`
 	Desc    string  `json:"desc"`

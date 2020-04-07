@@ -111,3 +111,29 @@ func (h *UserController) SaveUser(ctx *gin.Context) {
 
 	// c.JSON(http.StatusOK, UserService.SaveUser(&req))
 }
+
+// SaveDataUser ...
+func (h *UserController) ChangePassword(ctx *gin.Context) {
+
+	fmt.Println(">>> UserController - Save <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.ChangePasswordDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	res = services.InitializeUserServiceInterface().ChangePassword(&req)
+
+	ctx.JSON(http.StatusOK, res)
+}
+
+
+

@@ -78,3 +78,39 @@ func (service *UserServiceInterface) GetDataUserByFilterPaging(req dto.UserReque
 	return res
 
 }
+
+func (service *UserServiceInterface) ChangePassword(req *dto.ChangePasswordDto) models.Response {
+	var res models.Response
+
+	user, err := repository.GetUserById(dto.CurrUserID)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("oldPassword --> ", req.OldPass)
+	log.Println("db password --> ", user.Password)
+
+	if req.OldPass != user.Password {
+		res.Rc = constants.ERR_CODE_20
+		res.Msg = constants.ERR_CODE_20_MSG
+		return res
+	}
+
+	user.Password = req.NewPass
+	if err := repository.SaveUser(&user); err != nil{
+		res.Rc = constants.ERR_CODE_10
+		res.Msg = constants.ERR_CODE_10_MSG
+		return res
+	}
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = user
+
+	return res
+
+}

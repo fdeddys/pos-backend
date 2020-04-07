@@ -2,10 +2,13 @@ package services
 
 import (
 	"fmt"
+	"log"
 	"resto-be/constants"
+	"resto-be/models"
 	"resto-be/models/dbmodels"
 	"resto-be/database/repository"
 	"resto-be/models/dto"
+	"resto-be/utils"
 	"time"
 
 	jwt "github.com/dgrijalva/jwt-go"
@@ -172,6 +175,37 @@ func (service *AuthServiceInterface) ValidationResponseCustomer(customer dbmodel
 		res.Msg = constants.ERR_CODE_50_MSG
 		return res
 	}
+
+	return res
+}
+
+func (service *AuthServiceInterface) ResetPasswordByIdUser(userId int64)  models.Response{
+	var res models.Response
+
+	user,err := repository.GetUserById(userId)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	newPass := utils.GenerateRandomChar()
+	encPass := utils.HashPassword(user.Email + newPass)
+	user.Password = encPass
+
+	errSave := repository.SaveUser(&user)
+	if errSave != nil {
+		res.Rc = constants.ERR_CODE_10
+		res.Msg = constants.ERR_CODE_10_MSG
+		return res
+	}
+
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = newPass
 
 	return res
 }
