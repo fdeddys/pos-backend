@@ -14,6 +14,7 @@ type Customer struct {
 	ManualCustomer int    `json:"manual_customer"`
 	ManualRestoID  int64  `json:"manual_resto_id"`
 	TableCode 	   string `json:"table_code"`
+	Address 	   string	`json:"address"`
 }
 
 // TableName ...

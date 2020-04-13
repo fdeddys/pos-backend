@@ -48,6 +48,7 @@ func (service *CustomerServiceInterface) SaveDataCustomer(data *dbmodels.Custome
 		Password:       data.Password,
 		ManualCustomer: 1,
 		ManualRestoID:  data.ManualRestoID,
+		Address: data.Address,
 	}
 
 

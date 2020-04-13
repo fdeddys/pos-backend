@@ -93,3 +93,8 @@ INSERT INTO "public"."e_menu_item"("id", "group_id", "name", "desc", "img_url", 
 INSERT INTO "public"."e_menu_item"("id", "group_id", "name", "desc", "img_url", "price", "status") VALUES (11, 1, 'Nasi Goreng putih ', 'Nasi Putih goreng Telorrrr', 'https://i.picsum.photos/id/146/400/400.jpg', 987987.00, 1);
 INSERT INTO "public"."e_menu_item"("id", "group_id", "name", "desc", "img_url", "price", "status") VALUES (12, 1, 'Nasi Goreng rendang ', 'Nasi Putih goreng rendang', 'https://i.picsum.photos/id/152/400/400.jpg', 123.00, 1);
 INSERT INTO "public"."e_menu_item"("id", "group_id", "name", "desc", "img_url", "price", "status") VALUES (13, 1, 'Nasi Goreng Nanas ', 'Nasi Putih Nanas Telorrrr', 'https://i.picsum.photos/id/159/400/400.jpg', 5555.00, 1);
+
+
+----- BEGIN -----
+ALTER TABLE "public"."customer"
+  ADD COLUMN "address" text;

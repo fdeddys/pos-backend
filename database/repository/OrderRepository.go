@@ -62,7 +62,7 @@ func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
 
 	var orderDetails []dbmodels.OrderDetail
 
-	db.Preload("MenuItem").Preload("MenuItem.Category").Find(&orderDetails, " order_Id = ? and qty > 0 ", orderID)
+	db.Preload("MenuItem").Preload("MenuItem.Category").Preload("MenuItem.MenuGroup").Find(&orderDetails, " order_Id = ? and qty > 0 ", orderID)
 
 	return orderDetails
 }
