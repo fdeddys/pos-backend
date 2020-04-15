@@ -191,7 +191,14 @@ func InitRouter() *gin.Engine {
 	GroupTableController := new(v1.GroupTableController)
 	api = r.Group(version + "/group-table")
 	api.POST("", cekToken, GroupTableController.Save)
+	//api.POST("/page/:page/count/:count", cekToken, GroupTableController.GetByFilterPaging)
+	api.POST("/filter", cekToken, GroupTableController.Filter)
 
+
+	TableController := new(v1.TableController)
+	api = r.Group(version + "/table")
+	api.POST("", cekToken, TableController.Save)
+	api.POST("/filter", TableController.Filter)
 
 
 
