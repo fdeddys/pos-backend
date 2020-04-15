@@ -181,6 +181,22 @@ func InitRouter() *gin.Engine {
 	api.POST("/order/detail", cekToken, ReportController.OrderDetail)
 
 
+	//VoucherController := new(v1.VoucherController)
+	//api = r.Group(version + "/voucher")
+	//api.POST("", cekToken, VoucherController.Save)
+	//api.POST("/getbycode",VoucherController.GetByCodeVoucher)
+	//api.GET("/:id", VoucherController.GetById)
+	//api.POST("/page/:page/count/:count", cekToken, VoucherController.GetByFilterPaging)
+
+	GroupTableController := new(v1.GroupTableController)
+	api = r.Group(version + "/group-table")
+	api.POST("", cekToken, GroupTableController.Save)
+
+
+
+
+
+
 	//api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
 
 
