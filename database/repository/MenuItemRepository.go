@@ -130,6 +130,24 @@ func GetMenuItemFilterPaging(req dto.MenuItemRequestDto, page int, limit int) ([
 
 	return menuGroups, total, err
 }
+
+func GetMenuItemFilter(req dto.MenuItemRequestDto) ([]dbmodels.MenuItem, error) {
+	db := database.GetDbCon()
+
+	var menuItems []dbmodels.MenuItem
+
+
+	err := db.Preload("MenuGroup").Table("e_menu_item a").Select(" a.*").Joins("join resto b on a.resto_id = b.id").Where("b.resto_code = ?", req.RestoCode).Find(&menuItems).Error // query
+
+
+	if err != nil {
+		log.Println("<<< Error get data menuItems by filter >>>")
+		return menuItems, err
+	}
+
+
+	return menuItems, err
+}
 /*
 
 func GetMenuItemFilterPaging(req dto.MenuItemRequestDto, page int, limit int) ([]dbmodels.MenuItem, int, error) {

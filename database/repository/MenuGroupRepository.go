@@ -76,3 +76,22 @@ func GetMenuGroupByIdResto(idResto int64) ([]dbmodels.MenuGroup, error) {
 
 	return menuGroups, err
 }
+
+func GetMenuGroupFilter(req dto.MenuGroupRequestDto) ([]dbmodels.MenuGroup, error) {
+	db := database.GetDbCon()
+
+	var menuGroups []dbmodels.MenuGroup
+
+
+
+	err := db.Table("e_menu_group a").Select(" a.*").Joins("join resto b on a.resto_id = b.id").Where("b.resto_code = ?", req.RestoCode).Find(&menuGroups).Error // query
+
+
+	if err != nil {
+		log.Println("<<< Error get data menuGroups by filter  >>>")
+		return menuGroups, err
+	}
+
+
+	return menuGroups, err
+}

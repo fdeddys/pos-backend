@@ -102,6 +102,8 @@ func InitRouter() *gin.Engine {
 	api.GET("/id/:id", EMenuGroupController.GetById)
 	api.POST("/resto/:restoId/page/:page/count/:count", EMenuGroupController.GetByFilterPaging)
 	api.GET("/resto/:restoId", EMenuGroupController.GetByIdResto)
+	api.POST("/filter", EMenuGroupController.Filter)
+
 
 
 	CategoryController := new(v1.CategoryController)
@@ -120,6 +122,8 @@ func InitRouter() *gin.Engine {
 	api.POST("/page/:page/count/:count", EMenuItemController.GetByFilterPaging)
 	api.POST("/upload-image", cekToken, EMenuItemController.UploadImage)
 	api.POST("/remove-image", cekToken, EMenuItemController.RemoveImage)
+	api.POST("/filter", EMenuItemController.Filter)
+
 
 	//api.GET("/menu-group/:groupId/resto/:restoId", EMenuItemController.GetByMenuGroupIdAndIdResto)
 
@@ -192,7 +196,7 @@ func InitRouter() *gin.Engine {
 	api = r.Group(version + "/group-table")
 	api.POST("", cekToken, GroupTableController.Save)
 	//api.POST("/page/:page/count/:count", cekToken, GroupTableController.GetByFilterPaging)
-	api.POST("/filter", cekToken, GroupTableController.Filter)
+	api.POST("/filter", GroupTableController.Filter)
 
 
 	TableController := new(v1.TableController)

@@ -345,6 +345,31 @@ func (service *MenuItemServiceInterface) AsyncSendToMinio (fileName string, data
 	return
 }
 
+func (service *MenuItemServiceInterface) Filter (req dto.MenuItemRequestDto) models.Response{
+	fmt.Println(">>> MenuItemServiceInterface - Filter <<<")
+	var res models.Response
+
+	reqByte,_ := json.Marshal(req)
+	log.Println("reqData -> ", string(reqByte))
+
+	menuItems, err := repository.GetMenuItemFilter(req)
+	if err != nil {
+		log.Println("err get menu items from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuItems
+	return res
+
+}
+
 
 /*
 func (service *MenuItemServiceInterface) GetByMenuGroupIdAndRestoId (groupId int64, restoId int64) models.Response{

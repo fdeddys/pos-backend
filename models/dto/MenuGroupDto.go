@@ -7,6 +7,7 @@ type MenuGroupRequestDto struct {
 	ImgUrl 	string `json:"imgURL"`
 	JamBuka string `json:"jamBuka"`
 	Status 	int `json:"status"`
+	RestoCode string `json:"restoCode"`
 }
 
 

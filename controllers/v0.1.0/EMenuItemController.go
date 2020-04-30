@@ -180,6 +180,7 @@ func (controller *EMenuItemController) GetByFilterPaging (ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 }
 
+
 func (controller *EMenuItemController) UploadImage(ctx *gin.Context)  {
 	fmt.Println(">>> EMenuItemController - UploadImage <<<")
 	parent := context.Background()
@@ -229,6 +230,28 @@ func (controller *EMenuItemController) RemoveImage(ctx *gin.Context)  {
 
 	ctx.JSON(http.StatusOK, res)
 
+}
+
+func (controller *EMenuItemController) Filter (ctx *gin.Context) {
+	fmt.Println(">>> EMenuItemController - Filter<<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.MenuItemRequestDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+
+	res = services.InitializeMenuItemServiceInterface().Filter(req)
+
+	ctx.JSON(http.StatusOK, res)
 }
 
 

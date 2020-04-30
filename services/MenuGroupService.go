@@ -194,3 +194,25 @@ func (service *MenuGroupServiceInterface) AsyncSendToMinio (fileName string, dat
 	close(errChan)
 	return
 }
+
+func (service *MenuGroupServiceInterface) Filter (req dto.MenuGroupRequestDto) models.Response{
+	var res models.Response
+
+	menuGroups, err := repository.GetMenuGroupFilter(req)
+	if err != nil {
+		log.Println("err get from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	log.Println("get data : ", res)
+
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = menuGroups
+
+	return res
+
+}

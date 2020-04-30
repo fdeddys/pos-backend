@@ -174,3 +174,29 @@ func (controller *EMenuGroupController) GetByIdResto (ctx *gin.Context) {
 
 
 }
+
+func (controller *EMenuGroupController) Filter (ctx *gin.Context) {
+	fmt.Println(">>> EMenuGroupController - Filter <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.MenuGroupRequestDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	byteReq,_ := json.Marshal(req)
+	log.Println(string(byteReq))
+
+	res = services.InitializeMenuGroupServiceInterface().Filter(req)
+
+	ctx.JSON(http.StatusOK, res)
+
+
+}
