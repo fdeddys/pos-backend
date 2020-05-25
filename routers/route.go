@@ -92,7 +92,6 @@ func InitRouter() *gin.Engine {
 	//TaxController := new(v1.TaxController)
 	//api = r.Group(version + "/tax")
 
-
 	EMenuGroupController := new(v1.EMenuGroupController)
 	api = r.Group(version + "/menu-group")
 	api.POST("", cekToken, EMenuGroupController.Save)
@@ -104,12 +103,9 @@ func InitRouter() *gin.Engine {
 	api.GET("/resto/:restoId", EMenuGroupController.GetByIdResto)
 	api.POST("/filter", EMenuGroupController.Filter)
 
-
-
 	CategoryController := new(v1.CategoryController)
 	api = r.Group(version + "/category")
 	api.GET("", CategoryController.GetAll)
-
 
 	EMenuItemController := new(v1.EMenuItemController)
 	api = r.Group(version + "/menu-item")
@@ -124,18 +120,14 @@ func InitRouter() *gin.Engine {
 	api.POST("/remove-image", cekToken, EMenuItemController.RemoveImage)
 	api.POST("/filter", EMenuItemController.Filter)
 
-
 	//api.GET("/menu-group/:groupId/resto/:restoId", EMenuItemController.GetByMenuGroupIdAndIdResto)
 
 	VoucherController := new(v1.VoucherController)
 	api = r.Group(version + "/voucher")
 	api.POST("", cekToken, VoucherController.Save)
-	api.POST("/getbycode",VoucherController.GetByCodeVoucher)
+	api.POST("/getbycode", VoucherController.GetByCodeVoucher)
 	api.GET("/:id", VoucherController.GetById)
 	api.POST("/page/:page/count/:count", cekToken, VoucherController.GetByFilterPaging)
-
-
-
 
 	OrderController := new(v1.OrderController)
 	api = r.Group(version + "/order")
@@ -184,7 +176,6 @@ func InitRouter() *gin.Engine {
 	api.POST("/order/page/:page/count/:count", cekToken, ReportController.GetOrderByFilterPaging)
 	api.POST("/order/detail", cekToken, ReportController.OrderDetail)
 
-
 	//VoucherController := new(v1.VoucherController)
 	//api = r.Group(version + "/voucher")
 	//api.POST("", cekToken, VoucherController.Save)
@@ -198,19 +189,25 @@ func InitRouter() *gin.Engine {
 	//api.POST("/page/:page/count/:count", cekToken, GroupTableController.GetByFilterPaging)
 	api.POST("/filter", GroupTableController.Filter)
 
-
 	TableController := new(v1.TableController)
 	api = r.Group(version + "/table")
 	api.POST("", cekToken, TableController.Save)
 	api.POST("/filter", TableController.Filter)
 
-
-
-
+	// ADD NEW
+	// 1. get order, preload=> order-detail by tabel no
+	// 2. get all active table ( status table open/occupacy jgn lupa )
+	// 3. add item by tabel
+	// 4. update qty item by table no/ order detail id - no add/substrac qty
+	// 5. payment by tabel no ( cash + debit + cc)
+	// 6. join tabel & separate tabel
+	// 7. move tabel
+	// 8. print bill, caption & cur bill ( bill w/o payment)
+	// 9. print report
+	// 10.login cashier
+	// 11.add waiters
 
 	//api.POST("/customer/page/:page/count/:count", OrderController.GetByCustPage)
-
-
 
 	return r
 
