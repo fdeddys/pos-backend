@@ -160,8 +160,7 @@ func (controller *OrderController) GetOrderDetailByOrderId(ctx *gin.Context) {
 
 }
 
-
-func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
+func (controller *OrderController) GetByFilterPaging(ctx *gin.Context) {
 	fmt.Println(">>> OrderController - Get By GetByFilterPaging <<<")
 	parent := context.Background()
 	defer parent.Done()
@@ -200,7 +199,6 @@ func (controller *OrderController) GetByFilterPaging (ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, res)
 
 }
-
 
 func (controller *OrderController) UpdateStatusOrderDetail(ctx *gin.Context) {
 	fmt.Println(">>> OrderController -  UpdateStatusOrderDetail <<<")
@@ -341,6 +339,122 @@ func (controller *OrderController) UpdateQty(ctx *gin.Context) {
 
 	resByte, _ := json.Marshal(res)
 	log.Println("res update qty order --> ", string(resByte))
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+// GetByRestoIdTabelID ...
+func (controller *OrderController) GetByRestoIdTabelID(ctx *gin.Context) {
+	fmt.Println(">>> Order Controoler - Get Tabel ID <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	restoId, err := strconv.ParseInt(ctx.Param("restoId"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "Resto id not supplied")
+		ctx.Abort()
+		return
+	}
+
+	tabelID, err := strconv.ParseInt(ctx.Param("tabelId"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "Tabel id not supplied")
+		ctx.Abort()
+		return
+	}
+
+	res = services.InitializeOrderServiceInterface().GetByRestoIdTabelId(restoId, tabelID)
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+// AddItemOrderToTabel ...
+func (controller *OrderController) AddItemOrderToTabel(ctx *gin.Context) {
+	fmt.Println(">>> OrderController - add Item to tabel <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	req := dto.AddOrderItemDto{}
+	res := models.Response{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+
+	reqByte, _ := json.Marshal(req)
+	log.Println("req -> ", string(reqByte))
+
+	res = services.InitializeOrderServiceInterface().AddItemOrderToTabel(&req)
+	resByte, _ := json.Marshal(res)
+	log.Println("res add order --> ", string(resByte))
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+// PaymentByTabelID ...
+func (controller *OrderController) PaymentByTabelID(ctx *gin.Context) {
+	fmt.Println(">>> OrderController - Payment at tabel ID  <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	tabelID, err := strconv.ParseInt(ctx.Param("tabelID"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "Tabel id not supplied")
+		ctx.Abort()
+		return
+	}
+
+	res := models.Response{}
+	req := []dto.OrderPaymentDto{}
+
+	if err := ctx.ShouldBindJSON(&req); err != nil {
+		fmt.Println("Request body error:", err)
+		res.Rc = constants.ERR_CODE_03
+		res.Msg = constants.ERR_CODE_03_MSG
+		ctx.JSON(http.StatusBadRequest, res)
+		return
+	}
+	json.Marshal(req)
+
+	res = services.InitializeOrderServiceInterface().PaymentByTabelID(req, tabelID)
+
+	resByte, _ := json.Marshal(res)
+	log.Println("res Payment", resByte)
+
+	ctx.JSON(http.StatusOK, res)
+
+}
+
+// GetPaymentByTabelID ...
+func (controller *OrderController) GetPaymentByTabelID(ctx *gin.Context) {
+	fmt.Println(">>> OrderController - Get Payment tabel ID  <<<")
+	parent := context.Background()
+	defer parent.Done()
+
+	res := models.Response{}
+
+	tabelID, err := strconv.ParseInt(ctx.Param("tabelID"), 10, 64)
+	if err != nil {
+		logs.Info("error", err)
+		ctx.JSON(http.StatusBadRequest, "Tabel id not supplied")
+		ctx.Abort()
+		return
+	}
+	res = services.InitializeOrderServiceInterface().GetPaymentByTabelID(tabelID)
+
+	resByte, _ := json.Marshal(res)
+	log.Println("res Payment", resByte)
 
 	ctx.JSON(http.StatusOK, res)
 

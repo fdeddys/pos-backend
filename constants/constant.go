@@ -99,7 +99,6 @@ const (
 
 	CANCEL      = "20"
 	CANCEL_DESC = "CANCEL"
-
 )
 
 const (
@@ -108,12 +107,10 @@ const (
 
 	COMPLETE      = "10"
 	COMPLETE_DESC = "COMPLETE"
-
 )
 
 const (
-
-	COOK_WAITING = "00"
+	COOK_WAITING      = "00"
 	COOK_WAITING_DESC = "WAITING"
 
 	COOK_COOKING      = "10"
@@ -130,14 +127,13 @@ const (
 
 	COOK_CANCEL      = "99"
 	COOK_CANCEL_DESC = "CANCEL"
-
 )
 
 const (
-	ERR_CODE_14= "14"
+	ERR_CODE_14     = "14"
 	ERR_CODE_14_MSG = "Status order already paid"
 
-	ERR_CODE_15= "15"
+	ERR_CODE_15     = "15"
 	ERR_CODE_15_MSG = "Status order already cancel"
 )
 
@@ -179,4 +175,15 @@ const (
 const (
 	BUCKET_RESTO     = "resto"
 	BUCKET_MENU_ITEM = "menu-item"
+)
+
+const (
+	TABEL_STATUS_INACTIVE = 90
+	TABEL_STATUS_READY    = 10
+	TABEL_STATUS_OCCUPACY = 20
+)
+
+const (
+	ERR_CODE_70     = "30"
+	ERR_CODE_70_MSG = "Order not found for this tabel"
 )

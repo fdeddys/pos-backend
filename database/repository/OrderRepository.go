@@ -52,8 +52,6 @@ func GetOrderById(id int64) (dbmodels.Order, error) {
 
 }
 
-
-
 // GetOrderDetailByOrderID ...
 func GetOrderDetailByOrderID(orderID int64) []dbmodels.OrderDetail {
 
@@ -83,11 +81,9 @@ func GetOrderDetailByID(orderDetailID int64) dbmodels.OrderDetail {
 func GetByRestoCodePage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, error) {
 	db := database.GetDbCon()
 
-
-
 	var orders []dbmodels.Order
 
-	resto,err:= GetRestoBycode(req.RestoCode)
+	resto, err := GetRestoBycode(req.RestoCode)
 	if err != nil {
 		return orders, err
 	}
@@ -115,7 +111,7 @@ func GetByRestoCodePage(req dto.OrderRequestDto, page int, limit int) ([]dbmodel
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+	if err := db.Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page - 1) * limit).Raw(" select * from public.order " + query).Find(&orders).Error; err != nil {
 		return orders, err
 	}
 	//
@@ -128,12 +124,11 @@ func GetByRestoCodePage(req dto.OrderRequestDto, page int, limit int) ([]dbmodel
 }
 
 // GetByRestoIDPage ...
-func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, int,  error) {
+func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.Order, int, error) {
 	db := database.GetDbCon()
 
 	var orders []dbmodels.Order
 	var total int
-
 
 	query := fmt.Sprintf("where resto_id = %d ", req.RestoId)
 
@@ -158,14 +153,14 @@ func GetByRestoIDPage(req dto.OrderRequestDto, page int, limit int) ([]dbmodels.
 
 	log.Println("query --> ", query)
 
-	if err := db.Preload("Voucher").Preload("OrderDetail").Preload("OrderDetail.MenuItem").Preload("OrderDetail.MenuItem.Category").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page-1)*limit).Raw(" select * from public.order " + query ).Find(&orders).Error; err != nil {
+	if err := db.Preload("Voucher").Preload("OrderDetail").Preload("OrderDetail.MenuItem").Preload("OrderDetail.MenuItem.Category").Preload("Customer").Preload("User").Preload("Resto").Order("id desc").Limit(limit).Offset((page - 1) * limit).Raw(" select * from public.order " + query).Find(&orders).Error; err != nil {
 		return orders, 0, err
 	}
-	if err:= db.Raw("select count(*) from public.order " + query).Count(&total).Error; err != nil{
+	if err := db.Raw("select count(*) from public.order " + query).Count(&total).Error; err != nil {
 		return orders, 0, err
 	}
 
-	return orders,  total, nil
+	return orders, total, nil
 }
 
 // UpdateStatusCompleteOrder ...
@@ -232,13 +227,12 @@ func UpdateTotal(orderID int64, subTotal int64, disc float64, total int64, tax f
 	var order dbmodels.Order
 
 	err := db.Model(&order).Where("id = ?", orderID).Update(dbmodels.Order{
-		SubTotal: subTotal,
-		Disc: int64(disc),
-		Total: total,
-		Tax: int64(tax),
+		SubTotal:      subTotal,
+		Disc:          int64(disc),
+		Total:         total,
+		Tax:           int64(tax),
 		ServiceCharge: int64(serviceCharge),
-		GrandTotal: int64(grandTotal),
-
+		GrandTotal:    int64(grandTotal),
 	}).Error
 
 	return err
@@ -257,23 +251,46 @@ func GetOrderDetailByOrderDetailID(orderDetailID int64) dbmodels.OrderDetail {
 	return orderDetail
 }
 
-
 // GetOrderDetailReport ...
-func GetOrderDetailReport(req dto.OrderRequestDto,) ([]models.OrderDetailReport, error) {
+func GetOrderDetailReport(req dto.OrderRequestDto) ([]models.OrderDetailReport, error) {
 
 	db := database.GetDbCon()
 	db.Debug().LogMode(true)
 
 	var orderDetails []models.OrderDetailReport
 
-	err:= db.Table("order_detail a").Select("a.*,b.order_no, b.order_date, b.status order_status, c.name customer, b.is_paid, b.is_complete, b.notes, d.name menu_item,  b.grand_total").
-				Joins("left join public.order b on a.order_id= b.id").
-				Joins("left join public.customer c on b.customer_id = c.id").
-				Joins("left join public.e_menu_item d on d.id = a.e_menu_item").
-				Where("b.order_date BETWEEN ? AND ?", req.StartDate, req.EndDate).
-				Where("b.resto_id = ?", req.RestoId).
-				Order("b.id desc").
-				Scan(&orderDetails).Error
+	err := db.Table("order_detail a").Select("a.*,b.order_no, b.order_date, b.status order_status, c.name customer, b.is_paid, b.is_complete, b.notes, d.name menu_item,  b.grand_total").
+		Joins("left join public.order b on a.order_id= b.id").
+		Joins("left join public.customer c on b.customer_id = c.id").
+		Joins("left join public.e_menu_item d on d.id = a.e_menu_item").
+		Where("b.order_date BETWEEN ? AND ?", req.StartDate, req.EndDate).
+		Where("b.resto_id = ?", req.RestoId).
+		Order("b.id desc").
+		Scan(&orderDetails).Error
 
 	return orderDetails, err
+}
+
+// GetOrderByRestoIdTabelID ...
+func GetOrderByRestoIdTabelID(restoId, tabelId int64) (dbmodels.Order, error) {
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+	order := dbmodels.Order{}
+
+	err := db.Preload("Voucher").Preload("Customer").Preload("Resto").Preload("OrderDetail").Where(" table_id = ?  ", tabelId).Where(" resto_id = ? ", restoId).First(&order).Error
+
+	return order, err
+
+}
+
+func GetOrderDetailByOrderIDAndItemID(orderID, itemID int64) []dbmodels.OrderDetail {
+
+	db := database.GetDbCon()
+	db.Debug().LogMode(true)
+
+	var orderDetails []dbmodels.OrderDetail
+
+	db.Preload("MenuItem").Preload("MenuItem.Category").Preload("MenuItem.MenuGroup").Find(&orderDetails, " order_Id = ? and qty > 0 and e_menu_item = ? ", orderID, itemID)
+
+	return orderDetails
 }

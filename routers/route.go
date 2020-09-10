@@ -139,6 +139,15 @@ func InitRouter() *gin.Engine {
 	api.GET("/detail/:orderId", OrderController.GetOrderDetailByOrderId)
 	api.POST("/page/:page/count/:count", OrderController.GetByFilterPaging)
 
+	// ADD NEW
+	// 1. get order (preload=> order-detail) by tabel no
+	api.GET("/restoId/:restoId/tabel/:tabelId", OrderController.GetByRestoIdTabelID)
+	// 3. add item by no tabel
+	api.POST("/addItem", OrderController.AddItemOrderToTabel)
+	// 5. payment by tabel no ( cash + debit + cc)
+	api.POST("/payment/:tabelID", OrderController.PaymentByTabelID)
+	api.GET("/payment/:tabelID", OrderController.GetPaymentByTabelID)
+
 	api.POST("/update-status", OrderController.UpdateStatusOrder)
 	api.POST("/update-status-complete", OrderController.UpdateStatusCompleteOrder)
 	api.POST("/update-status-detail", OrderController.UpdateStatusOrderDetail)
@@ -194,12 +203,17 @@ func InitRouter() *gin.Engine {
 	api.POST("", cekToken, TableController.Save)
 	api.POST("/filter", TableController.Filter)
 
+	PaymentTypeCtrl := new(v1.PaymentTypeController)
+	api = r.Group(version + "/payment-type")
+	api.POST("/get-all", PaymentTypeCtrl.GetAll)
+
 	// ADD NEW
-	// 1. get order, preload=> order-detail by tabel no
-	// 2. get all active table ( status table open/occupacy jgn lupa )
-	// 3. add item by tabel
+	// 1. get order (preload=> order-detail) by tabel no
+	// 2. get all active table ( status table open/occupacy jgn lupa ) => sdh ada
+	// 3. add item by no tabel
 	// 4. update qty item by table no/ order detail id - no add/substrac qty
 	// 5. payment by tabel no ( cash + debit + cc)
+
 	// 6. join tabel & separate tabel
 	// 7. move tabel
 	// 8. print bill, caption & cur bill ( bill w/o payment)
