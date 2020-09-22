@@ -193,7 +193,7 @@ func (service *OrderServiceInterface) AddOrderDetail(orderId int64, orderDetails
 	}
 
 	res.Rc = constants.ERR_CODE_00
-	res.Msg = constants.ERR_CODE_00_MSG
+	res.Msg = fmt.Sprintf("%v", orderId)
 
 	return res
 }
