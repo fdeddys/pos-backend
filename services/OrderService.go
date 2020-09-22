@@ -813,3 +813,40 @@ func (service *OrderServiceInterface) GetPaymentByTabelID(tabelID int64) models.
 	return res
 
 }
+
+// AddNewDetail ...
+func (service *OrderServiceInterface) AddNewDetail(req *dto.OrderDetailRequest) models.Response {
+
+	var res models.Response
+	menuItem, err := repository.GetMenuItemById(req.EMenuItem)
+
+	if err != nil {
+		log.Println("err get menu item from database : ", err)
+
+		res.Rc = constants.ERR_CODE_11
+		res.Msg = constants.ERR_CODE_11_MSG
+		return res
+	}
+
+	// pack msg order detail
+	orderDetail := dbmodels.OrderDetail{
+		Price:     menuItem.Price,
+		EMenuItem: req.EMenuItem,
+		Qty:       req.Qty,
+		OrderId:   req.OrderID,
+		Status:    constants.COOK_WAITING,
+	}
+
+	// save order detail to db
+	errOrderDetail := repository.AddOrderDetail(&orderDetail)
+	if err != nil {
+		log.Println("err save orderdetail to database : ", errOrderDetail)
+
+		res.Rc = constants.ERR_CODE_10
+		res.Msg = constants.ERR_CODE_10_MSG
+		return res
+	}
+
+	return res
+
+}

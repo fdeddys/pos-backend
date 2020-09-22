@@ -335,7 +335,11 @@ func (controller *OrderController) UpdateQty(ctx *gin.Context) {
 	}
 	json.Marshal(req)
 
-	res = services.InitializeOrderServiceInterface().UpdateQty(&req)
+	if req.ID == 0 {
+		res = services.InitializeOrderServiceInterface().AddNewDetail(&req)
+	} else {
+		res = services.InitializeOrderServiceInterface().UpdateQty(&req)
+	}
 
 	resByte, _ := json.Marshal(res)
 	log.Println("res update qty order --> ", string(resByte))
