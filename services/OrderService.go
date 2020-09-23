@@ -474,8 +474,8 @@ func (service *OrderServiceInterface) UpdateQty(req *dto.OrderDetailRequest) mod
 	reCalculate(orderDetail.OrderId)
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
-	res.Data = orderDetail
-
+	res.Data = orderDetail.ID
+	res.TotalData = 0
 	return res
 
 }
@@ -846,7 +846,10 @@ func (service *OrderServiceInterface) AddNewDetail(req *dto.OrderDetailRequest) 
 		res.Msg = constants.ERR_CODE_10_MSG
 		return res
 	}
-
+	res.Rc = constants.ERR_CODE_00
+	res.Msg = constants.ERR_CODE_00_MSG
+	res.Data = orderDetail.ID
+	res.TotalData = 0
 	return res
 
 }
