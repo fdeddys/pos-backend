@@ -846,6 +846,7 @@ func (service *OrderServiceInterface) AddNewDetail(req *dto.OrderDetailRequest) 
 		res.Msg = constants.ERR_CODE_10_MSG
 		return res
 	}
+	reCalculate(orderDetail.OrderId)
 	res.Rc = constants.ERR_CODE_00
 	res.Msg = constants.ERR_CODE_00_MSG
 	res.Data = orderDetail.ID
